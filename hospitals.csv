@@ -1,0 +1,21 @@
+hospital_id,hospital_name,hospital_type,address,latitude,longitude,total_capacity_SIMULATED,current_occupancy_SIMULATED,icu_capacity_SIMULATED,icu_occupancy_SIMULATED,emergency_available_SIMULATED,teleconsultation_SIMULATED
+H001,LLR Hospital (Hallet),Government,"Darshan Purwa, Sarvodaya Nagar, Kanpur, UP 208002",26.4674,80.3208,100,35,5,2,True,False
+H002,UHM Govt Hospital Kanpur,Government,"39/24, Meston Road, Parade, Kanpur, UP 208001",26.459,80.343,150,46,10,5,True,True
+H003,KPM Hospital,Government,"Birhana Road, Naughara, Kanpur, UP",26.4598,80.3465,200,57,15,8,True,True
+H004,Regency Multi Super Speciality Hospital,Private,"Sarvodaya Nagar, Kanpur, UP",26.477,80.313,250,68,20,11,True,False
+H005,Apollo Spectra Hospitals - Kanpur,Private,"14/138, Mall Road, Chunniganj, Kanpur, UP 208001",26.4695,80.3455,300,79,25,2,True,True
+H006,Krishna Super Speciality Hospital,Private,"363, near Tatmil Chauraha, Harris Ganj, Kanpur, UP 208004",26.4475,80.3425,350,35,5,5,True,True
+H007,Ujala Cygnus Noble Hospital Kanpur,Private,"113/16 A, Khalasi Line, Swaroop Nagar, Kanpur, UP 208002",26.481,80.319,100,46,10,8,True,False
+H008,Ujala Cygnus Kulwanti Hospital,Private,"117/N/8, Kakadeo, Kanpur, UP 208025",26.487,80.305,150,57,15,11,True,True
+H009,Kanishk Super Speciality Hospital,Private,"10/503-A, Khalasi Line, Kanpur, UP 208002",26.4805,80.317,200,68,20,2,True,True
+H010,Lotus Super Specialty Hospital,Private,"120/500(22), Lajpat Nagar, Kanpur, UP 208005",26.465,80.311,250,79,25,5,True,False
+H011,Kanpur Medical Centre,Private,"120/500(24), Govind Nagar Road, Lajpat Nagar, Kanpur, UP 208005",26.465,80.3095,300,35,5,8,True,True
+H012,Neuron Super Speciality Hospital,Private,"L/450, Double Pulia, Kakadeo, Kanpur, UP 208025",26.49,80.3,350,46,10,11,True,True
+H013,Lifetron Hospital,Private,"Keshav Puram, Kalyanpur, Kanpur, UP 208019",26.512,80.27,100,57,15,2,True,False
+H014,Dhanvantri Superspeciality Hospital,Private,"Vasant Vihar, Naubasta, Kanpur, UP 208021",26.414,80.331,150,68,20,5,True,True
+H015,Mahadeva Multi Speciality Hospital,Private,"Vasant Vihar, Naubasta, Kanpur, UP 208021",26.4145,80.332,200,79,25,8,True,True
+H016,Family Hospital & Research Centre,Private,"Hanspuram, Naubasta, Kanpur, UP 208021",26.41,80.33,250,35,5,11,True,False
+H017,Paramount Hospital,Private,"Awas Vikas Road, Hanspuram, Naubasta, Kanpur, UP 208021",26.409,80.326,300,46,10,2,True,True
+H018,Utkarsh Hospital,Private,"Baba Nagar, Naubasta, Kanpur, UP 208021",26.416,80.338,350,57,15,5,True,True
+H019,K.P.S. Hospital,Private,"PAC Bypass, New Azad Nagar, Kanpur, UP 208011",26.43,80.255,100,68,20,8,True,False
+H020,Panacea Multi Super Specialty Hospital,Private,"117/473 L Block, Kakadeo, Kanpur, UP 208005",26.488,80.302,150,79,25,11,True,True
