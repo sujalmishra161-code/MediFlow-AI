@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './App_findcare.css';
 import { 
   Activity, User, MapPin, Calendar, Clock, AlertTriangle, AlertCircle, 
   Sparkles, Building, UserCheck, Stethoscope, RefreshCw, Trash2, 
@@ -1896,7 +1897,7 @@ export default function App() {
                       </div>
 
                       <button
-                        onClick={fetchHospitalDashboard}
+                        onClick={loadHospitalDashboard}
                         className="rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-[10px] font-extrabold hover:bg-white/15 transition-colors flex items-center justify-center gap-2"
                       >
                         <RefreshCw className="h-4 w-4" />
