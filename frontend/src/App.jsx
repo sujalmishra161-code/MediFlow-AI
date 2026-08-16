@@ -1591,228 +1591,453 @@ export default function App() {
 
           {activeTab === 'hospital' && (
             <div className="space-y-6">
-              <section className="rounded-3xl bg-white border border-[#E5EBF3] shadow-[0_10px_35px_rgba(24,52,86,0.06)] overflow-hidden">
-                <div className="px-5 sm:px-7 py-5 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
-                  <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-2xl bg-[#EAF3FF] flex items-center justify-center">
-                      <Activity className="h-6 w-6 text-[#1677F0]" />
-                    </div>
+              {/* HOSPITAL COMMAND CENTER */}
+              <section className="overflow-hidden rounded-[28px] bg-[#102A43] text-white shadow-[0_18px_50px_rgba(16,42,67,0.18)]">
+                <div className="relative p-6 sm:p-8">
+                  <div className="absolute -right-20 -top-24 h-72 w-72 rounded-full bg-[#3978A8]/30 blur-3xl" />
+                  <div className="absolute right-20 bottom-0 h-40 w-40 rounded-full bg-[#5CB477]/10 blur-3xl" />
+
+                  <div className="relative flex flex-col xl:flex-row xl:items-end xl:justify-between gap-7">
                     <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-[9px] uppercase tracking-[0.2em] font-extrabold text-[#1677F0]">Operations center</span>
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ECF9F1] px-2 py-1 text-[8px] font-bold text-[#2F9A59]">
-                          <span className="h-1.5 w-1.5 rounded-full bg-[#35B66A] animate-pulse" /> LIVE
-                        </span>
+                      <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-[0.18em] text-[#BFE3F2]">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#62D08A] animate-pulse" />
+                        Live operations center
                       </div>
-                      <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#12243A] mt-1">Live Hospital Dashboard</h1>
-                      <p className="text-xs text-[#7C8B9D] mt-1">Real-time overview of hospital operations and patient flow.</p>
+
+                      <h1 className="mt-4 text-3xl sm:text-4xl xl:text-5xl font-black tracking-tight">
+                        Hospital Command Center
+                      </h1>
+
+                      <p className="mt-3 max-w-2xl text-sm sm:text-base leading-relaxed text-[#B8C9D5]">
+                        Real-time visibility into patient flow, doctor workload, appointment queues and emergency capacity.
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 min-w-[210px]">
+                        <p className="text-[8px] uppercase tracking-[0.18em] font-bold text-[#91A8B8]">Selected facility</p>
+                        <select
+                          value={selectedHospitalId}
+                          onChange={e => setSelectedHospitalId(e.target.value)}
+                          className="mt-1.5 w-full bg-transparent text-sm font-extrabold text-white outline-none"
+                        >
+                          {localHospitals.map(h => (
+                            <option key={h.hospital_id} value={h.hospital_id} className="text-[#263946]">
+                              {h.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <button
+                        onClick={fetchHospitalDashboard}
+                        className="rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-[10px] font-extrabold hover:bg-white/15 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <RefreshCw className="h-4 w-4" />
+                        REFRESH
+                      </button>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2.5">
-                    <div className="hidden sm:flex items-center gap-2 rounded-2xl bg-[#F8FAFD] border border-[#E5EBF3] px-3 py-2.5">
-                      <Building className="h-4 w-4 text-[#557089]" />
-                      <div>
-                        <p className="text-[8px] text-[#8B99A8] font-bold uppercase tracking-wider">Facility</p>
-                        <p className="text-[11px] font-extrabold text-[#24384D]">{selectedHospital?.name || 'Hospital'}</p>
+
+                  <div className="relative mt-7 grid grid-cols-2 lg:grid-cols-4 gap-3">
+                    {[
+                      ["System status", isLocalMode ? "SIMULATOR" : "ONLINE", isLocalMode ? "Fallback mode" : "FastAPI connected"],
+                      ["Queue status", hospitalQueue.length > 5 ? "BUSY" : "STABLE", `${hospitalQueue.length} active appointments`],
+                      ["AI routing", "ACTIVE", "Dynamic allocation enabled"],
+                      ["Last sync", "LIVE", "Data refresh ready"]
+                    ].map(([label, value, sub]) => (
+                      <div key={label} className="rounded-2xl border border-white/10 bg-white/[0.07] p-4">
+                        <p className="text-[8px] uppercase tracking-[0.18em] font-bold text-[#8FA7B8]">{label}</p>
+                        <div className="mt-2 flex items-center gap-2">
+                          <span className="h-2 w-2 rounded-full bg-[#62D08A]" />
+                          <span className="text-sm font-black">{value}</span>
+                        </div>
+                        <p className="mt-1 text-[8px] text-[#9FB2BF]">{sub}</p>
                       </div>
-                    </div>
-                    <select value={selectedHospitalId} onChange={e => setSelectedHospitalId(e.target.value)}
-                      className="bg-white border border-[#DCE5EF] rounded-xl px-3.5 py-3 text-[10px] font-extrabold text-[#31475B] outline-none focus:border-[#1677F0] min-w-[185px]">
-                      {localHospitals.map(h => <option key={h.hospital_id} value={h.hospital_id}>{h.name}</option>)}
-                    </select>
-                    <button type="button" onClick={loadHospitalDashboard}
-                      className="h-11 w-11 rounded-xl border border-[#DCE5EF] bg-white hover:bg-[#F5F9FE] text-[#1677F0] flex items-center justify-center">
-                      <RefreshCw className="h-4 w-4" />
-                    </button>
+                    ))}
                   </div>
                 </div>
               </section>
 
+              {/* KPI STRIP */}
               {hospitalStats && (
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
+                <section className="grid grid-cols-2 lg:grid-cols-5 gap-3">
                   {[
-                    ['Doctors available', hospitalStats.doctors_available, 'On-duty active', 'blue', UserCheck],
-                    ['Patients waiting', hospitalStats.patients_waiting, 'Scheduled today', 'violet', User],
-                    ['Average wait', `${hospitalStats.average_waiting_time_minutes} min`, 'Queue load', 'orange', Clock],
-                    ['Hospital capacity', `${hospitalStats.capacity_percentage}%`, 'Facility utilization', 'green', Activity],
-                    ['Emergency / ICU', `${hospitalStats.emergency_capacity_percentage}%`, 'Critical capacity', 'red', AlertTriangle]
-                  ].map(([label, value, sub, tone, Icon]) => (
-                    <div key={label} className="bg-white rounded-2xl border border-[#E5EBF3] p-4 sm:p-5 shadow-[0_5px_20px_rgba(24,52,86,0.04)]">
-                      <div className="flex items-start justify-between">
-                        <div className={`h-11 w-11 rounded-xl flex items-center justify-center ${
-                          tone === 'blue' ? 'bg-[#EAF3FF] text-[#1677F0]' :
-                          tone === 'violet' ? 'bg-[#F3EEFF] text-[#7C4DDB]' :
-                          tone === 'orange' ? 'bg-[#FFF4E7] text-[#F08A00]' :
-                          tone === 'green' ? 'bg-[#EAF9F0] text-[#25A35A]' :
-                          'bg-[#FFF0F2] text-[#E5484D]'
-                        }`}><Icon className="h-5 w-5" /></div>
-                        <span className="text-[8px] font-bold text-[#7C8B9D]">{tone === 'red' ? 'CRITICAL' : 'TODAY'}</span>
+                    ["Doctors available", hospitalStats.doctors_available, "On-duty physicians", "doctor"],
+                    ["Patients waiting", hospitalStats.patients_waiting, "Active queue", "patient"],
+                    ["Average wait", `${hospitalStats.average_waiting_time_minutes} min`, "Estimated", "clock"],
+                    ["Hospital capacity", `${hospitalStats.capacity_percentage}%`, "Facility utilization", "capacity"],
+                    ["Emergency / ICU", `${hospitalStats.emergency_capacity_percentage}%`, "Critical capacity", "emergency"]
+                  ].map(([label, value, sub, type]) => (
+                    <div
+                      key={label}
+                      className={`rounded-2xl border p-4 sm:p-5 bg-white ${
+                        type === "emergency"
+                          ? "border-[#F2CDD2]"
+                          : "border-[#E3EAF0]"
+                      } shadow-[0_8px_25px_rgba(35,55,70,0.04)]`}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <p className="text-[8px] uppercase tracking-[0.16em] font-extrabold text-[#8B99A2]">{label}</p>
+                        {type === "emergency" ? (
+                          <AlertTriangle className="h-4 w-4 text-[#D45D69]" />
+                        ) : type === "capacity" ? (
+                          <Building className="h-4 w-4 text-[#3978A8]" />
+                        ) : type === "clock" ? (
+                          <Clock className="h-4 w-4 text-[#8067A5]" />
+                        ) : type === "doctor" ? (
+                          <UserCheck className="h-4 w-4 text-[#3978A8]" />
+                        ) : (
+                          <User className="h-4 w-4 text-[#3978A8]" />
+                        )}
                       </div>
-                      <p className="text-[9px] uppercase tracking-wider text-[#7E8DA0] font-bold mt-4">{label}</p>
-                      <p className="text-2xl font-extrabold text-[#12243A] mt-1">{value}</p>
-                      <p className={`text-[9px] font-semibold mt-1 ${
-                        tone === 'red' ? 'text-[#E5484D]' : tone === 'orange' ? 'text-[#F08A00]' :
-                        tone === 'green' ? 'text-[#25A35A]' : tone === 'violet' ? 'text-[#7C4DDB]' : 'text-[#1677F0]'
-                      }`}>{sub}</p>
-                      {(label === 'Hospital capacity' || label === 'Emergency / ICU') && (
-                        <div className="h-1.5 bg-[#EDF1F6] rounded-full overflow-hidden mt-3">
-                          <div className={`h-full rounded-full ${tone === 'red' ? 'bg-[#E5484D]' : 'bg-[#25A35A]'}`}
-                            style={{ width: `${label === 'Hospital capacity' ? hospitalStats.capacity_percentage : hospitalStats.emergency_capacity_percentage}%` }} />
+
+                      <p className={`mt-3 text-2xl sm:text-3xl font-black ${
+                        type === "emergency" ? "text-[#C65562]" : "text-[#203744]"
+                      }`}>
+                        {value}
+                      </p>
+                      <p className="mt-1 text-[8px] text-[#98A5AD]">{sub}</p>
+
+                      {(type === "capacity" || type === "emergency") && (
+                        <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-[#EDF1F4]">
+                          <div
+                            className={`h-full rounded-full ${type === "emergency" ? "bg-[#D45D69]" : "bg-[#3978A8]"}`}
+                            style={{
+                              width: `${type === "capacity" ? hospitalStats.capacity_percentage : hospitalStats.emergency_capacity_percentage}%`
+                            }}
+                          />
                         </div>
                       )}
                     </div>
                   ))}
-                </div>
+                </section>
               )}
 
+              {/* MAIN OPERATIONS GRID */}
               <div className="grid grid-cols-1 xl:grid-cols-12 gap-5">
-                <section className="xl:col-span-5 bg-white rounded-2xl border border-[#E5EBF3] p-5 shadow-[0_5px_20px_rgba(24,52,86,0.04)]">
-                  <div className="flex items-center justify-between mb-4">
-                    <div><h3 className="text-sm font-extrabold text-[#12243A]">Queue Trend (Today)</h3><p className="text-[9px] text-[#8A98A8] mt-1">Patients waiting throughout the day</p></div>
-                    <span className="rounded-lg border border-[#DCE5EF] px-3 py-1.5 text-[9px] font-bold text-[#51667B]">Today</span>
-                  </div>
-                  <div className="h-[220px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={queueTrendData} margin={{ top: 10, right: 8, left: -18, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#EDF1F6" />
-                        <XAxis dataKey="time" stroke="#94A1AF" fontSize={8} tickLine={false} axisLine={false} />
-                        <YAxis stroke="#94A1AF" fontSize={8} tickLine={false} axisLine={false} allowDecimals={false} />
-                        <Tooltip contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#E2E9F1', borderRadius: '10px', fontSize: '10px' }} />
-                        <Line type="monotone" dataKey="patients" name="Patients Waiting" stroke="#1677F0" strokeWidth={3}
-                          dot={{ r: 3, fill: '#FFFFFF', stroke: '#1677F0', strokeWidth: 2 }} activeDot={{ r: 5 }} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                  <div className="flex items-center justify-center gap-2 text-[9px] text-[#66788B] mt-1"><span className="h-2 w-2 rounded-full bg-[#1677F0]" />Patients Waiting</div>
-                </section>
-
-                <section className="xl:col-span-4 bg-white rounded-2xl border border-[#E5EBF3] p-5 shadow-[0_5px_20px_rgba(24,52,86,0.04)]">
-                  <div className="flex items-center justify-between mb-2">
-                    <div><h3 className="text-sm font-extrabold text-[#12243A]">Capacity Utilization</h3><p className="text-[9px] text-[#8A98A8] mt-1">Current facility utilization</p></div>
-                    <Activity className="h-4 w-4 text-[#7D8DA0]" />
-                  </div>
-                  <div className="h-[220px] relative">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie data={capacityData} cx="50%" cy="48%" innerRadius={58} outerRadius={82} paddingAngle={3} dataKey="value" stroke="none">
-                          {capacityData.map((entry, index) => <Cell key={`cap-${index}`} fill={['#3AC27A', '#F6A23A', '#E5484D'][index]} />)}
-                        </Pie>
-                        <Tooltip contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#E2E9F1', borderRadius: '10px', fontSize: '10px' }} />
-                      </PieChart>
-                    </ResponsiveContainer>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                      <span className="text-2xl font-extrabold text-[#12243A]">{hospitalStats?.capacity_percentage || 0}%</span>
-                      <span className="text-[9px] text-[#7D8DA0] font-semibold">Utilized</span>
+                {/* Queue */}
+                <section className="xl:col-span-8 rounded-2xl border border-[#E3EAF0] bg-white overflow-hidden shadow-[0_8px_25px_rgba(35,55,70,0.04)]">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#EEF1F4] px-5 py-5">
+                    <div>
+                      <p className="text-[8px] uppercase tracking-[0.18em] font-extrabold text-[#3978A8]">Patient flow</p>
+                      <h2 className="mt-1 text-xl font-black text-[#243743]">Live appointment queue</h2>
+                      <p className="mt-1 text-[9px] text-[#97A3AA]">Appointments currently being managed by MediFlow AI.</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center gap-2 rounded-full bg-[#EDF8F1] px-3 py-1.5 text-[8px] font-extrabold text-[#4C9B67]">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#5CB477] animate-pulse" />
+                        LIVE
+                      </span>
+                      <span className="rounded-full bg-[#F5F7F9] px-3 py-1.5 text-[8px] font-bold text-[#7F8D96]">
+                        {hospitalQueue.length} CASES
+                      </span>
                     </div>
                   </div>
-                  <div className="grid grid-cols-3 gap-2 mt-1">
-                    {[
-                      ['Available', Math.max(0, 100 - Number(hospitalStats?.capacity_percentage || 0)), '#25A35A'],
-                      ['Occupied', Number(hospitalStats?.capacity_percentage || 0), '#F08A00'],
-                      ['Critical', Number(hospitalStats?.emergency_capacity_percentage || 0), '#E5484D']
-                    ].map(([label, value, color]) => (
-                      <div key={label} className="text-center">
-                        <div className="flex items-center justify-center gap-1.5"><span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} /><span className="text-[8px] text-[#748396]">{label}</span></div>
-                        <p className="text-[10px] font-extrabold text-[#34495C] mt-1">{value}%</p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
 
-                <section className="xl:col-span-3 bg-white rounded-2xl border border-[#E5EBF3] p-5 shadow-[0_5px_20px_rgba(24,52,86,0.04)]">
-                  <div className="flex items-center justify-between mb-4">
-                    <div><h3 className="text-sm font-extrabold text-[#12243A]">Department Load</h3><p className="text-[9px] text-[#8A98A8] mt-1">Average doctor workload</p></div>
-                    <BarChart3 className="h-4 w-4 text-[#7D8DA0]" />
-                  </div>
-                  <div className="space-y-4">
-                    {departmentLoad.length > 0 ? departmentLoad.map((item, index) => (
-                      <div key={item.name}>
-                        <div className="flex items-center justify-between mb-1.5"><span className="text-[9px] font-semibold text-[#42566A] truncate">{item.name}</span><span className="text-[9px] font-bold text-[#24384D]">{item.value}%</span></div>
-                        <div className="h-2 bg-[#EDF1F6] rounded-full overflow-hidden">
-                          <div className={`h-full rounded-full ${index === 0 ? 'bg-[#E5484D]' : index < 3 ? 'bg-[#F6A23A]' : 'bg-[#25A35A]'}`} style={{ width: `${Math.min(100, Math.max(0, item.value))}%` }} />
+                  <div className="p-4 sm:p-5 space-y-2.5">
+                    {hospitalQueue.length > 0 ? hospitalQueue.map((app, index) => (
+                      <div
+                        key={app.appointment_id}
+                        className={`group rounded-2xl border p-4 transition-all hover:-translate-y-0.5 hover:shadow-md ${
+                          app.priority === "EMERGENCY"
+                            ? "border-[#F0C8CD] bg-[#FFF7F8]"
+                            : app.status === "SHIFTED"
+                            ? "border-[#F1DEB5] bg-[#FFFCF5]"
+                            : "border-[#E8EDF1] bg-[#FCFDFE]"
+                        }`}
+                      >
+                        <div className="grid grid-cols-1 md:grid-cols-[48px_1fr_auto] gap-4 items-center">
+                          <div className={`h-11 w-11 rounded-xl flex items-center justify-center font-black text-xs ${
+                            app.priority === "EMERGENCY"
+                              ? "bg-[#FDEBED] text-[#C65562]"
+                              : "bg-[#EAF3F8] text-[#3978A8]"
+                          }`}>
+                            #{String(index + 1).padStart(2, "0")}
+                          </div>
+
+                          <div className="min-w-0">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <h3 className="text-sm font-black text-[#334650]">{app.patient_name}</h3>
+                              <span className="font-mono text-[8px] text-[#A0ABB2]">{app.appointment_id}</span>
+                            </div>
+
+                            <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-[9px] text-[#8B989F]">
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-3 w-3 text-[#3978A8]" />
+                                {app.appointment_time?.split(" ")[1] || "--:--"}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Stethoscope className="h-3 w-3 text-[#8067A5]" />
+                                {localDoctors.find(d => d.doctor_id === app.doctor_id)?.name || app.doctor_id}
+                              </span>
+                            </div>
+
+                            {app.notes && (
+                              <p className="mt-2 text-[8px] text-[#9AA5AC] truncate max-w-[520px]">{app.notes}</p>
+                            )}
+                          </div>
+
+                          <div className="flex items-center gap-2 md:justify-end">
+                            <span className={`rounded-lg border px-2.5 py-1.5 text-[8px] font-black ${
+                              app.priority === "EMERGENCY" || app.priority === "HIGH"
+                                ? "border-[#F0CDD2] bg-[#FFF0F1] text-[#C65562]"
+                                : app.priority === "MEDIUM"
+                                ? "border-[#F1DFB7] bg-[#FFF8E9] text-[#B17C28]"
+                                : "border-[#CDE9D5] bg-[#EDF8F1] text-[#4C9B67]"
+                            }`}>
+                              {app.priority}
+                            </span>
+
+                            <span className={`rounded-lg bg-white px-2.5 py-1.5 text-[8px] font-black border border-[#E8EDF1] ${
+                              app.status === "CANCELLED"
+                                ? "text-[#9DA7AD]"
+                                : app.status === "SHIFTED"
+                                ? "text-[#B17C28]"
+                                : app.status === "REALLOCATED"
+                                ? "text-[#8067A5]"
+                                : "text-[#4F9A65]"
+                            }`}>
+                              {app.status}
+                            </span>
+
+                            {app.status !== "CANCELLED" && (
+                              <button
+                                onClick={() => handleCancelAppointment(app.appointment_id)}
+                                className="h-8 w-8 rounded-lg border border-[#E6EBEF] bg-white flex items-center justify-center text-[#9AA5AC] hover:text-[#C65562] hover:border-[#F0CDD2] transition-colors"
+                                title="Cancel appointment"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </button>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    )) : <div className="py-12 text-center text-[9px] text-[#94A1AF]">No department data available.</div>}
+                    )) : (
+                      <div className="py-20 text-center">
+                        <div className="mx-auto h-14 w-14 rounded-2xl bg-[#F3F7F9] flex items-center justify-center">
+                          <Calendar className="h-6 w-6 text-[#8FA0AA]" />
+                        </div>
+                        <h3 className="mt-4 text-sm font-black text-[#42545E]">Queue is clear</h3>
+                        <p className="mt-1 text-[9px] text-[#9AA5AC]">No active appointments in this facility.</p>
+                      </div>
+                    )}
                   </div>
-                  <div className="mt-5 pt-4 border-t border-[#EEF2F6] text-center"><span className="text-[9px] font-bold text-[#1677F0]">View all departments →</span></div>
                 </section>
+
+                {/* Right column */}
+                <div className="xl:col-span-4 space-y-5">
+                  {/* Capacity visualization */}
+                  <section className="rounded-2xl border border-[#E3EAF0] bg-white p-5 shadow-[0_8px_25px_rgba(35,55,70,0.04)]">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-[8px] uppercase tracking-[0.18em] font-extrabold text-[#3978A8]">Resource health</p>
+                        <h3 className="mt-1 text-lg font-black text-[#334650]">Facility capacity</h3>
+                      </div>
+                      <Building className="h-5 w-5 text-[#9AA7AF]" />
+                    </div>
+
+                    <div className="mt-5 grid grid-cols-2 items-center gap-3">
+                      <div className="h-[180px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={[
+                                { name: "Occupied", value: hospitalStats?.capacity_percentage || 0 },
+                                { name: "Available", value: Math.max(0, 100 - (hospitalStats?.capacity_percentage || 0)) }
+                              ]}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={50}
+                              outerRadius={70}
+                              startAngle={90}
+                              endAngle={-270}
+                              paddingAngle={3}
+                              dataKey="value"
+                            >
+                              <Cell fill="#3978A8" />
+                              <Cell fill="#E7EEF2" />
+                            </Pie>
+                          </PieChart>
+                        </ResponsiveContainer>
+                        <div className="relative -mt-[122px] text-center pointer-events-none">
+                          <p className="text-2xl font-black text-[#263A46]">{hospitalStats?.capacity_percentage || 0}%</p>
+                          <p className="text-[7px] uppercase tracking-widest text-[#98A5AC]">occupied</p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div>
+                          <div className="flex items-center justify-between text-[8px]">
+                            <span className="font-bold text-[#74838C]">Hospital beds</span>
+                            <span className="font-black text-[#334650]">{hospitalStats?.capacity_percentage || 0}%</span>
+                          </div>
+                          <div className="mt-1.5 h-1.5 rounded-full bg-[#EDF1F4] overflow-hidden">
+                            <div className="h-full rounded-full bg-[#3978A8]" style={{ width: `${hospitalStats?.capacity_percentage || 0}%` }} />
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex items-center justify-between text-[8px]">
+                            <span className="font-bold text-[#74838C]">Emergency / ICU</span>
+                            <span className="font-black text-[#C65562]">{hospitalStats?.emergency_capacity_percentage || 0}%</span>
+                          </div>
+                          <div className="mt-1.5 h-1.5 rounded-full bg-[#F4E7E9] overflow-hidden">
+                            <div className="h-full rounded-full bg-[#D45D69]" style={{ width: `${hospitalStats?.emergency_capacity_percentage || 0}%` }} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* Simulation */}
+                  <section className="rounded-2xl border border-[#E3EAF0] bg-white p-5 shadow-[0_8px_25px_rgba(35,55,70,0.04)]">
+                    <div className="flex items-start gap-3">
+                      <div className="h-10 w-10 rounded-xl bg-[#FFF0F1] flex items-center justify-center">
+                        <AlertTriangle className="h-5 w-5 text-[#D45D69]" />
+                      </div>
+                      <div>
+                        <p className="text-[8px] uppercase tracking-[0.18em] font-extrabold text-[#C65562]">Scenario engine</p>
+                        <h3 className="mt-1 text-sm font-black text-[#334650]">Dynamic optimization</h3>
+                        <p className="mt-1 text-[9px] text-[#99A5AC]">Test how MediFlow reacts to live disruptions.</p>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={handleSimulateEmergency}
+                      className="mt-5 w-full rounded-xl bg-[#D45D69] hover:bg-[#C95562] text-white py-3.5 text-[9px] font-black tracking-wider transition-colors"
+                    >
+                      🚨 SIMULATE EMERGENCY
+                    </button>
+
+                    <div className="my-4 h-px bg-[#EEF1F4]" />
+
+                    <label className="text-[8px] uppercase tracking-[0.16em] font-black text-[#8D999F] block mb-2">
+                      Doctor availability
+                    </label>
+
+                    <div className="flex gap-2">
+                      <select
+                        value={unavailableDoctorId}
+                        onChange={e => setUnavailableDoctorId(e.target.value)}
+                        className="min-w-0 flex-1 rounded-xl border border-[#DFE6EB] bg-white px-3 py-2.5 text-[9px] text-[#465964] outline-none focus:border-[#3978A8]"
+                      >
+                        {hospitalDoctorsList.map(d => (
+                          <option key={d.doctor_id} value={d.doctor_id}>
+                            {d.name} ({d.specialty})
+                          </option>
+                        ))}
+                      </select>
+
+                      <button
+                        onClick={handleDoctorUnavailable}
+                        className="rounded-xl border border-[#F0DEB8] bg-[#FFF8E9] px-3 text-[8px] font-black text-[#A5792B] hover:bg-[#FFF4DC]"
+                      >
+                        OFFLINE
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={handleRebalanceQueues}
+                      className="mt-3 w-full rounded-xl border border-[#DFE6EB] bg-[#F8FAFB] hover:bg-[#F2F6F8] py-3 text-[8px] font-black text-[#5C6D76] transition-colors"
+                    >
+                      ⚖️ REBALANCE QUEUES
+                    </button>
+                  </section>
+                </div>
               </div>
 
+              {/* BEFORE / AFTER SIMULATION */}
               {beforeAfterQueue && (
-                <section className="bg-white rounded-2xl border border-[#F1D4D8] overflow-hidden shadow-[0_5px_20px_rgba(24,52,86,0.04)]">
-                  <div className="p-5 border-b border-[#F4E5E7] flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-3"><div className="h-10 w-10 rounded-xl bg-[#FFF0F2] flex items-center justify-center"><AlertTriangle className="h-5 w-5 text-[#E5484D]" /></div><div><p className="text-[8px] uppercase tracking-[0.18em] font-extrabold text-[#E5484D]">Dynamic recalculation</p><h3 className="text-sm font-extrabold text-[#273C50] mt-1">Emergency impact simulation</h3></div></div>
-                    <span className="text-[9px] font-bold text-[#E5484D]">REAL-TIME</span>
+                <section className="rounded-2xl border border-[#F0CDD2] bg-white overflow-hidden shadow-[0_8px_25px_rgba(35,55,70,0.04)]">
+                  <div className="flex items-center justify-between border-b border-[#F3E2E4] px-5 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="h-9 w-9 rounded-xl bg-[#FFF0F1] flex items-center justify-center">
+                        <Activity className="h-4 w-4 text-[#D45D69]" />
+                      </div>
+                      <div>
+                        <p className="text-[8px] uppercase tracking-[0.18em] font-black text-[#D45D69]">Reallocation engine</p>
+                        <h3 className="mt-0.5 text-sm font-black text-[#394A54]">Emergency impact simulation</h3>
+                      </div>
+                    </div>
+                    <span className="rounded-full bg-[#FFF0F1] px-3 py-1.5 text-[8px] font-black text-[#C65562]">AUTO-OPTIMIZED</span>
                   </div>
+
                   <div className="grid md:grid-cols-2 gap-4 p-5">
-                    <div className="rounded-xl bg-[#FAFBFD] border border-[#E7EDF3] p-4"><p className="text-[8px] uppercase tracking-widest font-extrabold text-[#91A0AE] mb-3">Before event</p><div className="space-y-2">{beforeAfterQueue.before.map((app, idx) => <div key={idx} className="flex justify-between rounded-lg bg-white border border-[#EEF2F6] px-3 py-2.5 text-[9px]"><span className="font-bold text-[#53677A]">{app.patient_name}</span><span className="font-mono text-[#8795A3]">{app.appointment_time.split(' ')[1]}</span></div>)}</div></div>
-                    <div className="rounded-xl bg-[#FFF8F8] border border-[#F2E0E2] p-4"><p className="text-[8px] uppercase tracking-widest font-extrabold text-[#E5484D] mb-3">After event</p><div className="space-y-2">{beforeAfterQueue.after.map((app, idx) => <div key={idx} className={`flex justify-between rounded-lg border px-3 py-2.5 text-[9px] ${app.priority === 'EMERGENCY' ? 'bg-[#FFF0F2] border-[#F0C8CD] text-[#B74F5B]' : app.status === 'SHIFTED' ? 'bg-[#FFF9EC] border-[#F1E0B8] text-[#9A762F]' : 'bg-white border-[#EEF1F4] text-[#53656F]'}`}><span className="font-bold">{app.priority === 'EMERGENCY' && '🚨 '}{app.patient_name}</span><span className="font-mono font-bold">{app.appointment_time.split(' ')[1]}</span></div>)}</div></div>
+                    <div className="rounded-2xl border border-[#E9EEF2] bg-[#FAFBFC] p-4">
+                      <p className="text-[8px] uppercase tracking-[0.16em] font-black text-[#9AA5AC] mb-3">Before event</p>
+                      <div className="space-y-2">
+                        {beforeAfterQueue.before.map((app, idx) => (
+                          <div key={idx} className="flex items-center justify-between rounded-xl bg-white border border-[#EEF1F4] px-3 py-3">
+                            <span className="text-[9px] font-bold text-[#53656F]">{app.patient_name}</span>
+                            <span className="font-mono text-[9px] font-bold text-[#8C999F]">{app.appointment_time.split(" ")[1]}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-[#F2E0E2] bg-[#FFF8F8] p-4">
+                      <p className="text-[8px] uppercase tracking-[0.16em] font-black text-[#D45D69] mb-3">After event</p>
+                      <div className="space-y-2">
+                        {beforeAfterQueue.after.map((app, idx) => (
+                          <div
+                            key={idx}
+                            className={`flex items-center justify-between rounded-xl border px-3 py-3 ${
+                              app.priority === "EMERGENCY"
+                                ? "bg-[#FFF0F1] border-[#F0C8CD]"
+                                : app.status === "SHIFTED"
+                                ? "bg-[#FFF9EC] border-[#F1E0B8]"
+                                : "bg-white border-[#EEF1F4]"
+                            }`}
+                          >
+                            <span className={`text-[9px] font-bold ${
+                              app.priority === "EMERGENCY" ? "text-[#B74F5B]" : "text-[#53656F]"
+                            }`}>
+                              {app.priority === "EMERGENCY" && "🚨 "}
+                              {app.patient_name}
+                            </span>
+                            <span className="font-mono text-[9px] font-black text-[#53656F]">
+                              {app.appointment_time.split(" ")[1]}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <div className="mx-5 mb-5 rounded-xl bg-[#F7F9FC] border border-[#E8EDF3] px-4 py-3 text-[9px] text-[#718196] leading-relaxed"><b className="text-[#455B70]">Recalculation:</b> {beforeAfterQueue.explanation}</div>
+
+                  <div className="mx-5 mb-5 rounded-xl border border-[#E8EDF1] bg-[#F8FAFB] px-4 py-3 text-[9px] leading-relaxed text-[#7D8B94]">
+                    <b className="text-[#4E606A]">AI recalculation:</b> {beforeAfterQueue.explanation}
+                  </div>
                 </section>
               )}
 
-              <section className="bg-white rounded-2xl border border-[#E5EBF3] shadow-[0_5px_20px_rgba(24,52,86,0.04)] overflow-hidden">
-                <div className="px-5 sm:px-6 py-5 border-b border-[#E9EEF4] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              {/* EVENT STREAM */}
+              <section className="rounded-2xl border border-[#E3EAF0] bg-white overflow-hidden shadow-[0_8px_25px_rgba(35,55,70,0.04)]">
+                <div className="flex items-center justify-between border-b border-[#EEF1F4] px-5 py-4">
                   <div>
-                    <div className="flex items-center gap-2"><h2 className="text-lg font-extrabold text-[#12243A]">Live Appointment Queue</h2><span className="inline-flex items-center gap-1.5 rounded-full bg-[#ECF9F1] px-2.5 py-1 text-[8px] font-extrabold text-[#2F9A59]"><span className="h-1.5 w-1.5 rounded-full bg-[#35B66A]" />LIVE</span></div>
-                    <p className="text-[9px] text-[#8B99A8] mt-1">Real-time scheduled patients for {selectedHospital?.name || 'this facility'}.</p>
+                    <p className="text-[8px] uppercase tracking-[0.18em] font-black text-[#3978A8]">System event stream</p>
+                    <h3 className="mt-1 text-lg font-black text-[#334650]">MediFlow dispatch log</h3>
                   </div>
-                  <button type="button" onClick={loadHospitalDashboard} className="rounded-xl border border-[#1677F0] text-[#1677F0] hover:bg-[#EEF6FF] px-4 py-2.5 text-[9px] font-extrabold">Refresh Queue</button>
+                  <Activity className="h-5 w-5 text-[#3978A8]" />
                 </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full min-w-[950px] text-left">
-                    <thead><tr className="bg-[#FAFBFD] border-b border-[#E9EEF4] text-[8px] uppercase tracking-widest text-[#8796A6]">
-                      <th className="px-5 py-3.5">Token</th><th className="px-5 py-3.5">Patient</th><th className="px-5 py-3.5">Department</th><th className="px-5 py-3.5">Doctor</th><th className="px-5 py-3.5">Time</th><th className="px-5 py-3.5">Priority</th><th className="px-5 py-3.5">Status</th><th className="px-5 py-3.5 text-right">Action</th>
-                    </tr></thead>
-                    <tbody className="divide-y divide-[#EEF2F6]">
-                      {hospitalQueue.length > 0 ? hospitalQueue.map((app, index) => {
-                        const doc = localDoctors.find(d => d.doctor_id === app.doctor_id);
-                        const priority = app.priority || 'LOW';
-                        const priorityClass = priority === 'EMERGENCY' || priority === 'HIGH' ? 'bg-[#FFF0F2] text-[#E5484D] border-[#F4CDD2]' : priority === 'MEDIUM' ? 'bg-[#FFF7E8] text-[#D28112] border-[#F0D8AD]' : 'bg-[#ECF9F1] text-[#2F9A59] border-[#CDEAD7]';
-                        return (
-                          <tr key={app.appointment_id} className="hover:bg-[#FBFCFE] transition-colors">
-                            <td className="px-5 py-4"><span className="inline-flex rounded-full bg-[#EAF3FF] text-[#1677F0] px-2.5 py-1 text-[9px] font-extrabold font-mono">{app.appointment_id || `A00${index + 1}`}</span></td>
-                            <td className="px-5 py-4"><p className="text-[10px] font-extrabold text-[#263B50]">{app.patient_name || `Patient ${index + 1}`}</p><p className="text-[8px] text-[#93A0AE] mt-1">{app.notes || 'Initial seeded appointment.'}</p></td>
-                            <td className="px-5 py-4"><span className="inline-flex items-center gap-2 text-[9px] font-semibold text-[#50657A]"><span className="h-7 w-7 rounded-lg bg-[#F3EEFF] text-[#7C4DDB] flex items-center justify-center"><Stethoscope className="h-3.5 w-3.5" /></span>{doc?.specialty || 'General Medicine'}</span></td>
-                            <td className="px-5 py-4 text-[9px] font-bold text-[#455A70]">{doc?.name || 'Assigned physician'}</td>
-                            <td className="px-5 py-4 font-mono text-[9px] font-bold text-[#465D73]">{app.appointment_time?.split(' ')[1] || '--:--'}</td>
-                            <td className="px-5 py-4"><span className={`px-2.5 py-1 rounded-full border text-[8px] font-extrabold ${priorityClass}`}>{priority}</span></td>
-                            <td className="px-5 py-4"><span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[8px] font-extrabold ${app.status === 'CANCELLED' ? 'bg-[#F3F5F7] text-[#8A98A8]' : app.status === 'SHIFTED' ? 'bg-[#FFF7E8] text-[#C47C15]' : app.status === 'REALLOCATED' ? 'bg-[#F3EEFF] text-[#7651B7]' : 'bg-[#ECF9F1] text-[#2F9A59]'}`}><span className="h-1.5 w-1.5 rounded-full bg-current" />{app.status || 'BOOKED'}</span></td>
-                            <td className="px-5 py-4 text-right">{app.status !== 'CANCELLED' && <button onClick={() => handleCancelAppointment(app.appointment_id)} className="h-9 w-9 rounded-xl border border-[#DDE6EF] bg-white hover:bg-[#FFF4F5] hover:border-[#F0CDD2] text-[#718296] hover:text-[#E5484D] inline-flex items-center justify-center" title="Cancel appointment"><Trash2 className="h-4 w-4" /></button>}</td>
-                          </tr>
-                        );
-                      }) : <tr><td colSpan="8" className="p-16 text-center"><div className="mx-auto h-12 w-12 rounded-2xl bg-[#F3F7FB] flex items-center justify-center"><Calendar className="h-5 w-5 text-[#7D8EA0]" /></div><p className="text-sm font-extrabold text-[#40566B] mt-3">No active appointments</p><p className="text-[9px] text-[#95A2B0] mt-1">The live queue is currently clear.</p></td></tr>}
-                    </tbody>
-                  </table>
+
+                <div className="p-5">
+                  <div className="rounded-2xl border border-[#EEF1F4] bg-[#FAFBFC] p-4 max-h-[240px] overflow-y-auto space-y-3">
+                    {simulationLogs.length > 0 ? simulationLogs.map((log, idx) => (
+                      <div key={idx} className="flex gap-3 border-b border-[#EDF0F2] last:border-0 pb-3 last:pb-0">
+                        <span className="mt-1 h-2 w-2 rounded-full bg-[#3978A8] flex-shrink-0" />
+                        <p className="text-[9px] leading-relaxed text-[#697982] font-mono">{log}</p>
+                      </div>
+                    )) : (
+                      <div className="py-8 text-center">
+                        <CheckCircle2 className="h-5 w-5 text-[#5CB477] mx-auto" />
+                        <p className="mt-2 text-[9px] font-bold text-[#7E8B93]">System ready</p>
+                        <p className="mt-1 text-[8px] text-[#A0AAB1]">Emergency and reallocation events will appear here.</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div className="px-5 py-3.5 border-t border-[#E9EEF4] flex items-center justify-between"><span className="text-[9px] text-[#8998A8]">Showing {hospitalQueue.length} appointment{hospitalQueue.length === 1 ? '' : 's'}</span><span className="text-[9px] font-bold text-[#1677F0]">Live synchronization enabled</span></div>
               </section>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                <section className="bg-white rounded-2xl border border-[#E5EBF3] p-5 shadow-[0_5px_20px_rgba(24,52,86,0.04)]">
-                  <div className="flex items-center gap-3 mb-5"><div className="h-10 w-10 rounded-xl bg-[#FFF0F2] flex items-center justify-center"><AlertTriangle className="h-5 w-5 text-[#E5484D]" /></div><div><h3 className="text-sm font-extrabold text-[#23394F]">Simulation Controls</h3><p className="text-[9px] text-[#8D9AAA] mt-1">Trigger dynamic hospital events.</p></div></div>
-                  <div className="grid sm:grid-cols-3 gap-2.5">
-                    <button onClick={handleSimulateEmergency} className="rounded-xl bg-[#E5484D] hover:bg-[#D83E45] text-white py-3 text-[8px] font-extrabold">🚨 SIMULATE EMERGENCY</button>
-                    <button onClick={handleRebalanceQueues} className="rounded-xl border border-[#DCE5EF] bg-[#F8FAFD] hover:bg-[#F0F5FA] text-[#53687D] py-3 text-[8px] font-extrabold">⚖️ REBALANCE QUEUES</button>
-                    <button onClick={loadHospitalDashboard} className="rounded-xl border border-[#DCE5EF] bg-white hover:bg-[#F4F8FC] text-[#1677F0] py-3 text-[8px] font-extrabold">↻ REFRESH DATA</button>
-                  </div>
-                  <div className="mt-5 pt-5 border-t border-[#EDF1F5]">
-                    <label className="text-[9px] uppercase tracking-widest font-extrabold text-[#8795A5] block mb-2">Doctor unavailable</label>
-                    <div className="flex gap-2">
-                      <select value={unavailableDoctorId} onChange={e => setUnavailableDoctorId(e.target.value)} className="min-w-0 flex-1 bg-white border border-[#DCE5EF] rounded-xl px-3 py-3 text-[9px] font-semibold text-[#455B70] outline-none focus:border-[#1677F0]">{hospitalDoctorsList.map(d => <option key={d.doctor_id} value={d.doctor_id}>{d.name} ({d.specialty})</option>)}</select>
-                      <button onClick={handleDoctorUnavailable} className="rounded-xl bg-[#FFF7E8] border border-[#F0D9B0] px-4 text-[9px] font-extrabold text-[#B87917]">Go offline</button>
-                    </div>
-                  </div>
-                </section>
-
-                <section className="bg-white rounded-2xl border border-[#E5EBF3] p-5 shadow-[0_5px_20px_rgba(24,52,86,0.04)]">
-                  <div className="flex items-center justify-between mb-4"><div><h3 className="text-sm font-extrabold text-[#23394F]">System Event Stream</h3><p className="text-[9px] text-[#8D9AAA] mt-1">Dynamic optimization and reallocation log.</p></div><span className="inline-flex items-center gap-1.5 text-[8px] font-bold text-[#2F9A59]"><span className="h-1.5 w-1.5 rounded-full bg-[#35B66A] animate-pulse" />SYSTEM ONLINE</span></div>
-                  <div className="rounded-xl bg-[#F8FAFD] border border-[#E8EEF4] p-3 h-[150px] overflow-y-auto space-y-2">
-                    {simulationLogs.length > 0 ? simulationLogs.map((log, idx) => <div key={idx} className="flex gap-2 border-b border-[#E9EEF4] last:border-0 pb-2 last:pb-0 text-[8px] leading-relaxed text-[#65778B] font-mono"><span className="text-[#1677F0]">›</span><span>{log}</span></div>) : <div className="h-full flex items-center justify-center text-center"><div><Activity className="h-5 w-5 text-[#B1BFCC] mx-auto" /><p className="text-[9px] text-[#9AA7B4] mt-2">System ready. Event logs will stream here.</p></div></div>}
-                  </div>
-                </section>
-              </div>
             </div>
           )}
 
