@@ -1854,8 +1854,7 @@ export default function App() {
 </div>
 )}
 
-  </div>
-)}
+  
 
           {activeTab === 'hospital' && (
             <div className="space-y-6">
