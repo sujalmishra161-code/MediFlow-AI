@@ -1728,7 +1728,127 @@ export default function App() {
 ====================================================== */}
 
 {searchResult && (
-    // paste my new doctor-list code here
+  <div className="mt-8 space-y-6">
+
+    {/* AI ASSESSMENT */}
+    <section className="bg-white rounded-2xl border border-[#E4EAF0] p-6 shadow-sm">
+      <div className="flex items-center justify-between gap-4 mb-6">
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#3978A8]">AI Care Assessment</p>
+          <h2 className="text-2xl font-extrabold text-[#20313D] mt-1">Recommended care path</h2>
+        </div>
+        <div className="px-4 py-2 rounded-xl bg-[#EAF6EF] text-[#3F8F59] text-xs font-extrabold">
+          {searchResult.classification?.urgency || "LOW"} PRIORITY
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-7">
+        <div className="rounded-xl bg-[#F6F9FC] border border-[#E4EAF0] p-4">
+          <p className="text-[10px] font-bold text-[#8A98A4] uppercase">Required Specialty</p>
+          <p className="text-lg font-extrabold text-[#20313D] mt-2">
+            {searchResult.classification?.specialty || "General Medicine"}
+          </p>
+        </div>
+        <div className="rounded-xl bg-[#F6F9FC] border border-[#E4EAF0] p-4">
+          <p className="text-[10px] font-bold text-[#8A98A4] uppercase">Urgency</p>
+          <p className="text-lg font-extrabold text-[#20313D] mt-2">
+            {searchResult.classification?.urgency || "LOW"}
+          </p>
+        </div>
+        <div className="rounded-xl bg-[#F6F9FC] border border-[#E4EAF0] p-4">
+          <p className="text-[10px] font-bold text-[#8A98A4] uppercase">Search Radius</p>
+          <p className="text-lg font-extrabold text-[#20313D] mt-2">
+            {searchResult.recommendations?.radius_km || 0} km
+          </p>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#3978A8]">Best Available Doctors</p>
+          <p className="text-sm text-[#6F808B] mt-1">Ranked using specialty, availability, distance, queue and workload.</p>
+        </div>
+        <span className="text-sm font-bold text-[#3978A8]">
+          {searchResult.recommendations?.doctors?.length || 0} matches
+        </span>
+      </div>
+
+      {searchResult.recommendations?.doctors?.length > 0 ? (
+        <div className="space-y-4">
+          {searchResult.recommendations.doctors.map((doctor, index) => (
+            <div
+              key={doctor.doctor_id || index}
+              className={`rounded-2xl border p-5 transition ${
+                index === 0 ? "border-[#3978A8] bg-[#F5FAFD]" : "border-[#E4EAF0] bg-white"
+              }`}
+            >
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-[#EAF3F8] text-[#3978A8] flex items-center justify-center font-extrabold text-lg shrink-0">
+                    {index + 1}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="text-lg font-extrabold text-[#20313D]">Dr. {doctor.name}</h3>
+                      {index === 0 && (
+                        <span className="px-2 py-1 rounded-md bg-[#3978A8] text-white text-[9px] font-bold uppercase">Best Match</span>
+                      )}
+                    </div>
+                    <p className="text-sm text-[#6F808B] mt-1">
+                      {doctor.specialty}{doctor.qualification ? ` • ${doctor.qualification}` : ""}
+                    </p>
+                    <p className="text-xs text-[#8A98A4] mt-2">{doctor.hospital?.name || "Hospital"}</p>
+                    <p className="text-xs text-[#8A98A4] mt-1">{doctor.distance_km ?? "—"} km away</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-5 flex-wrap">
+                  <div className="text-center">
+                    <p className="text-[9px] font-bold uppercase text-[#8A98A4]">Match Score</p>
+                    <p className="text-xl font-extrabold text-[#3978A8]">{doctor.score ?? 0}%</p>
+                  </div>
+                  <div className="text-center">
+                    <p className={`text-xs font-bold ${doctor.available_now ? "text-[#3F8F59]" : "text-[#C24F5D]"}`}>
+                      {doctor.available_now ? "● AVAILABLE NOW" : "● BUSY"}
+                    </p>
+                    <p className="text-[10px] text-[#8A98A4] mt-1">Queue: {doctor.queue_count ?? 0}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleBookAppointment(doctor)}
+                    className="px-5 py-3 rounded-xl bg-[#3978A8] hover:bg-[#28658F] text-white text-xs font-extrabold transition"
+                  >
+                    BOOK APPOINTMENT
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="rounded-xl bg-[#FFF8F0] border border-[#F0D9AA] p-5">
+          <p className="font-bold text-[#A87924]">No suitable doctor found nearby.</p>
+          <p className="text-xs text-[#8A98A4] mt-1">The system will suggest an escalation or referral option.</p>
+        </div>
+      )}
+
+      {searchResult.recommendations?.escalated && (
+        <div className="mt-5 rounded-xl bg-[#FFF8F8] border border-[#F0C3C8] p-5">
+          <p className="text-xs font-extrabold uppercase text-[#C24F5D]">Specialist Escalation Required</p>
+          <p className="text-sm text-[#6F5055] mt-2">
+            {searchResult.recommendations?.escalation_options?.referral?.message || "A higher-level specialist or hospital is recommended."}
+          </p>
+        </div>
+      )}
+
+      {bookingMessage && (
+        <div className="mt-5 rounded-xl bg-[#EFFAF3] border border-[#BFE2CA] p-5">
+          <p className="text-sm font-extrabold text-[#3F8F59]">Appointment booked successfully</p>
+          <p className="text-xs text-[#5D7565] mt-2">Your appointment has been added to the care coordination flow.</p>
+        </div>
+      )}
+    </section>
+  </div>
 )}
 
 </div>
