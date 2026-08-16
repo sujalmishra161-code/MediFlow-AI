@@ -10,7 +10,7 @@ import {
 } from 'recharts';
 import { INITIAL_HOSPITALS, INITIAL_DOCTORS, INITIAL_APPOINTMENTS } from './data';
 
-const API_BASE = "http://localhost:8000/api";
+const API_BASE = "https://mediflow-ai-production-2f71.up.railway.app/api";
 const COLORS = ['#3B82F6', '#8B5CF6', '#10B981', '#F59E0B', '#EF4444', '#EC4899', '#06B6D4'];
 
 const KANPUR_LOCATIONS = {
