@@ -9,17 +9,23 @@ def str_to_bool(val):
     return val.strip().lower() in ("true", "1", "yes")
 
 
+# Get the directory where seed.py is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# CSV files are currently in the repository root
+DATA_DIR = os.path.abspath(os.path.join(BASE_DIR, ".."))
+
+
 def seed_database():
     # Create tables if they don't already exist.
-    # IMPORTANT: Do NOT use drop_all() here because it would
-    # delete existing patients, doctors, hospitals, and appointments.
+    # NEVER drop existing tables here.
     Base.metadata.create_all(bind=engine)
 
     db = SessionLocal()
 
     try:
         # ---------------------------------------------------------
-        # Check whether the database has already been seeded
+        # Check whether database is already seeded
         # ---------------------------------------------------------
         if db.query(Doctor).count() > 0:
             print("Database already seeded. Skipping seed.")
@@ -28,12 +34,14 @@ def seed_database():
         # ---------------------------------------------------------
         # 1. Seed Hospitals
         # ---------------------------------------------------------
-        hospitals_path = "../hospitals.csv"
-
-        if not os.path.exists(hospitals_path):
-            hospitals_path = "hospitals.csv"
+        hospitals_path = os.path.join(DATA_DIR, "hospitals.csv")
 
         print(f"Seeding hospitals from {hospitals_path}...")
+
+        if not os.path.exists(hospitals_path):
+            raise FileNotFoundError(
+                f"hospitals.csv not found at: {hospitals_path}"
+            )
 
         with open(hospitals_path, mode="r", encoding="utf-8") as f:
             reader = csv.DictReader(f)
@@ -69,18 +77,19 @@ def seed_database():
                 db.add(hospital)
 
         db.commit()
-
         print("Hospitals seeded successfully.")
 
         # ---------------------------------------------------------
         # 2. Seed Doctors
         # ---------------------------------------------------------
-        doctors_path = "../doctors.csv"
-
-        if not os.path.exists(doctors_path):
-            doctors_path = "doctors.csv"
+        doctors_path = os.path.join(DATA_DIR, "doctors.csv")
 
         print(f"Seeding doctors from {doctors_path}...")
+
+        if not os.path.exists(doctors_path):
+            raise FileNotFoundError(
+                f"doctors.csv not found at: {doctors_path}"
+            )
 
         with open(doctors_path, mode="r", encoding="utf-8") as f:
             reader = csv.DictReader(f)
@@ -127,20 +136,25 @@ def seed_database():
                 db.add(doctor)
 
         db.commit()
-
         print("Doctors seeded successfully.")
 
         # ---------------------------------------------------------
         # 3. Seed Appointments
         # ---------------------------------------------------------
-        appointments_path = "../appointments_seed.csv"
-
-        if not os.path.exists(appointments_path):
-            appointments_path = "appointments_seed.csv"
+        appointments_path = os.path.join(
+            DATA_DIR,
+            "appointments_seed.csv"
+        )
 
         print(
             f"Seeding appointments from {appointments_path}..."
         )
+
+        if not os.path.exists(appointments_path):
+            raise FileNotFoundError(
+                f"appointments_seed.csv not found at: "
+                f"{appointments_path}"
+            )
 
         with open(
             appointments_path,
@@ -155,7 +169,6 @@ def seed_database():
                     "appointment_id"
                 ].strip()
 
-                # Placeholder patient name for seeded appointments
                 patient_name = f"Patient {appointment_id}"
 
                 appointment = Appointment(
