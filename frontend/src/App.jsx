@@ -1032,15 +1032,20 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F6F8FB] text-[#1E2B35] text-[14px] sm:text-[15px]">
-      {/* Redesigned desktop shell: top navigation instead of the old sidebar */}
-      <header className="sticky top-0 z-40 border-b border-[#E3EAF0] bg-white/95 backdrop-blur-xl">
-        <div className="max-w-[1600px] mx-auto h-[82px] px-4 sm:px-6 xl:px-10 flex items-center justify-between gap-6">
-          <div className="min-w-0">
+  <div className="min-h-screen bg-[#F6F8FB] text-[#1E2B35] text-[14px] sm:text-[15px]">
+
+    {/* TOP HEADER */}
+    <header className="border-b border-[#E3EAF0] bg-white">
+      <div className="max-w-[1600px] mx-auto px-5 sm:px-8 xl:px-10">
+        <div className="min-h-[86px] flex items-center justify-between gap-6">
+
+          {/* LEFT */}
+          <div>
             <p className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#3978A8]">
               Care coordination
             </p>
-            <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#20313D] mt-1">
+
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#20313D] mt-1">
               {activeTab === 'patient'
                 ? 'Find the right care'
                 : activeTab === 'hospital'
@@ -1049,78 +1054,166 @@ export default function App() {
             </h2>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="hidden sm:flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-[#F5FAFC] border border-[#D8E8F0]">
-              <div className="h-10 w-10 rounded-xl bg-[#3978A8] flex items-center justify-center shadow-sm">
+          {/* RIGHT */}
+          <div className="flex items-center gap-3">
+
+            {/* MediFlow Logo */}
+            <div className="hidden sm:flex items-center gap-3 px-3 py-2.5 rounded-2xl bg-[#F5FAFC] border border-[#D8E8F0]">
+              <div className="h-10 w-10 rounded-xl bg-[#3978A8] flex items-center justify-center">
                 <Activity className="h-5 w-5 text-white" />
               </div>
+
               <div className="leading-tight">
-                <p className="text-[15px] font-extrabold tracking-tight text-[#20313D]">
+                <p className="text-[15px] font-extrabold text-[#20313D]">
                   MediFlow <span className="text-[#3978A8]">AI</span>
                 </p>
-                <p className="text-[9px] font-semibold text-[#8A98A4] mt-0.5">Smart care coordination</p>
+
+                <p className="text-[9px] font-semibold text-[#8A98A4] mt-0.5">
+                  Smart care coordination
+                </p>
               </div>
             </div>
 
+            {/* Backend status */}
             <div className="hidden md:flex items-center gap-2 px-3 py-2.5 rounded-xl border border-[#E5EBEF] bg-[#FAFBFC]">
-              <span className={`h-2.5 w-2.5 rounded-full ${isLocalMode ? 'bg-[#E2A44A]' : 'bg-[#5CB477]'}`} />
+              <span
+                className={`h-2.5 w-2.5 rounded-full ${
+                  isLocalMode ? 'bg-[#E2A44A]' : 'bg-[#5CB477]'
+                }`}
+              />
+
               <span className="text-[10px] font-bold text-[#687780]">
                 {isLocalMode ? 'Local simulator' : 'FastAPI connected'}
               </span>
             </div>
 
+            {/* User */}
             <div className="h-10 w-10 rounded-full bg-[#EAF3F8] border border-[#D7E7EF] flex items-center justify-center">
-              <User className="h-6 w-6 text-[#3978A8]" />
+              <User className="h-5 w-5 text-[#3978A8]" />
             </div>
+
             <div className="hidden lg:block">
-              <p className="text-[13px] font-bold text-[#334650]">Sujal Mishra</p>
-              <p className="text-[10px] text-[#98A4AC]">Administrator</p>
+              <p className="text-[13px] font-bold text-[#334650]">
+                Sujal Mishra
+              </p>
+              <p className="text-[10px] text-[#98A4AC]">
+                Administrator
+              </p>
             </div>
+
           </div>
         </div>
-      </header>
+      </div>
+    </header>
 
-      {/* Large three-tab workspace navigation */}
-      <nav className="sticky top-[82px] z-30 border-b border-[#E5EBEF] bg-white/95 backdrop-blur-xl">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 xl:px-10 py-3">
-          <div className="grid grid-cols-3 gap-2 sm:gap-3">
-            {[
-              { id: 'patient', icon: Stethoscope, label: 'Find Care', sub: 'AI-powered care matching' },
-              { id: 'hospital', icon: Building, label: 'Hospital', sub: 'Operations & resources' },
-              { id: 'admin', icon: BarChart3, label: 'Analytics', sub: 'Performance insights' }
-            ].map(item => {
-              const Icon = item.icon;
-              const active = activeTab === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveTab(item.id)}
-                  className={`group flex items-center justify-center sm:justify-start gap-3 sm:gap-4 rounded-2xl px-3 sm:px-6 py-3.5 sm:py-4 text-left transition-all border ${
+
+    {/* MAIN NAVIGATION */}
+    <nav className="border-b border-[#E5EBEF] bg-white">
+      <div className="max-w-[1600px] mx-auto px-5 sm:px-8 xl:px-10">
+        <div className="grid grid-cols-3">
+
+          {[
+            {
+              id: 'patient',
+              icon: Stethoscope,
+              label: 'Find Care',
+              sub: 'AI-powered care matching'
+            },
+            {
+              id: 'hospital',
+              icon: Building,
+              label: 'Hospital',
+              sub: 'Operations & resources'
+            },
+            {
+              id: 'admin',
+              icon: BarChart3,
+              label: 'Analytics',
+              sub: 'Performance insights'
+            }
+          ].map(item => {
+
+            const Icon = item.icon;
+            const active = activeTab === item.id;
+
+            return (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`relative flex items-center justify-center gap-3 sm:gap-4 px-4 sm:px-8 py-4 sm:py-5 transition-all border-r border-[#E5EBEF] last:border-r-0 ${
+                  active
+                    ? 'bg-[#EAF3F8]'
+                    : 'bg-white hover:bg-[#F8FAFC]'
+                }`}
+              >
+
+                {/* Active blue line */}
+                {active && (
+                  <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#3978A8]" />
+                )}
+
+                {/* Icon */}
+                <div
+                  className={`h-10 w-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
                     active
-                      ? 'bg-[#EAF3F8] border-[#C9E0EB] text-[#3978A8] shadow-sm'
-                      : 'bg-white border-transparent text-[#6E7C86] hover:bg-[#F7FAFC] hover:border-[#E5EBEF]'
+                      ? 'bg-white text-[#3978A8]'
+                      : 'bg-[#F5F7F9] text-[#7E8C96]'
                   }`}
                 >
-                  <div className={`h-10 w-10 sm:h-11 sm:w-11 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                    active ? 'bg-white text-[#3978A8] shadow-sm' : 'bg-[#F5F7F9] text-[#8A98A4]'
-                  }`}>
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className={`text-sm sm:text-base font-extrabold ${active ? 'text-[#3978A8]' : 'text-[#445761]'}`}>
-                      {item.label}
-                    </p>
-                    <p className="hidden sm:block text-[9px] sm:text-[10px] mt-0.5 text-[#8B98A0]">
-                      {item.sub}
-                    </p>
-                  </div>
-                  {active && <ChevronRight className="hidden sm:block ml-auto h-4 w-4" />}
-                </button>
-              );
-            })}
-          </div>
+                  <Icon className="h-5 w-5" />
+                </div>
+
+                {/* Text */}
+                <div className="text-left">
+                  <p
+                    className={`text-sm sm:text-base font-extrabold ${
+                      active
+                        ? 'text-[#3978A8]'
+                        : 'text-[#445761]'
+                    }`}
+                  >
+                    {item.label}
+                  </p>
+
+                  <p className="hidden sm:block text-[9px] sm:text-[10px] mt-0.5 text-[#8B98A0]">
+                    {item.sub}
+                  </p>
+                </div>
+
+                {active && (
+                  <ChevronRight className="hidden lg:block h-4 w-4 text-[#3978A8]" />
+                )}
+
+              </button>
+            );
+          })}
+
         </div>
-      </nav>
+      </div>
+    </nav>
+
+
+    {/* MAIN CONTENT */}
+    <main className="max-w-[1600px] mx-auto px-4 sm:px-6 xl:px-10 py-7 sm:py-9">
+
+      {toast && (
+        <div
+          className={`fixed right-5 bottom-5 z-[100] max-w-sm flex items-start gap-3 px-4 py-3.5 rounded-xl border shadow-xl ${
+            toast.type === 'success'
+              ? 'bg-white border-[#BFE2CA] text-[#3F8F59]'
+              : toast.type === 'error'
+              ? 'bg-white border-[#F0C3C8] text-[#C24F5D]'
+              : toast.type === 'warning'
+              ? 'bg-white border-[#F0D9AA] text-[#A87924]'
+              : 'bg-white border-[#C9DFEB] text-[#3978A8]'
+          }`}
+        >
+          <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+          <span className="text-[11px] font-semibold leading-relaxed">
+            {toast.message}
+          </span>
+        </div>
+      )}
 
       <main className="max-w-[1600px] mx-auto px-4 sm:px-6 xl:px-10 py-7 sm:py-9">
         {toast && (
