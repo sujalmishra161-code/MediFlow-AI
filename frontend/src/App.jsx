@@ -1139,421 +1139,524 @@ export default function App() {
         )}
 
           {activeTab === 'patient' && (
-            <div className="space-y-6">
-              {/* Hero */}
-              <section className="rounded-3xl bg-white border border-[#E1E9EE] p-6 sm:p-8 xl:p-10 shadow-[0_8px_30px_rgba(35,55,70,0.05)]">
-                <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
-                  <div>
-                    <div className="inline-flex items-center gap-2 rounded-full bg-[#EAF3F8] px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.15em] text-[#3978A8]">
-                      <Sparkles className="h-3.5 w-3.5" />
-                      AI-assisted care routing
-                    </div>
-                    <h1 className="text-4xl sm:text-5xl xl:text-[56px] leading-[1.05] font-extrabold tracking-tight text-[#20313D] mt-5">
-                      Find the right doctor without the guesswork.
-                    </h1>
-                    <p className="text-base sm:text-lg text-[#7A8993] max-w-3xl mt-4 leading-relaxed">
-                      MediFlow analyzes specialty, urgency, distance, queue load, doctor workload and hospital capacity to create a ranked care recommendation.
-                    </p>
-                  </div>
+  <div className="mf-page">
 
-                  <div className="grid grid-cols-3 gap-2 min-w-0 xl:min-w-[430px]">
-                    {[
-                      ['01', 'AI Triage', 'Specialty + urgency'],
-                      ['02', 'Smart Match', '6 allocation signals'],
-                      ['03', 'Dynamic Flow', 'Queue reallocation']
-                    ].map(([num, title, sub]) => (
-                      <div key={num} className="rounded-2xl border border-[#E7EDF1] bg-[#FAFBFC] p-4">
-                        <span className="text-[9px] font-bold text-[#9AA6AF]">{num}</span>
-                        <p className="text-sm font-extrabold text-[#334650] mt-1.5">{title}</p>
-                        <p className="text-[10px] text-[#8C99A2] mt-1 leading-relaxed">{sub}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
+    {/* =====================================================
+        HEADER
+    ====================================================== */}
 
-              <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
-                {/* Assessment form */}
-                <section className="xl:col-span-5 bg-white rounded-3xl border border-[#E1E9EE] shadow-[0_8px_30px_rgba(35,55,70,0.05)] overflow-hidden">
-                  <div className="px-6 sm:px-7 py-6 border-b border-[#EEF1F4] flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="h-12 w-12 rounded-2xl bg-[#EAF3F8] flex items-center justify-center">
-                        <User className="h-6 w-6 text-[#3978A8]" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-extrabold text-[#2B3E49]">Patient assessment</h3>
-                        <p className="text-[10px] text-[#99A5AD] mt-1">Enter details for AI routing</p>
-                      </div>
-                    </div>
-                    <span className="text-[9px] font-bold text-[#5CB477]">STEP 1 / 2</span>
-                  </div>
+    <div className="mf-header" style={{ margin: "-34px -28px 0" }}>
+      <div className="mf-header-top">
 
-                  <div className="p-6 sm:p-8">
-                    <div className="grid grid-cols-2 gap-2 mb-5">
-                      <button onClick={() => prefillDemoScenario(1)} className="rounded-xl border border-[#DCEAF2] bg-[#F5FAFC] hover:bg-[#EDF6FA] px-3 py-2.5 text-left transition-colors">
-                        <span className="text-[8px] font-bold uppercase tracking-wider text-[#3978A8]">Demo scenario</span>
-                        <span className="block text-[11px] font-bold text-[#334650] mt-1">Cardiac priority</span>
-                      </button>
-                      <button onClick={() => prefillDemoScenario(4)} className="rounded-xl border border-[#E5DFF1] bg-[#FAF8FD] hover:bg-[#F6F2FA] px-3 py-2.5 text-left transition-colors">
-                        <span className="text-[8px] font-bold uppercase tracking-wider text-[#8067A5]">Demo scenario</span>
-                        <span className="block text-[11px] font-bold text-[#334650] mt-1">Specialist escalation</span>
-                      </button>
-                    </div>
+        <div>
+          <div className="mf-eyebrow">
+            Care Coordination
+          </div>
 
-                    <form onSubmit={handlePatientSearch} className="space-y-6">
-                      <div>
-                        <label className="block text-xs font-bold uppercase tracking-[0.12em] text-[#6F7F89] mb-2.5">Patient name</label>
-                        <div className="relative">
-                          <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#A0ABB2]" />
-                          <input
-                            type="text"
-                            value={patientName}
-                            onChange={e => setPatientName(e.target.value)}
-                            className="w-full rounded-xl border border-[#DFE6EB] bg-white pl-12 pr-4 py-4 text-base text-[#334650] outline-none focus:border-[#3978A8] focus:ring-2 focus:ring-[#3978A8]/10"
-                            required
-                          />
-                        </div>
-                      </div>
+          <h1 className="mf-title">
+            Find the right care
+          </h1>
+        </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div>
-                          <label className="block text-xs font-bold uppercase tracking-[0.12em] text-[#6F7F89] mb-2.5">Age</label>
-                          <input
-                            type="number"
-                            value={patientAge}
-                            onChange={e => setPatientAge(parseInt(e.target.value))}
-                            className="w-full rounded-xl border border-[#DFE6EB] bg-white px-4 py-4 text-base text-[#334650] outline-none focus:border-[#3978A8]"
-                            required
-                          />
-                        </div>
-                        <div className="sm:col-span-2">
-                          <label className="block text-xs font-bold uppercase tracking-[0.12em] text-[#6F7F89] mb-2.5">Location</label>
-                          <div className="relative">
-                            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#3978A8]" />
-                            <select
-                              value={patientLocation}
-                              onChange={e => setPatientLocation(e.target.value)}
-                              className="w-full appearance-none rounded-xl border border-[#DFE6EB] bg-white pl-12 pr-12 py-4 text-base text-[#334650] outline-none focus:border-[#3978A8]"
-                            >
-                              <option value="Kalyanpur">Kalyanpur (West)</option>
-                              <option value="Kakadeo">Kakadeo (Central-West)</option>
-                              <option value="Swaroop Nagar">Swaroop Nagar (Central)</option>
-                              <option value="Civil Lines">Civil Lines (North-Central)</option>
-                              <option value="Naubasta">Naubasta (South)</option>
-                              <option value="Kidwai Nagar">Kidwai Nagar (South-East)</option>
-                              <option value="Bidhuna">Bidhuna (Rural &gt;60km)</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
+        {/* MediFlow AI logo */}
+        <div className="mf-brand">
+          <div className="mf-logo">
+            MF
+          </div>
 
-                      <div>
-                        <div className="flex items-center justify-between mb-1.5">
-                          <label className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6F7F89]">Symptoms / reason for visit</label>
-                          <span className="text-[8px] text-[#A1ABB1]">AI triage input</span>
-                        </div>
-                        <textarea
-                          value={patientSymptoms}
-                          onChange={e => setPatientSymptoms(e.target.value)}
-                          rows={5}
-                          className="w-full rounded-xl border border-[#DFE6EB] bg-white px-4 py-4 text-base text-[#334650] outline-none focus:border-[#3978A8] focus:ring-2 focus:ring-[#3978A8]/10 resize-none"
-                          placeholder="Describe symptoms or reason for consultation..."
-                          required
-                        />
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-xs font-bold uppercase tracking-[0.12em] text-[#6F7F89] mb-2.5">Preferred date</label>
-                          <div className="relative">
-                            <Calendar className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#3978A8]" />
-                            <input
-                              type="date"
-                              value={prefDate}
-                              onChange={e => setPrefDate(e.target.value)}
-                              className="w-full rounded-xl border border-[#DFE6EB] bg-white pl-12 pr-12 py-4 text-base text-[#334650] outline-none focus:border-[#3978A8] focus:ring-2 focus:ring-[#3978A8]/10"
-                              required
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <label className="block text-xs font-bold uppercase tracking-[0.12em] text-[#6F7F89] mb-2.5">Preferred time</label>
-                          <div className="relative">
-                            <Clock className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#3978A8]" />
-                            <input
-                              type="time"
-                              value={prefTime}
-                              onChange={e => setPrefTime(e.target.value)}
-                              className="w-full rounded-xl border border-[#DFE6EB] bg-white pl-12 pr-12 py-4 text-base text-[#334650] outline-none focus:border-[#3978A8] focus:ring-2 focus:ring-[#3978A8]/10"
-                              required
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="rounded-xl bg-[#F7FAFC] border border-[#E8EDF1] px-3 py-2.5 text-[9px] text-[#8A969E] leading-relaxed">
-                        MediFlow uses symptoms for <span className="font-bold text-[#596A74]">specialty and urgency routing</span>. It does not provide a medical diagnosis.
-                      </div>
-
-                      <button
-                        type="submit"
-                        disabled={isSearching}
-                        className="w-full rounded-xl bg-[#3978A8] hover:bg-[#306B98] disabled:opacity-60 text-white py-5 sm:py-5 text-xs font-extrabold tracking-[0.08em] transition-colors flex items-center justify-center gap-2"
-                      >
-                        {isSearching ? (
-                          <><RefreshCw className="h-4 w-4 animate-spin" /> ANALYZING REQUEST...</>
-                        ) : (
-                          <><Sparkles className="h-4 w-4" /> FIND BEST CARE PATH <ChevronRight className="h-3.5 w-3.5" /></>
-                        )}
-                      </button>
-                    </form>
-                  </div>
-                </section>
-
-                {/* Results */}
-                <section className="xl:col-span-7 space-y-5">
-                  {!searchResult && !isSearching && (
-                    <div className="min-h-[620px] bg-white rounded-2xl border border-[#E4EAF0] flex flex-col items-center justify-center text-center p-8">
-                      <div className="h-16 w-16 rounded-2xl bg-[#F0F6F9] flex items-center justify-center mb-5">
-                        <Stethoscope className="h-7 w-7 text-[#3978A8]" />
-                      </div>
-                      <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#3978A8]">Ready for assessment</p>
-                      <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2A3C47] mt-2">Your care recommendation appears here</h3>
-                      <p className="text-sm text-[#8A969E] max-w-lg mt-2 leading-relaxed">
-                        Submit the patient details to see AI specialty classification, urgency, ranked doctors, estimated waiting time and escalation options.
-                      </p>
-                      <div className="grid grid-cols-3 gap-3 w-full max-w-lg mt-7">
-                        {[
-                          [Activity, 'AI Triage', 'Specialty + urgency'],
-                          [UserCheck, 'Best Match', 'Doctor ranking'],
-                          [Calendar, 'Allocation', 'Appointment slot']
-                        ].map(([Icon, title, sub]) => (
-                          <div key={title} className="rounded-xl border border-[#E8EDF1] bg-[#FAFBFC] p-3">
-                            <Icon className="h-4 w-4 text-[#3978A8] mx-auto" />
-                            <p className="text-[9px] font-bold text-[#556771] mt-2">{title}</p>
-                            <p className="text-[8px] text-[#9AA5AD] mt-1">{sub}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {isSearching && (
-                    <div className="min-h-[620px] bg-white rounded-2xl border border-[#DDE8EF] flex flex-col items-center justify-center text-center p-8">
-                      <div className="h-20 w-20 rounded-full border-4 border-[#E5EFF4] border-t-[#3978A8] animate-spin flex items-center justify-center">
-                        <Activity className="h-7 w-7 text-[#3978A8] animate-pulse" />
-                      </div>
-                      <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#3978A8] mt-6">Processing request</p>
-                      <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2A3C47] mt-2">Running AI specialty triage</h3>
-                      <p className="text-sm text-[#8A969E] max-w-lg mt-2 leading-relaxed">
-                        Assessing symptoms, resolving patient location and calculating matching scores across available physicians.
-                      </p>
-                      <div className="w-full max-w-md mt-6 space-y-2">
-                        {['Classifying specialty & urgency', 'Resolving nearby care options', 'Calculating doctor allocation score'].map((label, i) => (
-                          <div key={label} className="flex items-center gap-3 rounded-xl border border-[#E8EDF1] bg-[#FAFBFC] px-4 py-3">
-                            <span className="h-5 w-5 rounded-full bg-[#EAF3F8] text-[#3978A8] text-[9px] font-bold flex items-center justify-center">{i + 1}</span>
-                            <span className="text-[10px] text-[#687780]">{label}</span>
-                            <RefreshCw className="ml-auto h-3.5 w-3.5 text-[#3978A8] animate-spin" />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {searchResult && (
-                    <div className="space-y-6">
-                      <div className="bg-white rounded-2xl border border-[#DDE8EF] p-5 sm:p-6">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <span className="h-2 w-2 rounded-full bg-[#5CB477]" />
-                              <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#3978A8]">AI assessment complete</span>
-                            </div>
-                            <h3 className="text-2xl font-extrabold text-[#243743] mt-2">{searchResult.classification.specialty}</h3>
-                            <div className="flex flex-wrap gap-4 mt-2 text-[10px] text-[#89969E]">
-                              <span>Confidence <b className="text-[#3E505A]">{Math.round(searchResult.classification.confidence * 100)}%</b></span>
-                              <span>Radius <b className="text-[#3E505A]">{searchResult.recommendations.radius_km} km</b></span>
-                            </div>
-                          </div>
-                          <div className="sm:text-right">
-                            <span className="block text-[9px] font-bold uppercase tracking-widest text-[#8D99A1] mb-2">Priority</span>
-                            <span className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-[10px] font-extrabold border ${
-                              searchResult.classification.urgency === 'HIGH' || searchResult.classification.urgency === 'EMERGENCY'
-                                ? 'bg-[#FFF1F2] text-[#C65562] border-[#F4CDD1]'
-                                : searchResult.classification.urgency === 'MEDIUM'
-                                ? 'bg-[#FFF8E9] text-[#B17C28] border-[#F1DFB7]'
-                                : 'bg-[#EDF8F1] text-[#4C9B67] border-[#CDE9D5]'
-                            }`}>
-                              {(searchResult.classification.urgency === 'HIGH' || searchResult.classification.urgency === 'EMERGENCY') && <AlertTriangle className="h-3.5 w-3.5" />}
-                              {searchResult.classification.urgency}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {bookingMessage && bookingMessage.appointment && (
-                        <div className="rounded-2xl border border-[#CBE6D3] bg-[#F3FAF5] p-5">
-                          <div className="flex items-start gap-3">
-                            <div className="h-9 w-9 rounded-xl bg-white border border-[#D7EBDD] flex items-center justify-center">
-                              <CheckCircle2 className="h-5 w-5 text-[#55A86E]" />
-                            </div>
-                            <div className="flex-1">
-                              <div className="flex flex-wrap items-center justify-between gap-2">
-                                <h4 className="text-sm font-extrabold text-[#41895A]">Appointment confirmed</h4>
-                                <span className="text-[9px] font-bold px-2 py-1 rounded-full bg-white text-[#4E9B65] border border-[#D4EAD9]">{bookingMessage.appointment.status || 'BOOKED'}</span>
-                              </div>
-                              <p className="text-[10px] text-[#688074] mt-1">
-                                Booked with <b className="text-[#467A58]">{bookingMessage.appointment.doctor_name}</b> at <b className="text-[#467A58]">{bookingMessage.appointment.hospital_name}</b>.
-                              </p>
-                              <div className="inline-flex items-center gap-2 mt-3 rounded-lg bg-white border border-[#E0ECE3] px-3 py-1.5 text-[9px] font-mono text-[#63756A]">
-                                <Clock className="h-3 w-3" /> {bookingMessage.appointment.appointment_time}
-                              </div>
-                            </div>
-                          </div>
-                          {bookingMessage.shifted_appointments && bookingMessage.shifted_appointments.length > 0 && (
-                            <div className="mt-4 ml-12 rounded-xl bg-[#FFF9EC] border border-[#F0DEB5] p-3">
-                              <p className="text-[9px] font-bold text-[#A5792B] flex items-center gap-1.5"><AlertTriangle className="h-3 w-3" /> Queue optimization applied</p>
-                              <ul className="mt-2 space-y-1 text-[9px] text-[#8C7958]">
-                                {bookingMessage.shifted_appointments.map((shift, idx) => <li key={idx}>{shift.patient_name} → {shift.new_time.split(' ')[1]}</li>)}
-                              </ul>
-                            </div>
-                          )}
-                        </div>
-                      )}
-
-                      {!searchResult.recommendations.escalated ? (
-                        <div>
-                          <div className="flex items-end justify-between mb-3">
-                            <div>
-                              <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#3978A8]">Allocation results</p>
-                              <h4 className="text-lg font-extrabold text-[#2B3E49] mt-1">Recommended doctors</h4>
-                            </div>
-                            <span className="text-[10px] text-[#98A4AC]">Top {searchResult.recommendations.doctors.length} matches</span>
-                          </div>
-
-                          <div className="space-y-3">
-                            {searchResult.recommendations.doctors.map((doc, idx) => (
-                              <div key={doc.doctor_id} className={`bg-white rounded-2xl border p-4 sm:p-5 transition-all ${
-                                idx === 0 ? 'border-[#BFD8E5] shadow-[0_6px_22px_rgba(57,120,168,0.08)]' : 'border-[#E4EAF0]'
-                              }`}>
-                                <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                  <div className="flex items-start gap-3 flex-1 min-w-0">
-                                    <div className={`h-12 w-12 rounded-2xl flex-shrink-0 flex items-center justify-center ${
-                                      idx === 0 ? 'bg-[#EAF3F8] text-[#3978A8]' : 'bg-[#F5F7F9] text-[#8997A0]'
-                                    }`}>
-                                      <Stethoscope className="h-5 w-5" />
-                                    </div>
-                                    <div className="min-w-0">
-                                      <div className="flex flex-wrap items-center gap-2">
-                                        <h5 className="font-extrabold text-[#2C3F4A] truncate">{doc.name}</h5>
-                                        {idx === 0 && (
-                                          <span className="px-2 py-0.5 rounded-full bg-[#EAF3F8] border border-[#D3E5EE] text-[8px] font-extrabold uppercase tracking-widest text-[#3978A8]">Best match</span>
-                                        )}
-                                      </div>
-                                      <p className="text-[10px] text-[#7F8C94] mt-1">{doc.qualification} • {doc.specialty}</p>
-                                      <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-[9px] text-[#8D999F]">
-                                        <span className="flex items-center gap-1"><Building className="h-3 w-3" />{doc.hospital.name}</span>
-                                        <span className="flex items-center gap-1 text-[#637580]"><MapPin className="h-3 w-3 text-[#3978A8]" />{doc.distance_km} km</span>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div className="lg:w-[235px] flex flex-col gap-2">
-                                    <div className="flex items-center justify-between gap-4">
-                                      <div>
-                                        <span className="text-[8px] uppercase tracking-widest text-[#9AA5AC] font-bold">Match score</span>
-                                        <div className="flex items-end gap-2">
-                                          <span className="text-xl font-extrabold text-[#2C3F4A]">{doc.score}%</span>
-                                          <div className="w-20 h-1.5 bg-[#E8EDF1] rounded-full overflow-hidden mb-1">
-                                            <div className="h-full rounded-full bg-[#3978A8]" style={{ width: `${Math.min(100, doc.score)}%` }} />
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="text-right">
-                                        <span className="text-[8px] uppercase tracking-widest text-[#9AA5AC] font-bold">Est. wait</span>
-                                        <p className="text-xs font-extrabold text-[#3978A8] mt-1">{doc.queue_count * doc.consultation_duration} min</p>
-                                      </div>
-                                    </div>
-                                    <button onClick={() => handleBookAppointment(doc)} className="w-full rounded-xl bg-[#3978A8] hover:bg-[#306B98] text-white py-2.5 text-[9px] font-extrabold transition-colors flex items-center justify-center gap-2">
-                                      BOOK APPOINTMENT <ChevronRight className="h-3.5 w-3.5" />
-                                    </button>
-                                  </div>
-                                </div>
-
-                                <div className="mt-4 pt-3 border-t border-[#EEF1F4] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-                                  {[
-                                    ['Specialty', doc.breakdown.specialty_match],
-                                    ['Availability', doc.breakdown.availability],
-                                    ['Distance', doc.breakdown.distance_score],
-                                    ['Queue', doc.breakdown.queue_score],
-                                    ['Workload', doc.breakdown.workload_score],
-                                    ['Hospital', doc.breakdown.hospital_capacity_score]
-                                  ].map(([label, value]) => (
-                                    <div key={label} className="rounded-lg bg-[#F8FAFB] px-2 py-1.5 border border-[#EEF1F4]">
-                                      <p className="text-[7px] text-[#9BA6AD] uppercase">{label}</p>
-                                      <p className="text-[10px] text-[#52636D] font-bold mt-0.5">{value}%</p>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="space-y-4">
-                          <div className="rounded-2xl border border-[#F0CDD2] bg-[#FFF7F8] p-5 flex items-start gap-3">
-                            <ShieldAlert className="h-5 w-5 text-[#C65562] flex-shrink-0" />
-                            <div>
-                              <h4 className="font-extrabold text-[#B64F5B]">Local specialist unavailable</h4>
-                              <p className="text-[10px] text-[#8B7A7D] mt-1">MediFlow expanded the search radius from 10 km → 25 km → 50 km and activated specialist escalation.</p>
-                            </div>
-                          </div>
-
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-white rounded-2xl border border-[#E4EAF0] p-5">
-                              <div className="flex items-center gap-2 mb-4"><Building className="h-4 w-4 text-[#3978A8]" /><h5 className="font-extrabold text-sm text-[#334650]">Recommended hospitals</h5></div>
-                              <div className="space-y-2">
-                                {searchResult.recommendations.escalation_options.recommended_hospitals.map((h, i) => (
-                                  <div key={i} className="rounded-xl border border-[#EDF1F4] bg-[#FAFBFC] p-3">
-                                    <div className="flex justify-between gap-2"><span className="text-[10px] font-bold text-[#445761]">{h.name}</span><span className="text-[9px] font-bold text-[#3978A8]">{h.distance_km} km</span></div>
-                                    <div className="flex justify-between mt-2 text-[8px] text-[#929EA5]"><span>{h.specialty}</span><span>Slot {h.available_time}</span></div>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-
-                            <div className="bg-white rounded-2xl border border-[#E4EAF0] p-5">
-                              <div className="flex items-center gap-2 mb-4"><Stethoscope className="h-4 w-4 text-[#8067A5]" /><h5 className="font-extrabold text-sm text-[#334650]">Teleconsultation</h5></div>
-                              <div className="space-y-2">
-                                {searchResult.recommendations.escalation_options.teleconsultation.length > 0 ? searchResult.recommendations.escalation_options.teleconsultation.map((t, i) => (
-                                  <div key={i} className="rounded-xl border border-[#EDF1F4] bg-[#FAFBFC] p-3">
-                                    <div className="flex justify-between gap-2"><span className="text-[10px] font-bold text-[#445761]">{t.name}</span><span className="text-[9px] font-bold text-[#4F9A65]">Online</span></div>
-                                    <div className="flex justify-between mt-2 text-[8px] text-[#929EA5]"><span>{t.specialty}</span><span>{t.available_time}</span></div>
-                                  </div>
-                                )) : <div className="text-center text-[9px] text-[#98A4AC] py-5">Teleconsultation specialists offline.</div>}
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="rounded-2xl border border-[#DDD6EA] bg-[#FAF8FD] p-5">
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                              <div>
-                                <p className="text-[9px] uppercase tracking-widest font-extrabold text-[#8067A5]">Digital referral</p>
-                                <p className="text-[10px] text-[#7E7787] mt-1 leading-relaxed">{searchResult.recommendations.escalation_options.referral.message}</p>
-                              </div>
-                              <button onClick={() => showToast("Referral Certificate Generated!", "success")} className="flex-shrink-0 rounded-xl bg-white hover:bg-[#F7F4FB] border border-[#DED8E9] px-4 py-2.5 text-[9px] font-extrabold text-[#5D536A]">
-                                {searchResult.recommendations.escalation_options.referral.action}
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </section>
-              </div>
+          <div>
+            <div className="mf-brand-name">
+              MediFlow AI
             </div>
+
+            <div className="mf-brand-subtitle">
+              Smart Patient Routing
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Main tabs */}
+      <div className="mf-nav">
+
+        <button
+          type="button"
+          onClick={() => setActiveTab("patient")}
+          className={`mf-nav-button ${
+            activeTab === "patient" ? "active" : ""
+          }`}
+        >
+          <Stethoscope
+            style={{
+              width: 21,
+              height: 21,
+              verticalAlign: "middle",
+              marginRight: 8
+            }}
+          />
+          Find Care
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab("hospital")}
+          className={`mf-nav-button ${
+            activeTab === "hospital" ? "active" : ""
+          }`}
+        >
+          <Building
+            style={{
+              width: 21,
+              height: 21,
+              verticalAlign: "middle",
+              marginRight: 8
+            }}
+          />
+          Hospital
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab("admin")}
+          className={`mf-nav-button ${
+            activeTab === "admin" ? "active" : ""
+          }`}
+        >
+          <BarChart3
+            style={{
+              width: 21,
+              height: 21,
+              verticalAlign: "middle",
+              marginRight: 8
+            }}
+          />
+          Analytics
+        </button>
+
+      </div>
+    </div>
+
+
+    {/* =====================================================
+        HERO
+    ====================================================== */}
+
+    <section style={{ marginTop: 35 }}>
+
+      <div className="mf-section-label">
+        <Sparkles size={20} />
+        AI-assisted care routing
+      </div>
+
+      <h2 className="mf-hero-title">
+        Find the right doctor without the guesswork.
+      </h2>
+
+      <p className="mf-hero-description">
+        MediFlow analyzes specialty, urgency, distance, queue load,
+        doctor workload and hospital capacity to create a ranked
+        care recommendation.
+      </p>
+
+      <div className="mf-process">
+
+        <div className="mf-process-card">
+          <div className="mf-process-number">
+            01
+          </div>
+
+          <div className="mf-process-title">
+            AI Triage
+          </div>
+
+          <div className="mf-process-subtitle">
+            Specialty + urgency
+          </div>
+        </div>
+
+        <div className="mf-process-card">
+          <div className="mf-process-number">
+            02
+          </div>
+
+          <div className="mf-process-title">
+            Smart Match
+          </div>
+
+          <div className="mf-process-subtitle">
+            6 allocation signals
+          </div>
+        </div>
+
+        <div className="mf-process-card">
+          <div className="mf-process-number">
+            03
+          </div>
+
+          <div className="mf-process-title">
+            Dynamic Flow
+          </div>
+
+          <div className="mf-process-subtitle">
+            Queue reallocation
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    {/* =====================================================
+        PATIENT ASSESSMENT
+    ====================================================== */}
+
+    <section className="mf-assessment">
+
+      <div className="mf-assessment-header">
+
+        <div className="mf-assessment-heading">
+
+          <div className="mf-assessment-icon">
+            <User size={23} />
+          </div>
+
+          <div>
+            <div className="mf-assessment-title">
+              Patient assessment
+            </div>
+
+            <div className="mf-assessment-subtitle">
+              Enter details for AI routing
+            </div>
+          </div>
+
+        </div>
+
+        <div className="mf-step">
+          STEP 1 / 2
+        </div>
+
+      </div>
+
+
+      {/* Demo scenarios */}
+
+      <div className="mf-scenarios">
+
+        <button
+          type="button"
+          onClick={() => prefillDemoScenario(1)}
+          className="mf-scenario"
+          style={{
+            border: 0,
+            textAlign: "left",
+            width: "100%"
+          }}
+        >
+          <div className="mf-scenario-label">
+            Demo Scenario
+          </div>
+
+          <div className="mf-scenario-name">
+            Cardiac priority
+          </div>
+        </button>
+
+
+        <button
+          type="button"
+          onClick={() => prefillDemoScenario(4)}
+          className="mf-scenario"
+          style={{
+            border: 0,
+            textAlign: "left",
+            width: "100%"
+          }}
+        >
+          <div className="mf-scenario-label">
+            Demo Scenario
+          </div>
+
+          <div className="mf-scenario-name">
+            Specialist escalation
+          </div>
+        </button>
+
+      </div>
+
+
+      {/* FORM */}
+
+      <form
+        className="mf-form"
+        onSubmit={handlePatientSearch}
+      >
+
+        {/* Patient name */}
+
+        <div className="mf-field">
+
+          <label className="mf-label">
+            Patient name
+          </label>
+
+          <div className="mf-input-wrapper">
+
+            <User className="mf-input-icon" />
+
+            <input
+              type="text"
+              value={patientName}
+              onChange={(e) =>
+                setPatientName(e.target.value)
+              }
+              className="mf-input"
+              placeholder="Enter patient name"
+              required
+            />
+
+          </div>
+
+        </div>
+
+
+        {/* Age + Location */}
+
+        <div className="mf-field-row">
+
+          <div className="mf-field">
+
+            <label className="mf-label">
+              Age
+            </label>
+
+            <div className="mf-input-wrapper">
+
+              <Calendar className="mf-input-icon" />
+
+              <input
+                type="number"
+                min="0"
+                max="120"
+                value={patientAge}
+                onChange={(e) =>
+                  setPatientAge(parseInt(e.target.value) || 0)
+                }
+                className="mf-input"
+                required
+              />
+
+            </div>
+
+          </div>
+
+
+          <div className="mf-field">
+
+            <label className="mf-label">
+              Location
+            </label>
+
+            <div className="mf-input-wrapper">
+
+              <MapPin className="mf-input-icon" />
+
+              <select
+                value={patientLocation}
+                onChange={(e) =>
+                  setPatientLocation(e.target.value)
+                }
+                className="mf-select"
+              >
+
+                <option value="Kalyanpur">
+                  Kalyanpur (West)
+                </option>
+
+                <option value="Kakadeo">
+                  Kakadeo (Central-West)
+                </option>
+
+                <option value="Swaroop Nagar">
+                  Swaroop Nagar (Central)
+                </option>
+
+                <option value="Civil Lines">
+                  Civil Lines (North-Central)
+                </option>
+
+                <option value="Naubasta">
+                  Naubasta (South)
+                </option>
+
+                <option value="Kidwai Nagar">
+                  Kidwai Nagar (South-East)
+                </option>
+
+                <option value="Bidhuna">
+                  Bidhuna (Rural &gt;60km)
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        {/* Symptoms */}
+
+        <div className="mf-field">
+
+          <label className="mf-label">
+            Symptoms / Reason for visit
+          </label>
+
+          <div className="mf-input-wrapper">
+
+            <Activity
+              className="mf-input-icon"
+              style={{ top: 20, transform: "none" }}
+            />
+
+            <textarea
+              value={patientSymptoms}
+              onChange={(e) =>
+                setPatientSymptoms(e.target.value)
+              }
+              className="mf-textarea"
+              placeholder="Describe symptoms or reason for visit..."
+              required
+            />
+
+          </div>
+
+        </div>
+
+
+        {/* Date + Time */}
+
+        <div className="mf-field-row">
+
+          <div className="mf-field">
+
+            <label className="mf-label">
+              Preferred date
+            </label>
+
+            <div className="mf-input-wrapper">
+
+              <Calendar className="mf-input-icon" />
+
+              <input
+                type="date"
+                value={prefDate}
+                onChange={(e) =>
+                  setPrefDate(e.target.value)
+                }
+                className="mf-input"
+                required
+              />
+
+            </div>
+
+          </div>
+
+
+          <div className="mf-field">
+
+            <label className="mf-label">
+              Preferred time
+            </label>
+
+            <div className="mf-input-wrapper">
+
+              <Clock className="mf-input-icon" />
+
+              <input
+                type="time"
+                value={prefTime}
+                onChange={(e) =>
+                  setPrefTime(e.target.value)
+                }
+                className="mf-input"
+                required
+              />
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div className="mf-disclaimer">
+          MediFlow uses symptoms for specialty and urgency
+          routing. It does not provide a medical diagnosis.
+        </div>
+
+
+        {/* Search */}
+
+        <button
+          type="submit"
+          disabled={isSearching}
+          className="mf-submit"
+          style={{ marginTop: 18 }}
+        >
+
+          {isSearching ? (
+            <>
+              <RefreshCw
+                size={18}
+                style={{
+                  verticalAlign: "middle",
+                  marginRight: 8,
+                  animation: "spin 1s linear infinite"
+                }}
+              />
+
+              ANALYZING SYMPTOMS...
+            </>
+          ) : (
+            <>
+              <Sparkles
+                size={18}
+                style={{
+                  verticalAlign: "middle",
+                  marginRight: 8
+                }}
+              />
+
+              FIND BEST CARE PATH
+            </>
           )}
+
+        </button>
+
+      </form>
+
+    </section>
+
+
+    {/* =====================================================
+        SEARCH RESULT
+    ====================================================== */}
+
+    {searchResult && (
+      <div style={{ marginTop: 30 }}>
+
+        {/* Keep your existing searchResult rendering here */}
+
+      </div>
+    )}
+
+  </div>
+)}
 
           {activeTab === 'hospital' && (
             <div className="space-y-6">
