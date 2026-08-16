@@ -1032,777 +1032,303 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen pb-12">
-      <nav className="glass-card sticky top-0 z-50 border-b border-white/5 py-4 px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-950/80 backdrop-blur-md">
-        <div className="flex items-center gap-3">
-          <div className="bg-blue-600 p-2.5 rounded-xl shadow-lg shadow-blue-500/20">
-            <Activity className="h-6 w-6 text-white pulse-glow" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold font-display tracking-tight text-glow-blue text-white">MediFlow AI</h1>
-            <p className="text-xs text-blue-400 font-medium">Dynamic Triage & Allocation Engine</p>
-          </div>
-        </div>
+    <div className="min-h-screen bg-[#050914] text-white pb-16 relative overflow-x-hidden">
+      <div className="pointer-events-none fixed inset-0 -z-10">
+        <div className="absolute -top-40 left-1/4 h-96 w-96 rounded-full bg-blue-600/10 blur-3xl" />
+        <div className="absolute top-1/3 -right-40 h-96 w-96 rounded-full bg-violet-600/10 blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-80 w-80 rounded-full bg-cyan-500/5 blur-3xl" />
+      </div>
 
-        <div className="text-[10px] font-mono px-3 py-1 bg-slate-900/80 border border-white/10 rounded-full text-gray-400">
-          Engine Mode: <span className="text-blue-400 font-bold">{engineMode}</span>
-        </div>
+      <nav className="sticky top-0 z-50 border-b border-white/[0.07] bg-[#050914]/85 backdrop-blur-2xl">
+        <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-3">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="h-11 w-11 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                    <Activity className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="absolute -right-1 -bottom-1 h-3 w-3 rounded-full bg-emerald-400 border-2 border-[#050914]" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h1 className="text-lg sm:text-xl font-black tracking-tight">MediFlow <span className="text-blue-400">AI</span></h1>
+                    <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-400/20 text-[9px] font-bold text-blue-300 uppercase tracking-widest">Command Center</span>
+                  </div>
+                  <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5">Dynamic triage • doctor matching • hospital optimization</p>
+                </div>
+              </div>
 
-        <div className="flex gap-2 p-1 bg-slate-900/60 rounded-xl border border-white/5">
-          <button 
-            onClick={() => setActiveTab('patient')} 
-            className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === 'patient' ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/10' : 'text-gray-400 hover:text-white'}`}
-          >
-            Find a Doctor
-          </button>
-          <button 
-            onClick={() => setActiveTab('hospital')} 
-            className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === 'hospital' ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/10' : 'text-gray-400 hover:text-white'}`}
-          >
-            Hospital Simulation
-          </button>
-          <button 
-            onClick={() => setActiveTab('admin')} 
-            className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === 'admin' ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/10' : 'text-gray-400 hover:text-white'}`}
-          >
-            Admin Analytics
-          </button>
+              <div className="xl:hidden flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-lg shadow-emerald-400/40" />
+                <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">{isLocalMode ? 'Local' : 'Live'}</span>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <div className="hidden xl:flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.07]">
+                <span className={`h-2 w-2 rounded-full ${isLocalMode ? 'bg-amber-400' : 'bg-emerald-400'} ${!isLocalMode ? 'shadow-lg shadow-emerald-400/40' : ''}`} />
+                <div className="leading-tight">
+                  <p className="text-[9px] uppercase tracking-widest text-gray-600 font-bold">Engine status</p>
+                  <p className={`text-[10px] font-bold ${isLocalMode ? 'text-amber-300' : 'text-emerald-300'}`}>{engineMode}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-1 p-1 rounded-2xl bg-white/[0.035] border border-white/[0.07]">
+                <button onClick={() => setActiveTab('patient')} className={`px-3 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all ${activeTab === 'patient' ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-gray-500 hover:text-white hover:bg-white/[0.04]'}`}>
+                  Patient
+                </button>
+                <button onClick={() => setActiveTab('hospital')} className={`px-3 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all ${activeTab === 'hospital' ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-gray-500 hover:text-white hover:bg-white/[0.04]'}`}>
+                  Hospital
+                </button>
+                <button onClick={() => setActiveTab('admin')} className={`px-3 sm:px-5 py-2.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all ${activeTab === 'admin' ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-gray-500 hover:text-white hover:bg-white/[0.04]'}`}>
+                  Analytics
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-4 md:px-8 mt-8">
-        
+      <main className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
         {toast && (
-          <div className={`fixed bottom-5 right-5 z-50 flex items-center gap-3 px-5 py-4 rounded-xl border shadow-2xl transition-all duration-300 ${
-            toast.type === 'success' ? 'bg-emerald-950/80 border-emerald-500/40 text-emerald-300' :
-            toast.type === 'error' ? 'bg-rose-950/80 border-rose-500/40 text-rose-300' :
-            toast.type === 'warning' ? 'bg-amber-950/80 border-amber-500/40 text-amber-300' :
-            'bg-slate-900/90 border-blue-500/40 text-blue-300'
+          <div className={`fixed bottom-5 right-5 z-[100] max-w-sm flex items-start gap-3 px-4 py-3.5 rounded-2xl border shadow-2xl backdrop-blur-xl ${
+            toast.type === 'success' ? 'bg-emerald-950/90 border-emerald-500/30 text-emerald-200' :
+            toast.type === 'error' ? 'bg-rose-950/90 border-rose-500/30 text-rose-200' :
+            toast.type === 'warning' ? 'bg-amber-950/90 border-amber-500/30 text-amber-200' :
+            'bg-slate-900/95 border-blue-500/30 text-blue-200'
           }`}>
-            <AlertCircle className="h-5 w-5 flex-shrink-0" />
-            <span className="text-sm font-medium">{toast.message}</span>
+            <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+            <span className="text-xs sm:text-sm font-semibold leading-relaxed">{toast.message}</span>
           </div>
         )}
 
         {activeTab === 'patient' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-5 flex flex-col gap-6">
-              <div className="glass-card rounded-2xl p-6 md:p-8 flex flex-col gap-5 border border-white/5 relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-3 bg-blue-500/5 rounded-bl-2xl">
-                  <Sparkles className="h-5 w-5 text-blue-400" />
-                </div>
-                
+          <div className="space-y-6">
+            <section className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-br from-blue-950/50 via-slate-950/80 to-violet-950/30 p-5 sm:p-7 lg:p-8">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.14),transparent_35%)]" />
+              <div className="relative flex flex-col lg:flex-row lg:items-end justify-between gap-5">
                 <div>
-                  <h2 className="text-xl font-bold text-white">Find a Doctor</h2>
-                  <p className="text-xs text-gray-400 mt-1">Submit symptoms to classify priority & match optimal care</p>
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-400/20 text-[9px] font-bold uppercase tracking-[0.18em] text-blue-300 mb-4">
+                    <Sparkles className="h-3.5 w-3.5" /> AI-powered care routing
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight">Find the right care, <span className="text-blue-400">faster.</span></h2>
+                  <p className="max-w-2xl text-sm text-gray-400 mt-2 leading-relaxed">MediFlow evaluates specialty, urgency, distance, queue load, physician workload and hospital capacity to recommend the best available care path.</p>
                 </div>
-
-                <div className="flex gap-2">
-                  <button 
-                    onClick={() => prefillDemoScenario(1)} 
-                    className="flex-1 text-center py-2 px-3 rounded-lg bg-blue-950/50 hover:bg-blue-900/40 text-xs font-semibold text-blue-300 border border-blue-800/30"
-                  >
-                    Scenario 1 (Cardiac)
-                  </button>
-                  <button 
-                    onClick={() => prefillDemoScenario(4)} 
-                    className="flex-1 text-center py-2 px-3 rounded-lg bg-purple-950/50 hover:bg-purple-900/40 text-xs font-semibold text-purple-300 border border-purple-800/30"
-                  >
-                    Scenario 4 (Escalation)
-                  </button>
+                <div className="grid grid-cols-3 gap-2 sm:gap-3 min-w-full lg:min-w-[390px]">
+                  <div className="rounded-2xl bg-black/20 border border-white/[0.07] p-3 sm:p-4">
+                    <p className="text-[9px] uppercase tracking-widest text-gray-600 font-bold">Triage</p>
+                    <p className="text-sm font-black text-white mt-1">AI Specialty</p>
+                    <p className="text-[9px] text-emerald-400 mt-1">No diagnosis</p>
+                  </div>
+                  <div className="rounded-2xl bg-black/20 border border-white/[0.07] p-3 sm:p-4">
+                    <p className="text-[9px] uppercase tracking-widest text-gray-600 font-bold">Matching</p>
+                    <p className="text-sm font-black text-white mt-1">6 Signals</p>
+                    <p className="text-[9px] text-blue-400 mt-1">Weighted score</p>
+                  </div>
+                  <div className="rounded-2xl bg-black/20 border border-white/[0.07] p-3 sm:p-4">
+                    <p className="text-[9px] uppercase tracking-widest text-gray-600 font-bold">Fallback</p>
+                    <p className="text-sm font-black text-white mt-1">Escalation</p>
+                    <p className="text-[9px] text-violet-400 mt-1">Hospital + telecare</p>
+                  </div>
                 </div>
-
-                <form onSubmit={handlePatientSearch} className="flex flex-col gap-4">
-                  <div>
-                    <label className="text-xs font-semibold text-gray-400 block mb-1">Patient Name</label>
-                    <input 
-                      type="text" 
-                      value={patientName} 
-                      onChange={e => setPatientName(e.target.value)} 
-                      className="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500" 
-                      required 
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="col-span-1">
-                      <label className="text-xs font-semibold text-gray-400 block mb-1">Age</label>
-                      <input 
-                        type="number" 
-                        value={patientAge} 
-                        onChange={e => setPatientAge(parseInt(e.target.value))} 
-                        className="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500" 
-                        required 
-                      />
-                    </div>
-                    <div className="col-span-2">
-                      <label className="text-xs font-semibold text-gray-400 block mb-1">Location (Kanpur region)</label>
-                      <select 
-                        value={patientLocation} 
-                        onChange={e => setPatientLocation(e.target.value)} 
-                        className="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-blue-500"
-                      >
-                        <option value="Kalyanpur">Kalyanpur (West)</option>
-                        <option value="Kakadeo">Kakadeo (Central-West)</option>
-                        <option value="Swaroop Nagar">Swaroop Nagar (Central)</option>
-                        <option value="Civil Lines">Civil Lines (North-Central)</option>
-                        <option value="Naubasta">Naubasta (South)</option>
-                        <option value="Kidwai Nagar">Kidwai Nagar (South-East)</option>
-                        <option value="Bidhuna">Bidhuna (Rural &gt;60km)</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-xs font-semibold text-gray-400 block mb-1">Symptoms / Reason for Visit</label>
-                    <textarea 
-                      value={patientSymptoms} 
-                      onChange={e => setPatientSymptoms(e.target.value)} 
-                      rows={3}
-                      className="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 resize-none" 
-                      placeholder="Describe symptoms in detail..."
-                      required 
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-xs font-semibold text-gray-400 block mb-1">Preferred Date</label>
-                      <input 
-                        type="date" 
-                        value={prefDate} 
-                        onChange={e => setPrefDate(e.target.value)} 
-                        className="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500" 
-                        required 
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs font-semibold text-gray-400 block mb-1">Preferred Time</label>
-                      <input 
-                        type="time" 
-                        value={prefTime} 
-                        onChange={e => setPrefTime(e.target.value)} 
-                        className="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500" 
-                        required 
-                      />
-                    </div>
-                  </div>
-
-                  <button 
-                    type="submit" 
-                    disabled={isSearching}
-                    className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-lg shadow-blue-500/10 flex justify-center items-center gap-2 mt-2"
-                  >
-                    {isSearching ? (
-                      <>
-                        <RefreshCw className="h-4 w-4 animate-spin" />
-                        Analyzing Symptoms...
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="h-4 w-4" />
-                        SEARCH MEDICAL DISPATCH
-                      </>
-                    )}
-                  </button>
-                </form>
               </div>
-            </div>
+            </section>
 
-            <div className="lg:col-span-7 flex flex-col gap-6">
-              {!searchResult && !isSearching && (
-                <div className="glass-card rounded-2xl p-12 border border-white/5 flex flex-col items-center justify-center text-center h-full">
-                  <div className="h-16 w-16 bg-slate-900 border border-white/5 rounded-full flex items-center justify-center text-gray-500 mb-4">
-                    <Stethoscope className="h-8 w-8 text-blue-500/60" />
-                  </div>
-                  <h3 className="text-lg font-bold text-white mb-2">No Active Assessment</h3>
-                  <p className="text-sm text-gray-400 max-w-sm">Enter the patient's symptoms on the left to activate the AI Triage & Doctor allocation engine.</p>
-                </div>
-              )}
-
-              {isSearching && (
-                <div className="glass-card rounded-2xl p-12 border border-white/5 flex flex-col items-center justify-center text-center h-full">
-                  <RefreshCw className="h-10 w-10 text-blue-500 animate-spin mb-4" />
-                  <h3 className="text-lg font-bold text-white mb-2">Running AI Specialty Triage</h3>
-                  <p className="text-sm text-gray-400 max-w-sm">Assessing symptoms, resolving patient geolocation, and calculating matching scores for available physicians...</p>
-                </div>
-              )}
-
-              {searchResult && (
-                <div className="flex flex-col gap-6">
-                  <div className="glass-card-glow rounded-2xl p-6 border flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-3 bg-blue-500/5 rounded-bl-2xl">
-                      <Sparkles className="h-5 w-5 text-blue-400" />
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+              <section className="xl:col-span-5 rounded-3xl border border-white/[0.08] bg-slate-950/70 shadow-2xl shadow-black/20 overflow-hidden">
+                <div className="p-5 sm:p-6 border-b border-white/[0.06] bg-white/[0.02]">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-xl bg-blue-500/10 border border-blue-400/20 flex items-center justify-center"><User className="h-5 w-5 text-blue-400" /></div>
+                      <div><h3 className="font-black text-white">Patient assessment</h3><p className="text-[10px] text-gray-500 mt-0.5">Tell us what the patient needs</p></div>
                     </div>
+                    <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-widest">Step 1 / 2</span>
+                  </div>
+                </div>
+
+                <div className="p-5 sm:p-6">
+                  <div className="grid grid-cols-2 gap-2 mb-5">
+                    <button onClick={() => prefillDemoScenario(1)} className="rounded-xl border border-blue-500/20 bg-blue-500/[0.06] hover:bg-blue-500/10 px-3 py-2.5 text-left transition-all">
+                      <span className="text-[9px] uppercase tracking-wider font-bold text-blue-400">Demo scenario</span>
+                      <span className="block text-xs font-bold text-white mt-1">Cardiac priority</span>
+                    </button>
+                    <button onClick={() => prefillDemoScenario(4)} className="rounded-xl border border-violet-500/20 bg-violet-500/[0.06] hover:bg-violet-500/10 px-3 py-2.5 text-left transition-all">
+                      <span className="text-[9px] uppercase tracking-wider font-bold text-violet-400">Demo scenario</span>
+                      <span className="block text-xs font-bold text-white mt-1">Specialist escalation</span>
+                    </button>
+                  </div>
+
+                  <form onSubmit={handlePatientSearch} className="space-y-4">
                     <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-blue-400 uppercase tracking-widest">AI Assessment</span>
-                      </div>
-                      <h3 className="text-2xl font-bold text-white mt-1">{searchResult.classification.specialty}</h3>
-                      <p className="text-xs text-gray-400 mt-1">Classification Confidence: <span className="font-semibold text-gray-200">{Math.round(searchResult.classification.confidence * 100)}%</span></p>
+                      <label className="text-[10px] uppercase tracking-wider font-bold text-gray-500 block mb-1.5">Patient name</label>
+                      <div className="relative"><User className="absolute left-3 top-3.5 h-4 w-4 text-gray-600" /><input type="text" value={patientName} onChange={e => setPatientName(e.target.value)} className="w-full bg-black/20 border border-white/[0.08] rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-gray-700 focus:outline-none focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/10 transition-all" required /></div>
                     </div>
-                    <div className="flex flex-col items-end">
-                      <span className="text-xs font-semibold text-gray-400 mb-1">Urgency Level</span>
-                      <span className={`px-4 py-2 rounded-xl text-xs font-extrabold tracking-wider ${
-                        searchResult.classification.urgency === 'HIGH' || searchResult.classification.urgency === 'EMERGENCY' 
-                          ? 'bg-rose-950/80 text-rose-400 border border-rose-500/40 text-glow-purple' 
-                          : searchResult.classification.urgency === 'MEDIUM' 
-                          ? 'bg-amber-950/80 text-amber-400 border border-amber-500/40' 
-                          : 'bg-emerald-950/80 text-emerald-400 border border-emerald-500/40'
-                      }`}>
-                        {searchResult.classification.urgency}
-                      </span>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider font-bold text-gray-500 block mb-1.5">Age</label>
+                        <input type="number" value={patientAge} onChange={e => setPatientAge(parseInt(e.target.value))} className="w-full bg-black/20 border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/10" required />
+                      </div>
+                      <div className="sm:col-span-2">
+                        <label className="text-[10px] uppercase tracking-wider font-bold text-gray-500 block mb-1.5">Patient location</label>
+                        <div className="relative"><MapPin className="absolute left-3 top-3.5 h-4 w-4 text-blue-400" /><select value={patientLocation} onChange={e => setPatientLocation(e.target.value)} className="w-full appearance-none bg-black/20 border border-white/[0.08] rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500/60">
+                          <option value="Kalyanpur">Kalyanpur (West)</option><option value="Kakadeo">Kakadeo (Central-West)</option><option value="Swaroop Nagar">Swaroop Nagar (Central)</option><option value="Civil Lines">Civil Lines (North-Central)</option><option value="Naubasta">Naubasta (South)</option><option value="Kidwai Nagar">Kidwai Nagar (South-East)</option><option value="Bidhuna">Bidhuna (Rural &gt;60km)</option>
+                        </select></div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center justify-between mb-1.5"><label className="text-[10px] uppercase tracking-wider font-bold text-gray-500">Symptoms / reason for visit</label><span className="text-[9px] text-gray-600">AI triage input</span></div>
+                      <textarea value={patientSymptoms} onChange={e => setPatientSymptoms(e.target.value)} rows={4} className="w-full bg-black/20 border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-700 focus:outline-none focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/10 resize-none" placeholder="Describe symptoms or reason for consultation..." required />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div><label className="text-[10px] uppercase tracking-wider font-bold text-gray-500 block mb-1.5">Preferred date</label><div className="relative"><Calendar className="absolute left-3 top-3.5 h-4 w-4 text-gray-600" /><input type="date" value={prefDate} onChange={e => setPrefDate(e.target.value)} className="w-full bg-black/20 border border-white/[0.08] rounded-xl pl-10 pr-3 py-3 text-sm text-white focus:outline-none focus:border-blue-500/60" required /></div></div>
+                      <div><label className="text-[10px] uppercase tracking-wider font-bold text-gray-500 block mb-1.5">Preferred time</label><div className="relative"><Clock className="absolute left-3 top-3.5 h-4 w-4 text-gray-600" /><input type="time" value={prefTime} onChange={e => setPrefTime(e.target.value)} className="w-full bg-black/20 border border-white/[0.08] rounded-xl pl-10 pr-3 py-3 text-sm text-white focus:outline-none focus:border-blue-500/60" required /></div></div>
+                    </div>
+
+                    <div className="rounded-xl border border-blue-500/10 bg-blue-500/[0.035] px-3 py-2.5 text-[10px] text-gray-500 leading-relaxed">MediFlow uses symptoms for <span className="text-gray-300 font-semibold">specialty and urgency routing</span>; it does not provide a medical diagnosis.</div>
+
+                    <button type="submit" disabled={isSearching} className="group w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-cyan-500 disabled:opacity-60 text-white font-black py-3.5 text-xs transition-all shadow-xl shadow-blue-600/15 flex items-center justify-center gap-2">
+                      {isSearching ? <><RefreshCw className="h-4 w-4 animate-spin" /> RUNNING AI TRIAGE...</> : <><Sparkles className="h-4 w-4 group-hover:rotate-12 transition-transform" /> FIND BEST CARE PATH <ChevronRight className="h-4 w-4" /></>}
+                    </button>
+                  </form>
+                </div>
+              </section>
+
+              <section className="xl:col-span-7 space-y-5">
+                {!searchResult && !isSearching && (
+                  <div className="min-h-[520px] rounded-3xl border border-dashed border-white/[0.1] bg-slate-950/45 flex flex-col items-center justify-center text-center p-8">
+                    <div className="h-20 w-20 rounded-3xl bg-blue-500/[0.06] border border-blue-400/10 flex items-center justify-center mb-5"><Stethoscope className="h-9 w-9 text-blue-400/70" /></div>
+                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-blue-400 mb-2">Ready for assessment</span>
+                    <h3 className="text-xl font-black text-white">Your care recommendation will appear here</h3>
+                    <p className="text-sm text-gray-500 max-w-md mt-2 leading-relaxed">Submit patient details to see specialty classification, urgency, ranked doctors, estimated wait time and the escalation path.</p>
+                    <div className="grid grid-cols-3 gap-2 mt-7 w-full max-w-lg">
+                      <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3"><Activity className="h-4 w-4 text-blue-400 mx-auto" /><p className="text-[9px] text-gray-500 mt-2">Triage</p></div>
+                      <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3"><UserCheck className="h-4 w-4 text-emerald-400 mx-auto" /><p className="text-[9px] text-gray-500 mt-2">Match</p></div>
+                      <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3"><Calendar className="h-4 w-4 text-violet-400 mx-auto" /><p className="text-[9px] text-gray-500 mt-2">Allocate</p></div>
                     </div>
                   </div>
+                )}
 
-                  {bookingMessage && (
-                    <div className="bg-emerald-950/40 border border-emerald-500/30 rounded-2xl p-5 flex items-start gap-4">
-                      <CheckCircle2 className="h-6 w-6 text-emerald-400 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <h4 className="font-bold text-emerald-300">Appointment Confirmed!</h4>
-                        <p className="text-sm text-emerald-400/90 mt-1">
-                          Booked with **{bookingMessage.appointment.doctor_name}** at **{bookingMessage.appointment.hospital_name}**.
-                        </p>
-                        <p className="text-xs text-gray-400 mt-2 font-mono">
-                          Time Slot: {bookingMessage.appointment.appointment_time} | Status: {bookingMessage.appointment.status || "BOOKED"}
-                        </p>
-                        {bookingMessage.shifted_appointments && bookingMessage.shifted_appointments.length > 0 && (
-                          <div className="mt-3 p-3 bg-slate-950/70 border border-white/5 rounded-xl">
-                            <span className="text-[11px] font-bold text-amber-400 flex items-center gap-1 mb-1">
-                              <AlertTriangle className="h-3 w-3" /> Queue optimization active:
-                            </span>
-                            <ul className="text-[11px] text-gray-400 space-y-1 list-disc pl-4 font-mono">
-                              {bookingMessage.shifted_appointments.map((shift, idx) => (
-                                <li key={idx}>
-                                  {shift.patient_name} shifted to {shift.new_time.split(' ')[1]}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
+                {isSearching && (
+                  <div className="min-h-[520px] rounded-3xl border border-blue-500/15 bg-blue-950/[0.08] flex flex-col items-center justify-center text-center p-8 overflow-hidden relative">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.12),transparent_55%)]" />
+                    <div className="relative h-24 w-24 rounded-full border border-blue-400/20 flex items-center justify-center mb-6"><div className="absolute inset-2 rounded-full border border-blue-400/20 border-t-blue-400 animate-spin" /><RefreshCw className="h-8 w-8 text-blue-400" /></div>
+                    <span className="relative text-[9px] font-bold uppercase tracking-[0.2em] text-blue-400">Processing request</span>
+                    <h3 className="relative text-xl font-black text-white mt-2">Running AI Specialty Triage</h3>
+                    <p className="relative text-sm text-gray-500 max-w-md mt-2">Assessing symptoms, resolving patient location and calculating matching scores across available physicians.</p>
+                    <div className="relative mt-7 w-full max-w-md space-y-2">
+                      {['Classifying specialty & urgency','Resolving nearby care options','Calculating doctor allocation score'].map((label, i) => <div key={label} className="flex items-center gap-3 rounded-xl bg-black/20 border border-white/[0.06] px-4 py-3 text-left"><span className="h-5 w-5 rounded-full bg-blue-500/10 border border-blue-400/20 text-[9px] text-blue-300 flex items-center justify-center">{i + 1}</span><span className="text-[10px] text-gray-400">{label}</span><RefreshCw className="ml-auto h-3.5 w-3.5 text-blue-400 animate-spin" /></div>)}
                     </div>
-                  )}
+                  </div>
+                )}
 
-                  {!searchResult.recommendations.escalated ? (
-                    <div className="flex flex-col gap-4">
-                      <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Recommended Doctors</h4>
-                      
-                      <div className="flex flex-col gap-4">
-                        {searchResult.recommendations.doctors.map((doc, idx) => (
-                          <div 
-                            key={doc.doctor_id} 
-                            className={`glass-card rounded-2xl p-5 border transition-all ${
-                              idx === 0 
-                                ? 'border-blue-500/30 bg-blue-950/10 shadow-lg shadow-blue-500/5' 
-                                : 'border-white/5'
-                            }`}
-                          >
-                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                              <div className="flex items-start gap-4">
-                                <div className={`p-3 rounded-xl ${idx === 0 ? 'bg-blue-600/20 text-blue-400' : 'bg-slate-900 text-gray-400'}`}>
-                                  <Stethoscope className="h-6 w-6" />
-                                </div>
-                                <div>
-                                  <div className="flex items-center gap-2">
-                                    <h5 className="font-bold text-white text-lg">{doc.name}</h5>
-                                    {idx === 0 && (
-                                      <span className="bg-blue-900/60 text-blue-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-blue-800/40 uppercase tracking-wider">
-                                        Best Match
-                                      </span>
-                                    )}
-                                  </div>
-                                  <p className="text-sm text-gray-400 mt-0.5">{doc.qualification} • {doc.specialty}</p>
-                                  <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
-                                    <span className="flex items-center gap-1"><Building className="h-3.5 w-3.5" /> {doc.hospital.name}</span>
-                                    <span>•</span>
-                                    <span className="flex items-center gap-1 font-semibold text-gray-300"><MapPin className="h-3.5 w-3.5 text-blue-400" /> {doc.distance_km} km</span>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="flex flex-col items-start md:items-end w-full md:w-auto border-t md:border-t-0 border-white/5 pt-3 md:pt-0 mt-3 md:mt-0">
-                                <div className="flex justify-between md:justify-end items-center w-full md:w-auto gap-4 mb-2">
-                                  <div className="text-left md:text-right">
-                                    <span className="text-[10px] font-bold text-gray-500 block uppercase">Matching Score</span>
-                                    <span className="text-xl font-black text-white">{doc.score}%</span>
-                                  </div>
-                                  <div className="text-left md:text-right">
-                                    <span className="text-[10px] font-bold text-gray-500 block uppercase">Est. Wait</span>
-                                    <span className="text-sm font-bold text-blue-400">{doc.queue_count * doc.consultation_duration} mins</span>
-                                  </div>
-                                </div>
-
-                                <button 
-                                  onClick={() => handleBookAppointment(doc)}
-                                  className="w-full md:w-auto bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-md shadow-blue-500/10"
-                                >
-                                  BOOK APPOINTMENT
-                                </button>
-                              </div>
-                            </div>
-
-                            <div className="mt-4 pt-4 border-t border-white/5 grid grid-cols-2 md:grid-cols-6 gap-2 text-[10px] text-gray-500 font-mono">
-                              <div>Specialty: {doc.breakdown.specialty_match}%</div>
-                              <div>Availability: {doc.breakdown.availability}%</div>
-                              <div>Distance: {doc.breakdown.distance_score}%</div>
-                              <div>Queue: {doc.breakdown.queue_score}%</div>
-                              <div>Workload: {doc.breakdown.workload_score}%</div>
-                              <div>Hosp Cap: {doc.breakdown.hospital_capacity_score}%</div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col gap-6">
-                      <div className="bg-rose-950/20 border border-rose-500/30 rounded-2xl p-5 flex items-start gap-4">
-                        <ShieldAlert className="h-6 w-6 text-rose-400 flex-shrink-0 mt-0.5" />
+                {searchResult && (
+                  <div className="space-y-5">
+                    <div className="rounded-3xl border border-blue-400/15 bg-gradient-to-br from-blue-950/40 to-slate-950/70 p-5 sm:p-6 relative overflow-hidden">
+                      <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl" />
+                      <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-5">
                         <div>
-                          <h4 className="font-bold text-rose-300">No Cardiology Specialist within 10 km</h4>
-                          <p className="text-sm text-gray-400 mt-1">
-                            Radius expanded: searched 10km → 25km → 50km. Activating **Best Available Specialist Matching**.
-                          </p>
+                          <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-emerald-400" /><span className="text-[9px] font-black text-blue-300 uppercase tracking-[0.2em]">AI assessment complete</span></div>
+                          <h3 className="text-2xl sm:text-3xl font-black mt-2">{searchResult.classification.specialty}</h3>
+                          <div className="flex flex-wrap items-center gap-3 mt-2 text-[10px] text-gray-500"><span>Confidence <b className="text-white">{Math.round(searchResult.classification.confidence * 100)}%</b></span><span className="h-1 w-1 rounded-full bg-gray-700" /><span>Search radius <b className="text-white">{searchResult.recommendations.radius_km} km</b></span></div>
                         </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="glass-card rounded-2xl p-5 border border-white/5">
-                          <h5 className="font-bold text-white text-sm mb-3 flex items-center gap-2">
-                            <Building className="h-4 w-4 text-blue-400" /> Recommended Hospitals
-                          </h5>
-                          <div className="flex flex-col gap-3">
-                            {searchResult.recommendations.escalation_options.recommended_hospitals.map((h, i) => (
-                              <div key={i} className="p-3 bg-slate-900/60 rounded-xl border border-white/5 text-xs">
-                                <div className="flex justify-between items-center">
-                                  <span className="font-bold text-gray-200">{h.name}</span>
-                                  <span className="text-[10px] text-blue-400 font-semibold">{h.distance_km} km</span>
-                                </div>
-                                <div className="flex justify-between items-center mt-2 text-gray-500">
-                                  <span>Cardiology Department</span>
-                                  <span>Slot: {h.available_time}</span>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="glass-card rounded-2xl p-5 border border-white/5">
-                          <h5 className="font-bold text-white text-sm mb-3 flex items-center gap-2">
-                            <Stethoscope className="h-4 w-4 text-purple-400" /> Teleconsultation Options
-                          </h5>
-                          <div className="flex flex-col gap-3">
-                            {searchResult.recommendations.escalation_options.teleconsultation.length > 0 ? (
-                              searchResult.recommendations.escalation_options.teleconsultation.map((t, i) => (
-                                <div key={i} className="p-3 bg-slate-900/60 rounded-xl border border-white/5 text-xs">
-                                  <div className="flex justify-between items-center">
-                                    <span className="font-bold text-gray-200">{t.name}</span>
-                                    <span className="text-[10px] text-purple-400 font-semibold">Online</span>
-                                  </div>
-                                  <div className="flex justify-between items-center mt-2 text-gray-500">
-                                    <span>{t.specialty}</span>
-                                    <span>Available: {t.available_time}</span>
-                                  </div>
-                                </div>
-                              ))
-                            ) : (
-                              <div className="p-4 text-center text-gray-500 text-xs">
-                                Teleconsultation specialists offline.
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="glass-card rounded-2xl p-5 border border-white/5 text-xs">
-                        <h5 className="font-bold text-white mb-2">Digital Referral & Escalation</h5>
-                        <p className="text-gray-400 leading-relaxed">
-                          {searchResult.recommendations.escalation_options.referral.message}
-                        </p>
-                        <button 
-                          onClick={() => showToast("Referral Certificate Generated!", "success")}
-                          className="mt-3 bg-slate-900 hover:bg-slate-800 text-gray-300 font-bold px-4 py-2 rounded-lg border border-white/5 transition-all text-[11px]"
-                        >
-                          {searchResult.recommendations.escalation_options.referral.action}
-                        </button>
+                        <div className="sm:text-right"><span className="text-[9px] font-bold uppercase tracking-widest text-gray-600 block mb-2">Priority</span><span className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black border ${searchResult.classification.urgency === 'HIGH' || searchResult.classification.urgency === 'EMERGENCY' ? 'bg-rose-500/10 text-rose-300 border-rose-500/25' : searchResult.classification.urgency === 'MEDIUM' ? 'bg-amber-500/10 text-amber-300 border-amber-500/25' : 'bg-emerald-500/10 text-emerald-300 border-emerald-500/25'}`}>{(searchResult.classification.urgency === 'HIGH' || searchResult.classification.urgency === 'EMERGENCY') && <AlertTriangle className="h-3.5 w-3.5" />}{searchResult.classification.urgency}</span></div>
                       </div>
                     </div>
-                  )}
-                </div>
-              )}
+
+                    {bookingMessage && (
+                      <div className="rounded-2xl border border-emerald-500/25 bg-emerald-950/25 p-5">
+                        <div className="flex items-start gap-3"><div className="h-9 w-9 rounded-xl bg-emerald-500/10 flex items-center justify-center"><CheckCircle2 className="h-5 w-5 text-emerald-400" /></div><div className="flex-1"><div className="flex flex-wrap items-center justify-between gap-2"><h4 className="font-black text-emerald-300">Appointment confirmed</h4><span className="text-[9px] font-bold px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">{bookingMessage.appointment.status || 'BOOKED'}</span></div><p className="text-xs text-emerald-200/70 mt-1">Booked with <b className="text-emerald-200">{bookingMessage.appointment.doctor_name}</b> at <b className="text-emerald-200">{bookingMessage.appointment.hospital_name}</b>.</p><div className="flex flex-wrap gap-2 mt-3"><span className="px-2.5 py-1 rounded-lg bg-black/20 text-[10px] font-mono text-gray-400">{bookingMessage.appointment.appointment_time}</span></div></div></div>
+                        {bookingMessage.shifted_appointments && bookingMessage.shifted_appointments.length > 0 && <div className="mt-4 ml-12 rounded-xl bg-amber-950/20 border border-amber-500/20 p-3"><p className="text-[10px] font-bold text-amber-300 flex items-center gap-1.5"><AlertTriangle className="h-3 w-3" /> Queue optimization applied</p><ul className="mt-2 space-y-1 text-[10px] text-gray-500">{bookingMessage.shifted_appointments.map((shift, idx) => <li key={idx}>{shift.patient_name} → {shift.new_time.split(' ')[1]}</li>)}</ul></div>}
+                      </div>
+                    )}
+
+                    {!searchResult.recommendations.escalated ? (
+                      <div>
+                        <div className="flex items-end justify-between mb-3"><div><p className="text-[9px] uppercase tracking-[0.2em] text-blue-400 font-black">Allocation results</p><h4 className="text-lg font-black mt-1">Recommended doctors</h4></div><span className="text-[10px] text-gray-600">Top {searchResult.recommendations.doctors.length} matches</span></div>
+                        <div className="space-y-3">
+                          {searchResult.recommendations.doctors.map((doc, idx) => (
+                            <div key={doc.doctor_id} className={`rounded-2xl border p-4 sm:p-5 transition-all hover:-translate-y-0.5 ${idx === 0 ? 'border-blue-400/25 bg-blue-950/20 shadow-xl shadow-blue-950/20' : 'border-white/[0.07] bg-slate-950/60 hover:border-white/[0.12]'}`}>
+                              <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                                <div className="flex items-start gap-3 flex-1 min-w-0">
+                                  <div className={`h-12 w-12 rounded-2xl flex-shrink-0 flex items-center justify-center ${idx === 0 ? 'bg-blue-500/15 border border-blue-400/20 text-blue-300' : 'bg-white/[0.04] border border-white/[0.07] text-gray-500'}`}><Stethoscope className="h-5 w-5" /></div>
+                                  <div className="min-w-0"><div className="flex flex-wrap items-center gap-2"><h5 className="font-black text-white truncate">{doc.name}</h5>{idx === 0 && <span className="px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-400/20 text-[8px] font-black uppercase tracking-widest text-blue-300">Best match</span>}</div><p className="text-[11px] text-gray-500 mt-1">{doc.qualification} • {doc.specialty}</p><div className="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-[10px] text-gray-600"><span className="flex items-center gap-1"><Building className="h-3 w-3" />{doc.hospital.name}</span><span className="flex items-center gap-1 text-gray-400"><MapPin className="h-3 w-3 text-blue-400" />{doc.distance_km} km</span></div></div>
+                                </div>
+                                <div className="lg:w-[230px] flex flex-col gap-2">
+                                  <div className="flex items-center justify-between gap-4"><div><span className="text-[8px] uppercase tracking-widest text-gray-600 font-bold">Match score</span><div className="flex items-end gap-2"><span className="text-xl font-black text-white">{doc.score}%</span><div className="w-20 h-1.5 bg-black/30 rounded-full overflow-hidden mb-1"><div className="h-full rounded-full bg-blue-500" style={{width: `${Math.min(100, doc.score)}%`}} /></div></div></div><div className="text-right"><span className="text-[8px] uppercase tracking-widest text-gray-600 font-bold">Wait</span><p className="text-xs font-black text-blue-300 mt-1">{doc.queue_count * doc.consultation_duration} min</p></div></div>
+                                  <button onClick={() => handleBookAppointment(doc)} className="w-full rounded-xl bg-blue-600 hover:bg-blue-500 text-white py-2.5 text-[10px] font-black transition-all shadow-lg shadow-blue-600/10 flex items-center justify-center gap-2">BOOK APPOINTMENT <ChevronRight className="h-3.5 w-3.5" /></button>
+                                </div>
+                              </div>
+                              <div className="mt-4 pt-3 border-t border-white/[0.06] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">{[['Specialty',doc.breakdown.specialty_match],['Availability',doc.breakdown.availability],['Distance',doc.breakdown.distance_score],['Queue',doc.breakdown.queue_score],['Workload',doc.breakdown.workload_score],['Hospital',doc.breakdown.hospital_capacity_score]].map(([label,value]) => <div key={label} className="rounded-lg bg-black/15 px-2 py-1.5"><p className="text-[8px] text-gray-600 uppercase">{label}</p><p className="text-[10px] text-gray-300 font-bold mt-0.5">{value}%</p></div>)}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="rounded-2xl border border-rose-500/20 bg-rose-950/15 p-5 flex items-start gap-3"><ShieldAlert className="h-5 w-5 text-rose-400 flex-shrink-0" /><div><h4 className="font-black text-rose-300">Local specialist unavailable</h4><p className="text-xs text-gray-500 mt-1">MediFlow expanded the search radius from 10 km → 25 km → 50 km and activated specialist escalation.</p></div></div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="rounded-2xl border border-white/[0.07] bg-slate-950/60 p-5"><div className="flex items-center gap-2 mb-4"><Building className="h-4 w-4 text-blue-400" /><h5 className="font-black text-sm">Recommended hospitals</h5></div><div className="space-y-2">{searchResult.recommendations.escalation_options.recommended_hospitals.map((h,i)=><div key={i} className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3"><div className="flex justify-between gap-2"><span className="text-xs font-bold text-gray-200">{h.name}</span><span className="text-[9px] font-bold text-blue-400">{h.distance_km} km</span></div><div className="flex justify-between mt-2 text-[9px] text-gray-600"><span>{h.specialty}</span><span>Slot {h.available_time}</span></div></div>)}</div></div>
+                          <div className="rounded-2xl border border-white/[0.07] bg-slate-950/60 p-5"><div className="flex items-center gap-2 mb-4"><Stethoscope className="h-4 w-4 text-violet-400" /><h5 className="font-black text-sm">Teleconsultation</h5></div><div className="space-y-2">{searchResult.recommendations.escalation_options.teleconsultation.length > 0 ? searchResult.recommendations.escalation_options.teleconsultation.map((t,i)=><div key={i} className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3"><div className="flex justify-between gap-2"><span className="text-xs font-bold text-gray-200">{t.name}</span><span className="text-[9px] font-bold text-emerald-400">Online</span></div><div className="flex justify-between mt-2 text-[9px] text-gray-600"><span>{t.specialty}</span><span>{t.available_time}</span></div></div>) : <div className="text-center text-[10px] text-gray-600 py-5">Teleconsultation specialists offline.</div>}</div></div>
+                        </div>
+                        <div className="rounded-2xl border border-violet-500/15 bg-violet-950/10 p-5"><div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4"><div><p className="text-[9px] uppercase tracking-widest font-black text-violet-400">Digital referral</p><p className="text-xs text-gray-500 mt-1 leading-relaxed">{searchResult.recommendations.escalation_options.referral.message}</p></div><button onClick={() => showToast("Referral Certificate Generated!", "success")} className="flex-shrink-0 rounded-xl bg-white/[0.05] hover:bg-white/[0.08] border border-white/[0.08] px-4 py-2.5 text-[10px] font-black text-gray-200">{searchResult.recommendations.escalation_options.referral.action}</button></div></div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </section>
             </div>
           </div>
         )}
 
         {activeTab === 'hospital' && (
-          <div className="flex flex-col gap-6">
-            <div className="glass-card rounded-2xl p-5 border border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-              <div className="flex items-center gap-3">
-                <Building className="h-6 w-6 text-blue-500" />
-                <div>
-                  <h3 className="font-bold text-white">Live Hospital Dashboard</h3>
-                  <p className="text-xs text-gray-400">Select hospital location to simulate events & inspect schedules</p>
-                </div>
+          <div className="space-y-6">
+            <section className="rounded-3xl border border-white/[0.08] bg-slate-950/65 p-5 sm:p-6">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+                <div className="flex items-center gap-3"><div className="h-11 w-11 rounded-2xl bg-blue-500/10 border border-blue-400/15 flex items-center justify-center"><Building className="h-5 w-5 text-blue-400" /></div><div><p className="text-[9px] uppercase tracking-[0.2em] font-black text-blue-400">Operations center</p><h2 className="text-xl font-black mt-1">Live Hospital Dashboard</h2><p className="text-[10px] text-gray-600 mt-1">Simulate emergencies, physician downtime and dynamic queue reallocation.</p></div></div>
+                <div className="flex items-center gap-2"><span className="text-[9px] uppercase tracking-widest font-bold text-gray-600">Facility</span><select value={selectedHospitalId} onChange={e => setSelectedHospitalId(e.target.value)} className="bg-black/25 border border-white/[0.08] rounded-xl px-4 py-3 text-xs font-bold text-white focus:outline-none focus:border-blue-500/50 min-w-[230px]">{localHospitals.map(h => <option key={h.hospital_id} value={h.hospital_id}>{h.name}</option>)}</select></div>
               </div>
-              <div>
-                <select 
-                  value={selectedHospitalId} 
-                  onChange={e => setSelectedHospitalId(e.target.value)} 
-                  className="bg-slate-950 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 font-semibold"
-                >
-                  {localHospitals.map(h => (
-                    <option key={h.hospital_id} value={h.hospital_id}>
-                      {h.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+            </section>
 
-            {hospitalStats && (
-              <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-                <div className="glass-card rounded-2xl p-5 border border-white/5">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase">Doctors Available</span>
-                  <div className="text-2xl font-black text-white mt-1">{hospitalStats.doctors_available}</div>
-                  <span className="text-[10px] text-emerald-400 font-medium">On-Duty active</span>
-                </div>
-                <div className="glass-card rounded-2xl p-5 border border-white/5">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase">Patients Waiting</span>
-                  <div className="text-2xl font-black text-white mt-1">{hospitalStats.patients_waiting}</div>
-                  <span className="text-[10px] text-blue-400 font-medium">Scheduled today</span>
-                </div>
-                <div className="glass-card rounded-2xl p-5 border border-white/5">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase">Avg Wait Time</span>
-                  <div className="text-2xl font-black text-white mt-1">{hospitalStats.average_waiting_time_minutes} min</div>
-                  <span className="text-[10px] text-blue-400 font-medium">Queue load factor</span>
-                </div>
-                <div className="glass-card rounded-2xl p-5 border border-white/5">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase">Hospital Capacity</span>
-                  <div className="text-2xl font-black text-white mt-1">{hospitalStats.capacity_percentage}%</div>
-                  <div className="w-full bg-slate-950 h-1.5 rounded-full mt-2 overflow-hidden">
-                    <div className="bg-blue-500 h-full rounded-full" style={{ width: `${hospitalStats.capacity_percentage}%` }}></div>
-                  </div>
-                </div>
-                <div className="glass-card rounded-2xl p-5 border border-white/5 col-span-2 lg:col-span-1">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase">Emergency/ICU Capacity</span>
-                  <div className="text-2xl font-black text-white mt-1">{hospitalStats.emergency_capacity_percentage}%</div>
-                  <div className="w-full bg-slate-950 h-1.5 rounded-full mt-2 overflow-hidden">
-                    <div className="bg-rose-500 h-full rounded-full" style={{ width: `${hospitalStats.emergency_capacity_percentage}%` }}></div>
-                  </div>
-                </div>
-              </div>
-            )}
+            {hospitalStats && <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-3">
+              {[['Doctors available',hospitalStats.doctors_available, 'On-duty active','blue'],['Patients waiting',hospitalStats.patients_waiting,'Scheduled today','cyan'],['Avg wait time',`${hospitalStats.average_waiting_time_minutes} min`,'Queue load','violet'],['Hospital capacity',`${hospitalStats.capacity_percentage}%`,'Facility utilization','blue'],['Emergency / ICU',`${hospitalStats.emergency_capacity_percentage}%`,'Critical capacity','rose']].map(([label,value,sub,tone])=><div key={label} className="rounded-2xl border border-white/[0.07] bg-slate-950/65 p-4 sm:p-5"><div className="flex items-start justify-between gap-2"><span className="text-[9px] uppercase tracking-widest text-gray-600 font-black">{label}</span><span className={`h-2 w-2 rounded-full ${tone === 'rose' ? 'bg-rose-400' : tone === 'violet' ? 'bg-violet-400' : 'bg-blue-400'}`} /></div><p className="text-xl sm:text-2xl font-black text-white mt-2">{value}</p><p className="text-[9px] text-gray-600 mt-1">{sub}</p>{(label === 'Hospital capacity' || label === 'Emergency / ICU') && <div className="h-1.5 rounded-full bg-black/30 mt-3 overflow-hidden"><div className={`h-full rounded-full ${tone === 'rose' ? 'bg-rose-500' : 'bg-blue-500'}`} style={{width: `${label === 'Hospital capacity' ? hospitalStats.capacity_percentage : hospitalStats.emergency_capacity_percentage}%`}} /></div>}</div>)}
+            </div>}
 
-            {beforeAfterQueue && (
-              <div className="glass-card-glow rounded-2xl p-6 border border-blue-500/20 relative overflow-hidden">
-                <h4 className="text-base font-bold text-white mb-4 flex items-center gap-2">
-                  <Activity className="h-5 w-5 text-rose-500 pulse-glow" /> Emergency Recalculation Impact
-                </h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="p-4 bg-slate-950/60 rounded-xl border border-white/5">
-                    <span className="text-xs font-extrabold text-gray-400 block mb-3 uppercase tracking-wider">Before Event</span>
-                    <div className="space-y-2">
-                      {beforeAfterQueue.before.map((app, idx) => (
-                        <div key={idx} className="flex justify-between items-center text-xs p-2.5 bg-slate-900/40 rounded-lg border border-white/5 font-mono">
-                          <span className="text-gray-300 font-bold">{app.patient_name}</span>
-                          <span className="text-gray-500">{app.appointment_time.split(' ')[1]}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+            {beforeAfterQueue && <section className="rounded-3xl border border-rose-500/15 bg-slate-950/65 overflow-hidden"><div className="p-5 border-b border-white/[0.06] flex items-center gap-3"><div className="h-9 w-9 rounded-xl bg-rose-500/10 flex items-center justify-center"><Activity className="h-4 w-4 text-rose-400" /></div><div><p className="text-[9px] uppercase tracking-widest font-black text-rose-400">Dynamic recalculation</p><h3 className="font-black mt-0.5">Emergency impact simulation</h3></div></div><div className="grid md:grid-cols-2 gap-4 p-5"><div className="rounded-2xl bg-black/20 border border-white/[0.06] p-4"><p className="text-[9px] uppercase tracking-widest font-black text-gray-600 mb-3">Before event</p><div className="space-y-2">{beforeAfterQueue.before.map((app,idx)=><div key={idx} className="flex justify-between rounded-xl bg-white/[0.02] border border-white/[0.05] px-3 py-2.5 text-[10px]"><span className="font-bold text-gray-300">{app.patient_name}</span><span className="font-mono text-gray-600">{app.appointment_time.split(' ')[1]}</span></div>)}</div></div><div className="rounded-2xl bg-rose-950/10 border border-rose-500/10 p-4"><p className="text-[9px] uppercase tracking-widest font-black text-rose-400 mb-3">After event</p><div className="space-y-2">{beforeAfterQueue.after.map((app,idx)=><div key={idx} className={`flex justify-between rounded-xl border px-3 py-2.5 text-[10px] ${app.priority === 'EMERGENCY' ? 'bg-rose-500/10 border-rose-500/25 text-rose-200' : app.status === 'SHIFTED' ? 'bg-amber-500/5 border-amber-500/15 text-amber-200' : 'bg-white/[0.02] border-white/[0.05] text-gray-300'}`}><span className="font-bold">{app.priority === 'EMERGENCY' && '🚨 '}{app.patient_name}</span><span className="font-mono font-bold">{app.appointment_time.split(' ')[1]}</span></div>)}</div></div></div><div className="mx-5 mb-5 rounded-xl bg-black/20 border border-white/[0.06] px-4 py-3 text-[10px] text-gray-500 leading-relaxed"><b className="text-gray-300">Recalculation:</b> {beforeAfterQueue.explanation}</div></section>}
 
-                  <div className="p-4 bg-slate-950/60 rounded-xl border border-rose-500/20">
-                    <span className="text-xs font-extrabold text-rose-400 block mb-3 uppercase tracking-wider">After Event</span>
-                    <div className="space-y-2">
-                      {beforeAfterQueue.after.map((app, idx) => (
-                        <div key={idx} className={`flex justify-between items-center text-xs p-2.5 rounded-lg border font-mono ${
-                          app.priority === 'EMERGENCY' 
-                            ? 'bg-rose-950/40 border-rose-500/40 text-rose-300' 
-                            : app.status === 'SHIFTED'
-                            ? 'bg-slate-900/60 border-amber-500/30 text-amber-300'
-                            : 'bg-slate-900/40 border-white/5 text-gray-300'
-                        }`}>
-                          <span className="font-bold flex items-center gap-1.5">
-                            {app.priority === 'EMERGENCY' && <span className="h-2 w-2 rounded-full bg-rose-500 animate-ping"></span>}
-                            {app.patient_name}
-                          </span>
-                          <span className="font-bold">{app.appointment_time.split(' ')[1]}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+              <section className="xl:col-span-8 rounded-3xl border border-white/[0.07] bg-slate-950/65 overflow-hidden">
+                <div className="p-5 border-b border-white/[0.06] flex items-center justify-between"><div><p className="text-[9px] uppercase tracking-widest font-black text-blue-400">Queue monitor</p><h3 className="font-black mt-1">Live appointment queue</h3></div><span className="inline-flex items-center gap-2 text-[9px] text-emerald-400 font-bold"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" /> LIVE</span></div>
+                <div className="overflow-x-auto"><table className="w-full min-w-[720px] text-left"><thead><tr className="bg-white/[0.02] border-b border-white/[0.05] text-[9px] uppercase tracking-widest text-gray-600"><th className="px-4 py-3">Appointment</th><th className="px-4 py-3">Patient</th><th className="px-4 py-3">Time</th><th className="px-4 py-3">Priority</th><th className="px-4 py-3">Status</th><th className="px-4 py-3">Action</th></tr></thead><tbody className="divide-y divide-white/[0.04]">{hospitalQueue.length > 0 ? hospitalQueue.map(app=><tr key={app.appointment_id} className="hover:bg-white/[0.02] transition-colors"><td className="px-4 py-4 font-mono text-[10px] text-gray-500 font-bold">{app.appointment_id}</td><td className="px-4 py-4"><p className="text-xs font-bold text-white">{app.patient_name}</p>{app.notes && <p className="text-[9px] text-gray-600 mt-1 max-w-[240px] truncate">{app.notes}</p>}</td><td className="px-4 py-4 font-mono text-xs text-gray-300 font-bold">{app.appointment_time.split(' ')[1]}</td><td className="px-4 py-4"><span className={`px-2 py-1 rounded-lg text-[8px] font-black border ${app.priority === 'EMERGENCY' || app.priority === 'HIGH' ? 'bg-rose-500/10 text-rose-300 border-rose-500/20' : app.priority === 'MEDIUM' ? 'bg-amber-500/10 text-amber-300 border-amber-500/20' : 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20'}`}>{app.priority}</span></td><td className="px-4 py-4"><span className={`text-[10px] font-bold ${app.status === 'CANCELLED' ? 'text-gray-600' : app.status === 'SHIFTED' ? 'text-amber-400' : app.status === 'REALLOCATED' ? 'text-violet-400' : 'text-emerald-400'}`}>{app.status}</span></td><td className="px-4 py-4">{app.status !== 'CANCELLED' && <button onClick={() => handleCancelAppointment(app.appointment_id)} className="h-8 w-8 rounded-lg border border-white/[0.06] bg-black/20 hover:bg-rose-500/10 hover:border-rose-500/20 text-gray-600 hover:text-rose-400 flex items-center justify-center transition-all" title="Cancel Appointment"><Trash2 className="h-3.5 w-3.5" /></button>}</td></tr>) : <tr><td colSpan="6" className="p-14 text-center text-xs text-gray-600">No active appointments in this hospital queue.</td></tr>}</tbody></table></div>
+              </section>
 
-                <div className="mt-4 p-3.5 bg-slate-950/80 rounded-xl border border-white/5 text-xs text-gray-400">
-                  <span className="font-bold text-white block mb-1">Recalculation Explanation:</span>
-                  {beforeAfterQueue.explanation}
-                </div>
-              </div>
-            )}
+              <div className="xl:col-span-4 space-y-6">
+                <section className="rounded-3xl border border-white/[0.07] bg-slate-950/65 p-5"><div className="flex items-center gap-3 mb-5"><div className="h-9 w-9 rounded-xl bg-rose-500/10 flex items-center justify-center"><AlertTriangle className="h-4 w-4 text-rose-400" /></div><div><h3 className="font-black text-sm">Simulation controls</h3><p className="text-[9px] text-gray-600 mt-0.5">Trigger real-time optimization</p></div></div><button onClick={handleSimulateEmergency} className="w-full rounded-xl bg-rose-600 hover:bg-rose-500 text-white py-3 text-[10px] font-black shadow-lg shadow-rose-600/10 transition-all">🚨 SIMULATE EMERGENCY</button><div className="my-4 h-px bg-white/[0.06]" /><label className="text-[9px] uppercase tracking-widest font-black text-gray-600 block mb-2">Doctor unavailable</label><div className="flex gap-2"><select value={unavailableDoctorId} onChange={e => setUnavailableDoctorId(e.target.value)} className="min-w-0 flex-1 bg-black/20 border border-white/[0.08] rounded-xl px-3 py-2.5 text-[10px] text-white focus:outline-none focus:border-blue-500/50">{hospitalDoctorsList.map(d=><option key={d.doctor_id} value={d.doctor_id}>{d.name} ({d.specialty})</option>)}</select><button onClick={handleDoctorUnavailable} className="rounded-xl bg-amber-500/10 border border-amber-500/15 px-3 text-[9px] font-black text-amber-300">Go offline</button></div><button onClick={handleRebalanceQueues} className="w-full mt-3 rounded-xl border border-white/[0.07] bg-white/[0.03] hover:bg-white/[0.06] text-gray-300 py-3 text-[10px] font-black transition-all">⚖️ REBALANCE OVERLOADED QUEUES</button></section>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              <div className="lg:col-span-8 flex flex-col gap-4">
-                <div className="glass-card rounded-2xl border border-white/5 overflow-hidden">
-                  <div className="p-5 border-b border-white/5 flex justify-between items-center">
-                    <h4 className="font-bold text-white text-base">Live Queue</h4>
-                    <span className="text-xs text-gray-400 font-mono">Real-time update active</span>
-                  </div>
-
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                      <thead>
-                        <tr className="border-b border-white/5 bg-slate-950/40 text-xs text-gray-400 uppercase font-semibold">
-                          <th className="p-4 font-bold">App ID</th>
-                          <th className="p-4 font-bold">Patient</th>
-                          <th className="p-4 font-bold">Time</th>
-                          <th className="p-4 font-bold">Priority</th>
-                          <th className="p-4 font-bold">Status</th>
-                          <th className="p-4 font-bold">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-white/5 text-xs text-gray-300">
-                        {hospitalQueue.length > 0 ? (
-                          hospitalQueue.map((app) => (
-                            <tr key={app.appointment_id} className="hover:bg-slate-900/30">
-                              <td className="p-4 font-mono font-bold text-gray-400">{app.appointment_id}</td>
-                              <td className="p-4 font-bold text-white">
-                                <div>{app.patient_name}</div>
-                                {app.notes && <div className="text-[10px] text-gray-500 font-medium mt-0.5">{app.notes}</div>}
-                              </td>
-                              <td className="p-4 font-mono font-semibold">{app.appointment_time.split(' ')[1]}</td>
-                              <td className="p-4">
-                                <span className={`px-2 py-0.5 rounded-lg text-[10px] font-extrabold ${
-                                  app.priority === 'EMERGENCY' || app.priority === 'HIGH'
-                                    ? 'bg-rose-950/80 text-rose-400 border border-rose-500/20'
-                                    : app.priority === 'MEDIUM'
-                                    ? 'bg-amber-950/80 text-amber-400 border border-amber-500/20'
-                                    : 'bg-emerald-950/80 text-emerald-400 border border-emerald-500/20'
-                                }`}>
-                                  {app.priority}
-                                </span>
-                              </td>
-                              <td className="p-4">
-                                <span className={`font-semibold ${
-                                  app.status === 'CANCELLED' ? 'text-gray-500' :
-                                  app.status === 'SHIFTED' ? 'text-amber-400' :
-                                  app.status === 'REALLOCATED' ? 'text-purple-400' :
-                                  'text-emerald-400'
-                                }`}>
-                                  {app.status}
-                                </span>
-                              </td>
-                              <td className="p-4">
-                                {app.status !== 'CANCELLED' && (
-                                  <button 
-                                    onClick={() => handleCancelAppointment(app.appointment_id)}
-                                    className="p-1.5 bg-slate-950 hover:bg-rose-950/40 text-gray-500 hover:text-rose-400 border border-white/5 hover:border-rose-800/40 rounded-lg transition-all"
-                                    title="Cancel Appointment"
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </button>
-                                )}
-                              </td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan="6" className="p-12 text-center text-gray-500">
-                              No active appointments in this hospital queue.
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              <div className="lg:col-span-4 flex flex-col gap-6">
-                <div className="glass-card rounded-2xl p-6 border border-white/5">
-                  <h4 className="font-bold text-white text-base mb-4">Simulate Events</h4>
-                  
-                  <div className="flex flex-col gap-4">
-                    <button 
-                      onClick={handleSimulateEmergency}
-                      className="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-3 px-4 rounded-xl text-xs transition-all shadow-md shadow-rose-600/10 flex justify-center items-center gap-2"
-                    >
-                      🚨 SIMULATE EMERGENCY
-                    </button>
-
-                    <div className="h-px bg-white/5 my-1"></div>
-
-                    <div className="flex flex-col gap-2">
-                      <label className="text-xs font-semibold text-gray-400 block">Doctor Unavailable</label>
-                      <div className="flex gap-2">
-                        <select 
-                          value={unavailableDoctorId} 
-                          onChange={e => setUnavailableDoctorId(e.target.value)} 
-                          className="flex-1 bg-slate-950 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
-                        >
-                          {hospitalDoctorsList.map(d => (
-                            <option key={d.doctor_id} value={d.doctor_id}>
-                              {d.name} ({d.specialty})
-                            </option>
-                          ))}
-                        </select>
-                        <button 
-                          onClick={handleDoctorUnavailable}
-                          className="bg-slate-900 hover:bg-slate-800 text-amber-400 font-bold px-4 py-2.5 rounded-xl border border-white/5 text-xs transition-all flex-shrink-0"
-                        >
-                          Go Offline
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-2 mt-2">
-                      <label className="text-xs font-semibold text-gray-400 block">Queue Rebalancing</label>
-                      <button 
-                        onClick={handleRebalanceQueues}
-                        className="w-full bg-slate-900 hover:bg-slate-800 text-gray-300 font-bold py-3 px-4 rounded-xl border border-white/5 transition-all text-xs flex justify-center items-center gap-2"
-                      >
-                        ⚖️ Rebalance Overloaded Queues
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="glass-card rounded-2xl p-6 border border-white/5 flex-1 flex flex-col min-h-[300px]">
-                  <h4 className="font-bold text-white text-base mb-3 flex items-center gap-2">
-                    <Activity className="h-4.5 w-4.5 text-blue-500" /> Dispatch Log Feed
-                  </h4>
-                  <div className="flex-1 bg-slate-950/70 border border-white/5 rounded-xl p-4 overflow-y-auto font-mono text-[10px] text-gray-400 space-y-2.5 max-h-[300px]">
-                    {simulationLogs.length > 0 ? (
-                      simulationLogs.map((log, idx) => (
-                        <div key={idx} className="pb-2 border-b border-white/5 last:border-b-0 leading-relaxed text-gray-300">
-                          {log}
-                        </div>
-                      ))
-                    ) : (
-                      <div className="text-center text-gray-600 py-12">
-                        System ready. Event logs will stream here.
-                      </div>
-                    )}
-                  </div>
-                </div>
-
+                <section className="rounded-3xl border border-white/[0.07] bg-slate-950/65 p-5 min-h-[300px]"><div className="flex items-center justify-between mb-4"><div><p className="text-[9px] uppercase tracking-widest font-black text-blue-400">Event stream</p><h3 className="font-black text-sm mt-1">Dispatch log</h3></div><Activity className="h-4 w-4 text-blue-400" /></div><div className="rounded-2xl bg-black/30 border border-white/[0.05] p-3 max-h-[330px] overflow-y-auto space-y-2">{simulationLogs.length > 0 ? simulationLogs.map((log,idx)=><div key={idx} className="border-b border-white/[0.04] last:border-0 pb-2 last:pb-0 text-[9px] leading-relaxed text-gray-400 font-mono">{log}</div>) : <div className="py-12 text-center text-[10px] text-gray-700">System ready. Event logs will stream here.</div>}</div></section>
               </div>
             </div>
           </div>
         )}
 
         {activeTab === 'admin' && (
-          <div className="flex flex-col gap-6">
-            {analytics && (
-              <div className="grid grid-cols-2 lg:grid-cols-6 gap-4">
-                <div className="glass-card rounded-2xl p-5 border border-white/5">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase">Total Hospitals</span>
-                  <div className="text-3xl font-black text-white mt-1">{analytics.summary.total_hospitals}</div>
-                  <span className="text-[10px] text-blue-400 font-medium">Active locations</span>
-                </div>
-                <div className="glass-card rounded-2xl p-5 border border-white/5">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase">Total Doctors</span>
-                  <div className="text-3xl font-black text-white mt-1">{analytics.summary.total_doctors}</div>
-                  <span className="text-[10px] text-blue-400 font-medium">Physician records</span>
-                </div>
-                <div className="glass-card rounded-2xl p-5 border border-white/5">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase">Active Appointments</span>
-                  <div className="text-3xl font-black text-white mt-1">{analytics.summary.active_appointments}</div>
-                  <span className="text-[10px] text-emerald-400 font-medium">Today's booked cases</span>
-                </div>
-                <div className="glass-card rounded-2xl p-5 border border-white/5">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase">Avg Wait Time</span>
-                  <div className="text-3xl font-black text-white mt-1">{analytics.summary.average_waiting_time}</div>
-                  <span className="text-[10px] text-blue-400 font-medium">Mean dispatch lag</span>
-                </div>
-                <div className="glass-card rounded-2xl p-5 border border-white/5">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase">Hospital Util.</span>
-                  <div className="text-3xl font-black text-white mt-1">{analytics.summary.hospital_utilization}</div>
-                  <span className="text-[10px] text-emerald-400 font-medium">Beds occupied average</span>
-                </div>
-                <div className="glass-card rounded-2xl p-5 border border-white/5 col-span-2 lg:col-span-1">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase">Emergency Cases</span>
-                  <div className="text-3xl font-black text-rose-400 mt-1">{analytics.summary.emergency_cases}</div>
-                  <span className="text-[10px] text-rose-400/80 font-medium">🚨 High-priority dispatches</span>
-                </div>
-              </div>
-            )}
+          <div className="space-y-6">
+            <section className="rounded-3xl border border-white/[0.08] bg-gradient-to-r from-violet-950/30 via-slate-950/70 to-blue-950/25 p-5 sm:p-7"><div className="flex flex-col md:flex-row md:items-center justify-between gap-4"><div><div className="inline-flex items-center gap-2 text-[9px] uppercase tracking-[0.2em] font-black text-violet-300"><BarChart3 className="h-3.5 w-3.5" /> System intelligence</div><h2 className="text-2xl font-black mt-2">Hospital network analytics</h2><p className="text-xs text-gray-500 mt-1">Operational view of capacity, physician workload, demand and waiting time.</p></div><div className="px-3 py-2 rounded-xl bg-black/20 border border-white/[0.06] text-[9px] text-gray-500"><span className="text-emerald-400 font-bold">●</span> Data refreshed from current system state</div></div></section>
 
-            {analytics && (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div className="glass-card rounded-2xl p-5 border border-white/5 lg:col-span-7">
-                  <h4 className="font-bold text-white text-sm mb-4">Hospital Bed Allocations (Capacity vs Occupancy)</h4>
-                  <div className="h-[280px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={analytics.charts.hospital_capacity}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                        <XAxis dataKey="name" stroke="#6B7280" fontSize={9} tickLine={false} />
-                        <YAxis stroke="#6B7280" fontSize={10} tickLine={false} />
-                        <Tooltip contentStyle={{ backgroundColor: '#0B0F19', borderColor: 'rgba(255,255,255,0.1)' }} />
-                        <Legend wrapperStyle={{ fontSize: '10px' }} />
-                        <Bar dataKey="occupancy" name="Occupied Beds" fill="#3B82F6" radius={[4, 4, 0, 0]} />
-                        <Bar dataKey="capacity" name="Total Capacity" fill="rgba(59, 130, 246, 0.15)" stroke="#3B82F6" strokeWidth={1} radius={[4, 4, 0, 0]} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
+            {analytics && <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">{[['Hospitals',analytics.summary.total_hospitals,'Active locations','blue'],['Doctors',analytics.summary.total_doctors,'Physician records','cyan'],['Appointments',analytics.summary.active_appointments,"Today's active","emerald"],['Avg wait',analytics.summary.average_waiting_time,'Dispatch lag','violet'],['Utilization',analytics.summary.hospital_utilization,'Average beds','blue'],['Emergency',analytics.summary.emergency_cases,'Priority cases','rose']].map(([label,value,sub,tone])=><div key={label} className="rounded-2xl border border-white/[0.07] bg-slate-950/65 p-4 sm:p-5"><div className="flex items-center justify-between"><span className="text-[8px] uppercase tracking-widest text-gray-600 font-black">{label}</span><span className={`h-2 w-2 rounded-full ${tone === 'rose' ? 'bg-rose-400' : tone === 'violet' ? 'bg-violet-400' : tone === 'emerald' ? 'bg-emerald-400' : 'bg-blue-400'}`} /></div><p className={`text-2xl font-black mt-2 ${tone === 'rose' ? 'text-rose-300' : 'text-white'}`}>{value}</p><p className="text-[8px] text-gray-600 mt-1">{sub}</p></div>)}</div>}
 
-                <div className="glass-card rounded-2xl p-5 border border-white/5 lg:col-span-5">
-                  <h4 className="font-bold text-white text-sm mb-4">Clinical Specialty Demand</h4>
-                  <div className="h-[280px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={analytics.charts.specialty_demand}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={60}
-                          outerRadius={85}
-                          paddingAngle={5}
-                          dataKey="value"
-                        >
-                          {analytics.charts.specialty_demand.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <Tooltip contentStyle={{ backgroundColor: '#0B0F19', borderColor: 'rgba(255,255,255,0.1)', fontSize: '11px' }} />
-                        <Legend layout="horizontal" align="center" verticalAlign="bottom" wrapperStyle={{ fontSize: '9px', color: '#9CA3AF' }} />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
+            {analytics && <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+              <div className="lg:col-span-7 rounded-3xl border border-white/[0.07] bg-slate-950/65 p-5"><div className="flex items-center justify-between mb-4"><div><p className="text-[9px] uppercase tracking-widest font-black text-blue-400">Capacity intelligence</p><h3 className="font-black mt-1">Hospital beds: occupancy vs capacity</h3></div><Building className="h-4 w-4 text-gray-600" /></div><div className="h-[300px]"><ResponsiveContainer width="100%" height="100%"><BarChart data={analytics.charts.hospital_capacity}><CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" /><XAxis dataKey="name" stroke="#64748B" fontSize={9} tickLine={false} /><YAxis stroke="#64748B" fontSize={9} tickLine={false} /><Tooltip contentStyle={{backgroundColor:'#090D18',borderColor:'rgba(255,255,255,0.1)',borderRadius:'12px',fontSize:'10px'}} /><Legend wrapperStyle={{fontSize:'9px'}} /><Bar dataKey="occupancy" name="Occupied" fill="#3B82F6" radius={[5,5,0,0]} /><Bar dataKey="capacity" name="Capacity" fill="rgba(59,130,246,0.14)" stroke="#3B82F6" strokeWidth={1} radius={[5,5,0,0]} /></BarChart></ResponsiveContainer></div></div>
 
-                <div className="glass-card rounded-2xl p-5 border border-white/5 lg:col-span-6">
-                  <h4 className="font-bold text-white text-sm mb-4">Doctor Workload Load Factor (%)</h4>
-                  <div className="h-[280px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={analytics.charts.doctor_workload} layout="vertical">
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                        <XAxis type="number" domain={[0, 100]} stroke="#6B7280" fontSize={10} tickLine={false} />
-                        <YAxis dataKey="name" type="category" stroke="#6B7280" fontSize={8} width={90} tickLine={false} />
-                        <Tooltip contentStyle={{ backgroundColor: '#0B0F19', borderColor: 'rgba(255,255,255,0.1)' }} />
-                        <Bar dataKey="workload" name="Workload %" fill="#8B5CF6" radius={[0, 4, 4, 0]} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
+              <div className="lg:col-span-5 rounded-3xl border border-white/[0.07] bg-slate-950/65 p-5"><div className="flex items-center justify-between mb-4"><div><p className="text-[9px] uppercase tracking-widest font-black text-violet-400">Demand mix</p><h3 className="font-black mt-1">Clinical specialty demand</h3></div><TrendingUp className="h-4 w-4 text-gray-600" /></div><div className="h-[300px]"><ResponsiveContainer width="100%" height="100%"><PieChart><Pie data={analytics.charts.specialty_demand} cx="50%" cy="45%" innerRadius={65} outerRadius={92} paddingAngle={4} dataKey="value">{analytics.charts.specialty_demand.map((entry,index)=><Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}</Pie><Tooltip contentStyle={{backgroundColor:'#090D18',borderColor:'rgba(255,255,255,0.1)',borderRadius:'12px',fontSize:'10px'}} /><Legend layout="horizontal" align="center" verticalAlign="bottom" wrapperStyle={{fontSize:'9px'}} /></PieChart></ResponsiveContainer></div></div>
 
-                <div className="glass-card rounded-2xl p-5 border border-white/5 lg:col-span-6">
-                  <h4 className="font-bold text-white text-sm mb-4">Average Waiting Time by Medical Specialty (min)</h4>
-                  <div className="h-[280px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={analytics.charts.waiting_time_by_specialty}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                        <XAxis dataKey="specialty" stroke="#6B7280" fontSize={9} tickLine={false} />
-                        <YAxis stroke="#6B7280" fontSize={10} tickLine={false} />
-                        <Tooltip contentStyle={{ backgroundColor: '#0B0F19', borderColor: 'rgba(255,255,255,0.1)' }} />
-                        <Line type="monotone" dataKey="waiting_time" name="Avg Wait Time" stroke="#10B981" strokeWidth={3} activeDot={{ r: 8 }} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
-              </div>
-            )}
+              <div className="lg:col-span-6 rounded-3xl border border-white/[0.07] bg-slate-950/65 p-5"><div className="flex items-center justify-between mb-4"><div><p className="text-[9px] uppercase tracking-widest font-black text-violet-400">Workload intelligence</p><h3 className="font-black mt-1">Doctor load factor</h3></div><UserCheck className="h-4 w-4 text-gray-600" /></div><div className="h-[300px]"><ResponsiveContainer width="100%" height="100%"><BarChart data={analytics.charts.doctor_workload} layout="vertical"><CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" /><XAxis type="number" domain={[0,100]} stroke="#64748B" fontSize={9} tickLine={false} /><YAxis dataKey="name" type="category" stroke="#64748B" fontSize={8} width={95} tickLine={false} /><Tooltip contentStyle={{backgroundColor:'#090D18',borderColor:'rgba(255,255,255,0.1)',borderRadius:'12px',fontSize:'10px'}} /><Bar dataKey="workload" name="Workload %" fill="#8B5CF6" radius={[0,5,5,0]} /></BarChart></ResponsiveContainer></div></div>
+
+              <div className="lg:col-span-6 rounded-3xl border border-white/[0.07] bg-slate-950/65 p-5"><div className="flex items-center justify-between mb-4"><div><p className="text-[9px] uppercase tracking-widest font-black text-emerald-400">Service performance</p><h3 className="font-black mt-1">Average waiting time by specialty</h3></div><Clock className="h-4 w-4 text-gray-600" /></div><div className="h-[300px]"><ResponsiveContainer width="100%" height="100%"><LineChart data={analytics.charts.waiting_time_by_specialty}><CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" /><XAxis dataKey="specialty" stroke="#64748B" fontSize={8} tickLine={false} /><YAxis stroke="#64748B" fontSize={9} tickLine={false} /><Tooltip contentStyle={{backgroundColor:'#090D18',borderColor:'rgba(255,255,255,0.1)',borderRadius:'12px',fontSize:'10px'}} /><Line type="monotone" dataKey="waiting_time" name="Avg wait (min)" stroke="#10B981" strokeWidth={3} activeDot={{r:6}} /></LineChart></ResponsiveContainer></div></div>
+            </div>}
           </div>
         )}
       </main>
