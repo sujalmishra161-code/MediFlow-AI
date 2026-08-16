@@ -9,7 +9,13 @@ from models import Hospital, Doctor, Patient, Appointment
 import schemas
 from ai import classify_symptoms
 from matching import resolve_location_to_coords, find_and_rank_doctors, calculate_doctor_score
-from scheduler import calculate_appointment_slot, cancel_appointment_and_pull_forward, parse_time, format_time
+from scheduler import (
+    calculate_appointment_slot,
+    cancel_appointment_and_pull_forward,
+    parse_time,
+    format_time,
+    preview_appointment_slot,
+)
 
 app = FastAPI(title="MediFlow AI Backend", version="1.0.0")
 
@@ -66,14 +72,71 @@ def patient_request(req: schemas.PatientRequest, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_patient)
     
-    # 4. Search and Rank Doctors
+    # 4. Search and rank doctors.
     recommendations = find_and_rank_doctors(db, lat, lon, ai_res["specialty"])
+
+    # 5. Recommend a real slot without booking it.  Start with the existing
+    # doctor score, then account for the actual delay caused by appointments
+    # already in the doctor's calendar.  This prevents a highly ranked but
+    # busy doctor from always beating a nearly equivalent doctor with an
+    # immediate opening.
+    appointment_recommendation = None
+    preferred_datetime = f"{req.preferred_date} {req.preferred_time}"
+    available_candidates = [
+        doctor for doctor in recommendations.get("doctors", []) if doctor["available_now"]
+    ]
+    candidate_slots = []
+    for doctor in available_candidates:
+        try:
+            slot = preview_appointment_slot(
+                db=db,
+                doctor_id=doctor["doctor_id"],
+                preferred_time_str=preferred_datetime,
+                duration_mins=doctor["consultation_duration"],
+            )
+        except ValueError:
+            continue
+
+        # A delay of 20 minutes costs one ranking point, capped at 20 points
+        # so an otherwise excellent nearby doctor remains competitive.
+        effective_score = round(doctor["score"] - min(slot["wait_minutes"] / 20, 20), 1)
+        candidate_slots.append({**doctor, **slot, "effective_score": effective_score})
+
+    if candidate_slots:
+        candidate_slots.sort(
+            key=lambda candidate: (
+                -candidate["effective_score"],
+                candidate["wait_minutes"],
+                candidate["distance_km"],
+            )
+        )
+        best = candidate_slots[0]
+        delay_description = (
+            "at the preferred time"
+            if best["wait_minutes"] == 0
+            else f"after an estimated {best['wait_minutes']}-minute delay"
+        )
+        appointment_recommendation = {
+            "doctor_id": best["doctor_id"],
+            "doctor_name": best["name"],
+            "hospital_id": best["hospital"]["hospital_id"],
+            "hospital_name": best["hospital"]["name"],
+            "appointment_time": best["scheduled_time"],
+            "estimated_wait_minutes": best["wait_minutes"],
+            "effective_score": best["effective_score"],
+            "reason": (
+                f"Best available slot {delay_description}, based on specialty match, "
+                "availability, distance, queue, workload, hospital capacity, and "
+                "existing appointments."
+            ),
+        }
     
     return {
         "patient_id": db_patient.patient_id,
         "classification": ai_res,
         "location": {"latitude": lat, "longitude": lon},
-        "recommendations": recommendations
+        "recommendations": recommendations,
+        "appointment_recommendation": appointment_recommendation,
     }
 
 
