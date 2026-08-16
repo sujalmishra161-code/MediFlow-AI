@@ -1215,21 +1215,8 @@ export default function App() {
         </div>
       )}
 
-      <main className="max-w-[1600px] mx-auto px-4 sm:px-6 xl:px-10 py-7 sm:py-9">
-        {toast && (
-          <div className={`fixed right-5 bottom-5 z-[100] max-w-sm flex items-start gap-3 px-4 py-3.5 rounded-xl border shadow-xl ${
-            toast.type === 'success'
-              ? 'bg-white border-[#BFE2CA] text-[#3F8F59]'
-              : toast.type === 'error'
-              ? 'bg-white border-[#F0C3C8] text-[#C24F5D]'
-              : toast.type === 'warning'
-              ? 'bg-white border-[#F0D9AA] text-[#A87924]'
-              : 'bg-white border-[#C9DFEB] text-[#3978A8]'
-          }`}>
-            <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
-            <span className="text-[11px] font-semibold leading-relaxed">{toast.message}</span>
-          </div>
-        )}
+      
+        
 
           {activeTab === 'patient' && (
   <div className="mf-page">
