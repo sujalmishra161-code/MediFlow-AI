@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Activity, User, MapPin, Calendar, Clock, AlertTriangle, AlertCircle, 
   Sparkles, Building, UserCheck, Stethoscope, RefreshCw, Trash2, 
@@ -159,6 +159,7 @@ export default function App() {
 
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
+  const resultsRef = useRef(null);
   const [bookingMessage, setBookingMessage] = useState(null);
 
   const [unavailableDoctorId, setUnavailableDoctorId] = useState('');
@@ -384,8 +385,34 @@ export default function App() {
           })
         });
         const data = await response.json();
-        setSearchResult(data);
+
+        // Normalize the backend response so the UI always receives the
+        // expected recommendations.doctors array.
+        const normalizedResult = {
+          ...data,
+          recommendations: {
+            ...(data.recommendations || {}),
+            doctors: Array.isArray(data?.recommendations?.doctors)
+              ? data.recommendations.doctors
+              : Array.isArray(data?.doctors)
+              ? data.doctors
+              : []
+          }
+        };
+
+        setSearchResult(normalizedResult);
         showToast("Assessment complete!", "success");
+
+        // Move the user directly to the recommendation cards after the
+        // assessment finishes instead of leaving the results below the fold.
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            resultsRef.current?.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+          }, 80);
+        });
       } catch {
         runPatientSearchLocal();
       } finally {
@@ -395,6 +422,14 @@ export default function App() {
       setTimeout(() => {
         runPatientSearchLocal();
         setIsSearching(false);
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            resultsRef.current?.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+          }, 80);
+        });
       }, 600);
     }
   };
@@ -1728,7 +1763,10 @@ export default function App() {
 ====================================================== */}
 
 {searchResult && (
-  <div className="mt-8 space-y-6">
+  <div
+    ref={resultsRef}
+    className="mt-8 space-y-6 scroll-mt-24"
+  >
 
     {/* AI ASSESSMENT */}
     <section className="bg-white rounded-2xl border border-[#E4EAF0] p-6 shadow-sm">
@@ -1854,7 +1892,6 @@ export default function App() {
 </div>
 )}
 
-  
 
           {activeTab === 'hospital' && (
             <div className="space-y-6">
