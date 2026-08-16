@@ -1724,16 +1724,15 @@ export default function App() {
 
 
     {/* =====================================================
-        SEARCH RESULT
-    ====================================================== */}
+    SEARCH RESULT
+====================================================== */}
 
-    {searchResult && (
-      <div style={{ marginTop: 30 }}>
+{searchResult && (
+    // paste my new doctor-list code here
+)}
 
-        {/* Keep your existing searchResult rendering here */}
-
-      </div>
-    )}
+</div>
+)}
 
   </div>
 )}
