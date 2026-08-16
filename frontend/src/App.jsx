@@ -729,7 +729,7 @@ export default function App() {
           ...prev
         ]);
         showToast("Emergency simulated!", "error");
-        fetchHospitalDashboard();
+        loadHospitalDashboard();
         return;
       } catch {
         // Fallback
@@ -836,7 +836,7 @@ export default function App() {
         } else {
           showToast("Doctor offline! No active appointments affected.", "info");
         }
-        fetchHospitalDashboard();
+        loadHospitalDashboard();
         return;
       } catch {
         // Fallback
@@ -920,7 +920,7 @@ export default function App() {
           ...prev
         ]);
         showToast("Cancelled and optimized!", "success");
-        fetchHospitalDashboard();
+        loadHospitalDashboard();
         return;
       } catch {
         // Fallback
@@ -983,7 +983,7 @@ export default function App() {
         } else {
           showToast("Queues are already balanced.", "info");
         }
-        fetchHospitalDashboard();
+        loadHospitalDashboard();
         return;
       } catch {
         // Fallback
