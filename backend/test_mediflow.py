@@ -5,7 +5,12 @@ from models import Hospital, Doctor, Appointment, Patient
 from ai import classify_symptoms
 from distance import haversine_distance
 from matching import resolve_location_to_coords, find_and_rank_doctors
-from scheduler import calculate_appointment_slot, cancel_appointment_and_pull_forward, parse_time
+from scheduler import (
+    calculate_appointment_slot,
+    cancel_appointment_and_pull_forward,
+    parse_time,
+    preview_appointment_slot,
+)
 
 class TestMediFlowAI(unittest.TestCase):
     
@@ -146,6 +151,35 @@ class TestMediFlowAI(unittest.TestCase):
         
         self.assertEqual(a2.appointment_time, "2026-08-14 10:40")
         self.assertEqual(a2.status, "SHIFTED")
+
+    def test_slot_preview_finds_a_free_time_without_changing_records(self):
+        doc = self.db.query(Doctor).filter(Doctor.specialty == "Cardiology").first()
+        self.db.query(Appointment).filter(
+            Appointment.appointment_id.like("PREVIEW_TEST%")
+        ).delete()
+        self.db.commit()
+
+        appointment = Appointment(
+            appointment_id="PREVIEW_TEST_1",
+            patient_name="Preview Test",
+            doctor_id=doc.doctor_id,
+            hospital_id=doc.hospital_id,
+            appointment_time="2026-09-01 10:00",
+            priority="LOW",
+            estimated_duration=20,
+            status="BOOKED",
+        )
+        self.db.add(appointment)
+        self.db.commit()
+
+        original_queue = doc.queue_count
+        preview = preview_appointment_slot(
+            self.db, doc.doctor_id, "2026-09-01 10:00", 20
+        )
+
+        self.assertEqual(preview["scheduled_time"], "2026-09-01 10:20")
+        self.assertEqual(preview["wait_minutes"], 20)
+        self.assertEqual(doc.queue_count, original_queue)
 
     def test_cancellation_and_pull_forward(self):
         doc = self.db.query(Doctor).filter(Doctor.specialty == "Cardiology").first()
