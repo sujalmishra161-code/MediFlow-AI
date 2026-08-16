@@ -1032,7 +1032,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F6F8FB] text-[#1E2B35]">
+    <div className="min-h-screen bg-[#F6F8FB] text-[#1E2B35] text-[14px] sm:text-[15px]">
       {/* Desktop sidebar + mobile navigation */}
       <aside className="hidden lg:flex fixed inset-y-0 left-0 z-40 w-[245px] flex-col border-r border-[#E5EAF0] bg-white">
         <div className="px-6 py-6 border-b border-[#EEF1F5]">
@@ -1063,15 +1063,15 @@ export default function App() {
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left text-[12px] font-semibold transition-all ${
+                  className={`w-full flex items-center gap-3 rounded-xl px-4 py-3.5 text-left text-[15px] font-bold transition-all ${
                     active
                       ? 'bg-[#EAF3F8] text-[#3978A8]'
                       : 'text-[#6E7C86] hover:bg-[#F5F7F9] hover:text-[#243743]'
                   }`}
                 >
-                  <Icon className={`h-4 w-4 ${active ? 'text-[#3978A8]' : 'text-[#8A98A4]'}`} />
+                  <Icon className={`h-5 w-5 ${active ? 'text-[#3978A8]' : 'text-[#8A98A4]'}`} />
                   {item.label}
-                  {active && <ChevronRight className="ml-auto h-3.5 w-3.5" />}
+                  {active && <ChevronRight className="ml-auto h-4 w-4" />}
                 </button>
               );
             })}
@@ -1098,15 +1098,24 @@ export default function App() {
         <header className="sticky top-0 z-30 h-[72px] border-b border-[#E5EAF0] bg-white/95 backdrop-blur-md">
           <div className="h-full px-4 sm:px-6 xl:px-8 flex items-center justify-between gap-4">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#9AA6AF]">
+              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#9AA6AF]">
                 {activeTab === 'patient' ? 'Care coordination' : activeTab === 'hospital' ? 'Hospital operations' : 'Network intelligence'}
               </p>
-              <h2 className="text-[17px] font-extrabold text-[#243743] mt-0.5">
+              <h2 className="text-[21px] font-extrabold text-[#243743] mt-0.5">
                 {activeTab === 'patient' ? 'Find the right care' : activeTab === 'hospital' ? 'Live hospital dashboard' : 'Healthcare network analytics'}
               </h2>
             </div>
 
             <div className="flex items-center gap-3">
+              <div className="hidden sm:flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-[#F5FAFC] border border-[#DCEAF2]">
+                <div className="h-9 w-9 rounded-xl bg-[#3978A8] flex items-center justify-center shadow-sm">
+                  <Activity className="h-5 w-5 text-white" />
+                </div>
+                <div className="leading-tight">
+                  <p className="text-[14px] font-extrabold tracking-tight text-[#20313D]">MediFlow <span className="text-[#3978A8]">AI</span></p>
+                  <p className="text-[9px] font-semibold text-[#8A98A4]">Smart care coordination</p>
+                </div>
+              </div>
               <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl border border-[#E6EBEF] bg-[#FAFBFC]">
                 <span className={`h-2 w-2 rounded-full ${isLocalMode ? 'bg-[#E2A44A]' : 'bg-[#5CB477]'}`} />
                 <span className="text-[10px] font-semibold text-[#687780]">
@@ -1117,8 +1126,8 @@ export default function App() {
                 <User className="h-4 w-4 text-[#3978A8]" />
               </div>
               <div className="hidden md:block">
-                <p className="text-[11px] font-bold text-[#334650]">Sujal Mishra</p>
-                <p className="text-[9px] text-[#98A4AC]">Administrator</p>
+                <p className="text-[13px] font-bold text-[#334650]">Sujal Mishra</p>
+                <p className="text-[10px] text-[#98A4AC]">Administrator</p>
               </div>
             </div>
           </div>
@@ -1134,7 +1143,7 @@ export default function App() {
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`py-2 rounded-lg text-[10px] font-bold ${
+                className={`py-3 rounded-lg text-[14px] font-bold ${
                   activeTab === item.id ? 'bg-white text-[#3978A8] shadow-sm' : 'text-[#7D8A93]'
                 }`}
               >
@@ -1170,10 +1179,10 @@ export default function App() {
                       <Sparkles className="h-3.5 w-3.5" />
                       AI-assisted care routing
                     </div>
-                    <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#20313D] mt-4">
+                    <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#20313D] mt-4">
                       Find the right doctor without the guesswork.
                     </h1>
-                    <p className="text-xs sm:text-sm text-[#7A8993] max-w-2xl mt-2 leading-relaxed">
+                    <p className="text-sm sm:text-base text-[#7A8993] max-w-2xl mt-2 leading-relaxed">
                       MediFlow analyzes specialty, urgency, distance, queue load, doctor workload and hospital capacity to create a ranked care recommendation.
                     </p>
                   </div>
@@ -1203,7 +1212,7 @@ export default function App() {
                         <User className="h-5 w-5 text-[#3978A8]" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-extrabold text-[#2B3E49]">Patient assessment</h3>
+                        <h3 className="text-base font-extrabold text-[#2B3E49]">Patient assessment</h3>
                         <p className="text-[9px] text-[#99A5AD] mt-0.5">Enter details for AI routing</p>
                       </div>
                     </div>
@@ -1222,16 +1231,16 @@ export default function App() {
                       </button>
                     </div>
 
-                    <form onSubmit={handlePatientSearch} className="space-y-4">
+                    <form onSubmit={handlePatientSearch} className="space-y-5">
                       <div>
-                        <label className="block text-[9px] font-bold uppercase tracking-wider text-[#7D8B94] mb-1.5">Patient name</label>
+                        <label className="block text-[11px] font-bold uppercase tracking-wider text-[#7D8B94] mb-2">Patient name</label>
                         <div className="relative">
                           <User className="absolute left-3 top-3.5 h-4 w-4 text-[#A0ABB2]" />
                           <input
                             type="text"
                             value={patientName}
                             onChange={e => setPatientName(e.target.value)}
-                            className="w-full rounded-xl border border-[#DFE6EB] bg-white pl-10 pr-4 py-3 text-xs text-[#334650] outline-none focus:border-[#3978A8] focus:ring-2 focus:ring-[#3978A8]/10"
+                            className="w-full rounded-xl border border-[#DFE6EB] bg-white pl-11 pr-4 py-3.5 text-sm text-[#334650] outline-none focus:border-[#3978A8] focus:ring-2 focus:ring-[#3978A8]/10"
                             required
                           />
                         </div>
@@ -1239,23 +1248,23 @@ export default function App() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div>
-                          <label className="block text-[9px] font-bold uppercase tracking-wider text-[#7D8B94] mb-1.5">Age</label>
+                          <label className="block text-[11px] font-bold uppercase tracking-wider text-[#7D8B94] mb-2">Age</label>
                           <input
                             type="number"
                             value={patientAge}
                             onChange={e => setPatientAge(parseInt(e.target.value))}
-                            className="w-full rounded-xl border border-[#DFE6EB] bg-white px-4 py-3 text-xs text-[#334650] outline-none focus:border-[#3978A8]"
+                            className="w-full rounded-xl border border-[#DFE6EB] bg-white px-4 py-3.5 text-sm text-[#334650] outline-none focus:border-[#3978A8]"
                             required
                           />
                         </div>
                         <div className="sm:col-span-2">
-                          <label className="block text-[9px] font-bold uppercase tracking-wider text-[#7D8B94] mb-1.5">Location</label>
+                          <label className="block text-[11px] font-bold uppercase tracking-wider text-[#7D8B94] mb-2">Location</label>
                           <div className="relative">
                             <MapPin className="absolute left-3 top-3.5 h-4 w-4 text-[#3978A8]" />
                             <select
                               value={patientLocation}
                               onChange={e => setPatientLocation(e.target.value)}
-                              className="w-full appearance-none rounded-xl border border-[#DFE6EB] bg-white pl-10 pr-4 py-3 text-xs text-[#334650] outline-none focus:border-[#3978A8]"
+                              className="w-full appearance-none rounded-xl border border-[#DFE6EB] bg-white pl-11 pr-11 py-3.5 text-sm text-[#334650] outline-none focus:border-[#3978A8]"
                             >
                               <option value="Kalyanpur">Kalyanpur (West)</option>
                               <option value="Kakadeo">Kakadeo (Central-West)</option>
@@ -1278,35 +1287,33 @@ export default function App() {
                           value={patientSymptoms}
                           onChange={e => setPatientSymptoms(e.target.value)}
                           rows={4}
-                          className="w-full rounded-xl border border-[#DFE6EB] bg-white px-4 py-3 text-xs text-[#334650] outline-none focus:border-[#3978A8] focus:ring-2 focus:ring-[#3978A8]/10 resize-none"
+                          className="w-full rounded-xl border border-[#DFE6EB] bg-white px-4 py-3.5 text-sm text-[#334650] outline-none focus:border-[#3978A8] focus:ring-2 focus:ring-[#3978A8]/10 resize-none"
                           placeholder="Describe symptoms or reason for consultation..."
                           required
                         />
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-[9px] font-bold uppercase tracking-wider text-[#7D8B94] mb-1.5">Preferred date</label>
+                          <label className="block text-[11px] font-bold uppercase tracking-wider text-[#7D8B94] mb-2">Preferred date</label>
                           <div className="relative">
-                            <Calendar className="absolute left-3 top-3.5 h-4 w-4 text-[#A0ABB2]" />
                             <input
                               type="date"
                               value={prefDate}
                               onChange={e => setPrefDate(e.target.value)}
-                              className="w-full rounded-xl border border-[#DFE6EB] bg-white pl-10 pr-3 py-3 text-xs text-[#334650] outline-none focus:border-[#3978A8]"
+                              className="w-full rounded-xl border border-[#DFE6EB] bg-white pl-4 pr-11 py-3.5 text-sm text-[#334650] outline-none focus:border-[#3978A8]"
                               required
                             />
                           </div>
                         </div>
                         <div>
-                          <label className="block text-[9px] font-bold uppercase tracking-wider text-[#7D8B94] mb-1.5">Preferred time</label>
+                          <label className="block text-[11px] font-bold uppercase tracking-wider text-[#7D8B94] mb-2">Preferred time</label>
                           <div className="relative">
-                            <Clock className="absolute left-3 top-3.5 h-4 w-4 text-[#A0ABB2]" />
                             <input
                               type="time"
                               value={prefTime}
                               onChange={e => setPrefTime(e.target.value)}
-                              className="w-full rounded-xl border border-[#DFE6EB] bg-white pl-10 pr-3 py-3 text-xs text-[#334650] outline-none focus:border-[#3978A8]"
+                              className="w-full rounded-xl border border-[#DFE6EB] bg-white pl-4 pr-11 py-3.5 text-sm text-[#334650] outline-none focus:border-[#3978A8]"
                               required
                             />
                           </div>
@@ -1450,7 +1457,7 @@ export default function App() {
                               <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#3978A8]">Allocation results</p>
                               <h4 className="text-lg font-extrabold text-[#2B3E49] mt-1">Recommended doctors</h4>
                             </div>
-                            <span className="text-[9px] text-[#98A4AC]">Top {searchResult.recommendations.doctors.length} matches</span>
+                            <span className="text-[10px] text-[#98A4AC]">Top {searchResult.recommendations.doctors.length} matches</span>
                           </div>
 
                           <div className="space-y-3">
@@ -1586,7 +1593,7 @@ export default function App() {
                     <div>
                       <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#3978A8]">Operations center</p>
                       <h2 className="text-xl font-extrabold text-[#2B3E49] mt-1">Live Hospital Dashboard</h2>
-                      <p className="text-[10px] text-[#929EA5] mt-1">Monitor queues and simulate dynamic hospital events.</p>
+                      <p className="text-[11px] text-[#929EA5] mt-1">Monitor queues and simulate dynamic hospital events.</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
