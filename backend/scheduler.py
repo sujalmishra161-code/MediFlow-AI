@@ -12,6 +12,60 @@ def parse_time(time_str: str) -> datetime:
 def format_time(dt: datetime) -> str:
     return dt.strftime("%Y-%m-%d %H:%M")
 
+
+def preview_appointment_slot(
+    db: Session,
+    doctor_id: str,
+    preferred_time_str: str,
+    duration_mins: int,
+) -> dict:
+    """Return the first non-conflicting slot without changing the database.
+
+    This is deliberately separate from ``calculate_appointment_slot``.  A
+    recommendation must not increment a doctor's queue, occupy a hospital bed,
+    or move another patient's appointment until the patient actually books.
+    """
+    preferred_start = parse_time(preferred_time_str)
+    date_str = preferred_start.strftime("%Y-%m-%d")
+
+    doctor = db.query(Doctor).filter(Doctor.doctor_id == doctor_id).first()
+    if not doctor:
+        raise ValueError(f"Doctor {doctor_id} not found")
+
+    active_appointments = db.query(Appointment).filter(
+        Appointment.doctor_id == doctor_id,
+        Appointment.appointment_time.like(f"{date_str}%"),
+        Appointment.status != "CANCELLED",
+    ).all()
+    active_appointments.sort(key=lambda appointment: parse_time(appointment.appointment_time))
+
+    slot_start = preferred_start
+    while True:
+        slot_end = slot_start + timedelta(minutes=duration_mins)
+        conflicting_appointment = next(
+            (
+                appointment
+                for appointment in active_appointments
+                if not (
+                    slot_end <= parse_time(appointment.appointment_time)
+                    or slot_start >= parse_time(appointment.appointment_time)
+                    + timedelta(minutes=appointment.estimated_duration)
+                )
+            ),
+            None,
+        )
+        if not conflicting_appointment:
+            break
+
+        slot_start = parse_time(conflicting_appointment.appointment_time) + timedelta(
+            minutes=conflicting_appointment.estimated_duration
+        )
+
+    return {
+        "scheduled_time": format_time(slot_start),
+        "wait_minutes": int((slot_start - preferred_start).total_seconds() // 60),
+    }
+
 def calculate_appointment_slot(
     db: Session,
     doctor_id: str,
