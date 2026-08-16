@@ -1033,29 +1033,61 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#F6F8FB] text-[#1E2B35] text-[14px] sm:text-[15px]">
-      {/* Desktop sidebar + mobile navigation */}
-      <aside className="hidden lg:flex fixed inset-y-0 left-0 z-40 w-[245px] flex-col border-r border-[#E5EAF0] bg-white">
-        <div className="px-6 py-6 border-b border-[#EEF1F5]">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-[#3978A8] flex items-center justify-center shadow-sm">
-              <Activity className="h-5 w-5 text-white" />
+      {/* Redesigned desktop shell: top navigation instead of the old sidebar */}
+      <header className="sticky top-0 z-40 border-b border-[#E3EAF0] bg-white/95 backdrop-blur-xl">
+        <div className="max-w-[1600px] mx-auto h-[82px] px-4 sm:px-6 xl:px-10 flex items-center justify-between gap-6">
+          <div className="min-w-0">
+            <p className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#3978A8]">
+              Care coordination
+            </p>
+            <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#20313D] mt-1">
+              {activeTab === 'patient'
+                ? 'Find the right care'
+                : activeTab === 'hospital'
+                ? 'Live hospital dashboard'
+                : 'Healthcare network analytics'}
+            </h2>
+          </div>
+
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="hidden sm:flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-[#F5FAFC] border border-[#D8E8F0]">
+              <div className="h-10 w-10 rounded-xl bg-[#3978A8] flex items-center justify-center shadow-sm">
+                <Activity className="h-5 w-5 text-white" />
+              </div>
+              <div className="leading-tight">
+                <p className="text-[15px] font-extrabold tracking-tight text-[#20313D]">
+                  MediFlow <span className="text-[#3978A8]">AI</span>
+                </p>
+                <p className="text-[9px] font-semibold text-[#8A98A4] mt-0.5">Smart care coordination</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-[17px] font-extrabold tracking-tight text-[#20313D]">
-                MediFlow <span className="text-[#3978A8]">AI</span>
-              </h1>
-              <p className="text-[10px] text-[#8A98A4] mt-0.5">Smart care coordination</p>
+
+            <div className="hidden md:flex items-center gap-2 px-3 py-2.5 rounded-xl border border-[#E5EBEF] bg-[#FAFBFC]">
+              <span className={`h-2.5 w-2.5 rounded-full ${isLocalMode ? 'bg-[#E2A44A]' : 'bg-[#5CB477]'}`} />
+              <span className="text-[10px] font-bold text-[#687780]">
+                {isLocalMode ? 'Local simulator' : 'FastAPI connected'}
+              </span>
+            </div>
+
+            <div className="h-10 w-10 rounded-full bg-[#EAF3F8] border border-[#D7E7EF] flex items-center justify-center">
+              <User className="h-6 w-6 text-[#3978A8]" />
+            </div>
+            <div className="hidden lg:block">
+              <p className="text-[13px] font-bold text-[#334650]">Sujal Mishra</p>
+              <p className="text-[10px] text-[#98A4AC]">Administrator</p>
             </div>
           </div>
         </div>
+      </header>
 
-        <div className="px-4 py-5">
-          <p className="px-3 mb-2 text-[9px] font-bold uppercase tracking-[0.18em] text-[#9AA6AF]">Workspace</p>
-          <div className="space-y-1">
+      {/* Large three-tab workspace navigation */}
+      <nav className="sticky top-[82px] z-30 border-b border-[#E5EBEF] bg-white/95 backdrop-blur-xl">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 xl:px-10 py-3">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {[
-              { id: 'patient', icon: Stethoscope, label: 'Find Care' },
-              { id: 'hospital', icon: Building, label: 'Hospital Operations' },
-              { id: 'admin', icon: BarChart3, label: 'Analytics' },
+              { id: 'patient', icon: Stethoscope, label: 'Find Care', sub: 'AI-powered care matching' },
+              { id: 'hospital', icon: Building, label: 'Hospital', sub: 'Operations & resources' },
+              { id: 'admin', icon: BarChart3, label: 'Analytics', sub: 'Performance insights' }
             ].map(item => {
               const Icon = item.icon;
               const active = activeTab === item.id;
@@ -1063,140 +1095,77 @@ export default function App() {
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`w-full flex items-center gap-3 rounded-xl px-4 py-3.5 text-left text-[15px] font-bold transition-all ${
+                  className={`group flex items-center justify-center sm:justify-start gap-3 sm:gap-4 rounded-2xl px-3 sm:px-6 py-3.5 sm:py-4 text-left transition-all border ${
                     active
-                      ? 'bg-[#EAF3F8] text-[#3978A8]'
-                      : 'text-[#6E7C86] hover:bg-[#F5F7F9] hover:text-[#243743]'
+                      ? 'bg-[#EAF3F8] border-[#C9E0EB] text-[#3978A8] shadow-sm'
+                      : 'bg-white border-transparent text-[#6E7C86] hover:bg-[#F7FAFC] hover:border-[#E5EBEF]'
                   }`}
                 >
-                  <Icon className={`h-5 w-5 ${active ? 'text-[#3978A8]' : 'text-[#8A98A4]'}`} />
-                  {item.label}
-                  {active && <ChevronRight className="ml-auto h-4 w-4" />}
+                  <div className={`h-10 w-10 sm:h-11 sm:w-11 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                    active ? 'bg-white text-[#3978A8] shadow-sm' : 'bg-[#F5F7F9] text-[#8A98A4]'
+                  }`}>
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className={`text-sm sm:text-base font-extrabold ${active ? 'text-[#3978A8]' : 'text-[#445761]'}`}>
+                      {item.label}
+                    </p>
+                    <p className="hidden sm:block text-[9px] sm:text-[10px] mt-0.5 text-[#8B98A0]">
+                      {item.sub}
+                    </p>
+                  </div>
+                  {active && <ChevronRight className="hidden sm:block ml-auto h-4 w-4" />}
                 </button>
               );
             })}
           </div>
         </div>
+      </nav>
 
-        <div className="mt-auto p-4">
-          <div className="rounded-2xl bg-[#F5F8FA] border border-[#E8EDF1] p-4">
-            <div className="flex items-center gap-2">
-              <span className={`h-2 w-2 rounded-full ${isLocalMode ? 'bg-[#E2A44A]' : 'bg-[#5CB477]'}`} />
-              <span className="text-[10px] font-bold text-[#53636E]">AI ENGINE</span>
-            </div>
-            <p className={`text-[10px] font-semibold mt-2 ${isLocalMode ? 'text-[#B47A25]' : 'text-[#4C9D67]'}`}>
-              {isLocalMode ? 'Local simulator active' : 'FastAPI connected'}
-            </p>
-            <p className="text-[9px] text-[#9AA6AF] mt-1 leading-relaxed">
-              Specialty routing, doctor matching and dynamic allocation.
-            </p>
+      <main className="max-w-[1600px] mx-auto px-4 sm:px-6 xl:px-10 py-7 sm:py-9">
+        {toast && (
+          <div className={`fixed right-5 bottom-5 z-[100] max-w-sm flex items-start gap-3 px-4 py-3.5 rounded-xl border shadow-xl ${
+            toast.type === 'success'
+              ? 'bg-white border-[#BFE2CA] text-[#3F8F59]'
+              : toast.type === 'error'
+              ? 'bg-white border-[#F0C3C8] text-[#C24F5D]'
+              : toast.type === 'warning'
+              ? 'bg-white border-[#F0D9AA] text-[#A87924]'
+              : 'bg-white border-[#C9DFEB] text-[#3978A8]'
+          }`}>
+            <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+            <span className="text-[11px] font-semibold leading-relaxed">{toast.message}</span>
           </div>
-        </div>
-      </aside>
-
-      <div className="lg:pl-[245px] min-h-screen">
-        <header className="sticky top-0 z-30 h-[72px] border-b border-[#E5EAF0] bg-white/95 backdrop-blur-md">
-          <div className="h-full px-4 sm:px-6 xl:px-8 flex items-center justify-between gap-4">
-            <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#9AA6AF]">
-                {activeTab === 'patient' ? 'Care coordination' : activeTab === 'hospital' ? 'Hospital operations' : 'Network intelligence'}
-              </p>
-              <h2 className="text-[21px] font-extrabold text-[#243743] mt-0.5">
-                {activeTab === 'patient' ? 'Find the right care' : activeTab === 'hospital' ? 'Live hospital dashboard' : 'Healthcare network analytics'}
-              </h2>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="hidden sm:flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-[#F5FAFC] border border-[#DCEAF2]">
-                <div className="h-9 w-9 rounded-xl bg-[#3978A8] flex items-center justify-center shadow-sm">
-                  <Activity className="h-5 w-5 text-white" />
-                </div>
-                <div className="leading-tight">
-                  <p className="text-[14px] font-extrabold tracking-tight text-[#20313D]">MediFlow <span className="text-[#3978A8]">AI</span></p>
-                  <p className="text-[9px] font-semibold text-[#8A98A4]">Smart care coordination</p>
-                </div>
-              </div>
-              <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl border border-[#E6EBEF] bg-[#FAFBFC]">
-                <span className={`h-2 w-2 rounded-full ${isLocalMode ? 'bg-[#E2A44A]' : 'bg-[#5CB477]'}`} />
-                <span className="text-[10px] font-semibold text-[#687780]">
-                  {isLocalMode ? 'Local mode' : 'Live engine'}
-                </span>
-              </div>
-              <div className="h-9 w-9 rounded-full bg-[#EAF3F8] border border-[#D9E8F0] flex items-center justify-center">
-                <User className="h-4 w-4 text-[#3978A8]" />
-              </div>
-              <div className="hidden md:block">
-                <p className="text-[13px] font-bold text-[#334650]">Sujal Mishra</p>
-                <p className="text-[10px] text-[#98A4AC]">Administrator</p>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <div className="lg:hidden sticky top-[72px] z-20 bg-white border-b border-[#E8EDF1] px-4 py-2">
-          <div className="grid grid-cols-3 gap-1 bg-[#F5F7F9] p-1 rounded-xl">
-            {[
-              { id: 'patient', label: 'Find Care' },
-              { id: 'hospital', label: 'Hospital' },
-              { id: 'admin', label: 'Analytics' }
-            ].map(item => (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`py-3 rounded-lg text-[14px] font-bold ${
-                  activeTab === item.id ? 'bg-white text-[#3978A8] shadow-sm' : 'text-[#7D8A93]'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <main className="max-w-[1450px] mx-auto px-4 sm:px-6 xl:px-8 py-6 sm:py-8">
-          {toast && (
-            <div className={`fixed right-5 bottom-5 z-[100] max-w-sm flex items-start gap-3 px-4 py-3.5 rounded-xl border shadow-xl ${
-              toast.type === 'success'
-                ? 'bg-white border-[#BFE2CA] text-[#3F8F59]'
-                : toast.type === 'error'
-                ? 'bg-white border-[#F0C3C8] text-[#C24F5D]'
-                : toast.type === 'warning'
-                ? 'bg-white border-[#F0D9AA] text-[#A87924]'
-                : 'bg-white border-[#C9DFEB] text-[#3978A8]'
-            }`}>
-              <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
-              <span className="text-[11px] font-semibold leading-relaxed">{toast.message}</span>
-            </div>
-          )}
+        )}
 
           {activeTab === 'patient' && (
             <div className="space-y-6">
               {/* Hero */}
-              <section className="rounded-2xl bg-white border border-[#E4EAF0] p-5 sm:p-7 shadow-[0_6px_24px_rgba(35,55,70,0.04)]">
+              <section className="rounded-3xl bg-white border border-[#E1E9EE] p-6 sm:p-8 xl:p-10 shadow-[0_8px_30px_rgba(35,55,70,0.05)]">
                 <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
                   <div>
                     <div className="inline-flex items-center gap-2 rounded-full bg-[#EAF3F8] px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.15em] text-[#3978A8]">
                       <Sparkles className="h-3.5 w-3.5" />
                       AI-assisted care routing
                     </div>
-                    <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#20313D] mt-4">
+                    <h1 className="text-4xl sm:text-5xl xl:text-[56px] leading-[1.05] font-extrabold tracking-tight text-[#20313D] mt-5">
                       Find the right doctor without the guesswork.
                     </h1>
-                    <p className="text-sm sm:text-base text-[#7A8993] max-w-2xl mt-2 leading-relaxed">
+                    <p className="text-base sm:text-lg text-[#7A8993] max-w-3xl mt-4 leading-relaxed">
                       MediFlow analyzes specialty, urgency, distance, queue load, doctor workload and hospital capacity to create a ranked care recommendation.
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-2 min-w-0 xl:min-w-[390px]">
+                  <div className="grid grid-cols-3 gap-2 min-w-0 xl:min-w-[430px]">
                     {[
                       ['01', 'AI Triage', 'Specialty + urgency'],
                       ['02', 'Smart Match', '6 allocation signals'],
                       ['03', 'Dynamic Flow', 'Queue reallocation']
                     ].map(([num, title, sub]) => (
-                      <div key={num} className="rounded-xl border border-[#E7EDF1] bg-[#FAFBFC] p-3">
+                      <div key={num} className="rounded-2xl border border-[#E7EDF1] bg-[#FAFBFC] p-4">
                         <span className="text-[9px] font-bold text-[#9AA6AF]">{num}</span>
-                        <p className="text-[11px] font-extrabold text-[#334650] mt-1">{title}</p>
-                        <p className="text-[8px] text-[#8C99A2] mt-1 leading-relaxed">{sub}</p>
+                        <p className="text-sm font-extrabold text-[#334650] mt-1.5">{title}</p>
+                        <p className="text-[10px] text-[#8C99A2] mt-1 leading-relaxed">{sub}</p>
                       </div>
                     ))}
                   </div>
@@ -1205,21 +1174,21 @@ export default function App() {
 
               <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
                 {/* Assessment form */}
-                <section className="xl:col-span-5 bg-white rounded-2xl border border-[#E4EAF0] shadow-[0_6px_24px_rgba(35,55,70,0.04)] overflow-hidden">
-                  <div className="px-5 sm:px-6 py-5 border-b border-[#EEF1F4] flex items-center justify-between">
+                <section className="xl:col-span-5 bg-white rounded-3xl border border-[#E1E9EE] shadow-[0_8px_30px_rgba(35,55,70,0.05)] overflow-hidden">
+                  <div className="px-6 sm:px-7 py-6 border-b border-[#EEF1F4] flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-xl bg-[#EAF3F8] flex items-center justify-center">
-                        <User className="h-5 w-5 text-[#3978A8]" />
+                      <div className="h-12 w-12 rounded-2xl bg-[#EAF3F8] flex items-center justify-center">
+                        <User className="h-6 w-6 text-[#3978A8]" />
                       </div>
                       <div>
-                        <h3 className="text-base font-extrabold text-[#2B3E49]">Patient assessment</h3>
-                        <p className="text-[9px] text-[#99A5AD] mt-0.5">Enter details for AI routing</p>
+                        <h3 className="text-xl font-extrabold text-[#2B3E49]">Patient assessment</h3>
+                        <p className="text-[10px] text-[#99A5AD] mt-1">Enter details for AI routing</p>
                       </div>
                     </div>
                     <span className="text-[9px] font-bold text-[#5CB477]">STEP 1 / 2</span>
                   </div>
 
-                  <div className="p-5 sm:p-6">
+                  <div className="p-6 sm:p-8">
                     <div className="grid grid-cols-2 gap-2 mb-5">
                       <button onClick={() => prefillDemoScenario(1)} className="rounded-xl border border-[#DCEAF2] bg-[#F5FAFC] hover:bg-[#EDF6FA] px-3 py-2.5 text-left transition-colors">
                         <span className="text-[8px] font-bold uppercase tracking-wider text-[#3978A8]">Demo scenario</span>
@@ -1231,16 +1200,16 @@ export default function App() {
                       </button>
                     </div>
 
-                    <form onSubmit={handlePatientSearch} className="space-y-5">
+                    <form onSubmit={handlePatientSearch} className="space-y-6">
                       <div>
-                        <label className="block text-[11px] font-bold uppercase tracking-wider text-[#7D8B94] mb-2">Patient name</label>
+                        <label className="block text-xs font-bold uppercase tracking-[0.12em] text-[#6F7F89] mb-2.5">Patient name</label>
                         <div className="relative">
-                          <User className="absolute left-3 top-3.5 h-4 w-4 text-[#A0ABB2]" />
+                          <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#A0ABB2]" />
                           <input
                             type="text"
                             value={patientName}
                             onChange={e => setPatientName(e.target.value)}
-                            className="w-full rounded-xl border border-[#DFE6EB] bg-white pl-11 pr-4 py-3.5 text-sm text-[#334650] outline-none focus:border-[#3978A8] focus:ring-2 focus:ring-[#3978A8]/10"
+                            className="w-full rounded-xl border border-[#DFE6EB] bg-white pl-12 pr-4 py-4 text-base text-[#334650] outline-none focus:border-[#3978A8] focus:ring-2 focus:ring-[#3978A8]/10"
                             required
                           />
                         </div>
@@ -1248,23 +1217,23 @@ export default function App() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div>
-                          <label className="block text-[11px] font-bold uppercase tracking-wider text-[#7D8B94] mb-2">Age</label>
+                          <label className="block text-xs font-bold uppercase tracking-[0.12em] text-[#6F7F89] mb-2.5">Age</label>
                           <input
                             type="number"
                             value={patientAge}
                             onChange={e => setPatientAge(parseInt(e.target.value))}
-                            className="w-full rounded-xl border border-[#DFE6EB] bg-white px-4 py-3.5 text-sm text-[#334650] outline-none focus:border-[#3978A8]"
+                            className="w-full rounded-xl border border-[#DFE6EB] bg-white px-4 py-4 text-base text-[#334650] outline-none focus:border-[#3978A8]"
                             required
                           />
                         </div>
                         <div className="sm:col-span-2">
-                          <label className="block text-[11px] font-bold uppercase tracking-wider text-[#7D8B94] mb-2">Location</label>
+                          <label className="block text-xs font-bold uppercase tracking-[0.12em] text-[#6F7F89] mb-2.5">Location</label>
                           <div className="relative">
-                            <MapPin className="absolute left-3 top-3.5 h-4 w-4 text-[#3978A8]" />
+                            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#3978A8]" />
                             <select
                               value={patientLocation}
                               onChange={e => setPatientLocation(e.target.value)}
-                              className="w-full appearance-none rounded-xl border border-[#DFE6EB] bg-white pl-11 pr-11 py-3.5 text-sm text-[#334650] outline-none focus:border-[#3978A8]"
+                              className="w-full appearance-none rounded-xl border border-[#DFE6EB] bg-white pl-12 pr-12 py-4 text-base text-[#334650] outline-none focus:border-[#3978A8]"
                             >
                               <option value="Kalyanpur">Kalyanpur (West)</option>
                               <option value="Kakadeo">Kakadeo (Central-West)</option>
@@ -1280,14 +1249,14 @@ export default function App() {
 
                       <div>
                         <div className="flex items-center justify-between mb-1.5">
-                          <label className="text-[9px] font-bold uppercase tracking-wider text-[#7D8B94]">Symptoms / reason for visit</label>
+                          <label className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6F7F89]">Symptoms / reason for visit</label>
                           <span className="text-[8px] text-[#A1ABB1]">AI triage input</span>
                         </div>
                         <textarea
                           value={patientSymptoms}
                           onChange={e => setPatientSymptoms(e.target.value)}
-                          rows={4}
-                          className="w-full rounded-xl border border-[#DFE6EB] bg-white px-4 py-3.5 text-sm text-[#334650] outline-none focus:border-[#3978A8] focus:ring-2 focus:ring-[#3978A8]/10 resize-none"
+                          rows={5}
+                          className="w-full rounded-xl border border-[#DFE6EB] bg-white px-4 py-4 text-base text-[#334650] outline-none focus:border-[#3978A8] focus:ring-2 focus:ring-[#3978A8]/10 resize-none"
                           placeholder="Describe symptoms or reason for consultation..."
                           required
                         />
@@ -1295,25 +1264,27 @@ export default function App() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-[11px] font-bold uppercase tracking-wider text-[#7D8B94] mb-2">Preferred date</label>
+                          <label className="block text-xs font-bold uppercase tracking-[0.12em] text-[#6F7F89] mb-2.5">Preferred date</label>
                           <div className="relative">
+                            <Calendar className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#3978A8]" />
                             <input
                               type="date"
                               value={prefDate}
                               onChange={e => setPrefDate(e.target.value)}
-                              className="w-full rounded-xl border border-[#DFE6EB] bg-white pl-4 pr-11 py-3.5 text-sm text-[#334650] outline-none focus:border-[#3978A8]"
+                              className="w-full rounded-xl border border-[#DFE6EB] bg-white pl-12 pr-12 py-4 text-base text-[#334650] outline-none focus:border-[#3978A8] focus:ring-2 focus:ring-[#3978A8]/10"
                               required
                             />
                           </div>
                         </div>
                         <div>
-                          <label className="block text-[11px] font-bold uppercase tracking-wider text-[#7D8B94] mb-2">Preferred time</label>
+                          <label className="block text-xs font-bold uppercase tracking-[0.12em] text-[#6F7F89] mb-2.5">Preferred time</label>
                           <div className="relative">
+                            <Clock className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#3978A8]" />
                             <input
                               type="time"
                               value={prefTime}
                               onChange={e => setPrefTime(e.target.value)}
-                              className="w-full rounded-xl border border-[#DFE6EB] bg-white pl-4 pr-11 py-3.5 text-sm text-[#334650] outline-none focus:border-[#3978A8]"
+                              className="w-full rounded-xl border border-[#DFE6EB] bg-white pl-12 pr-12 py-4 text-base text-[#334650] outline-none focus:border-[#3978A8] focus:ring-2 focus:ring-[#3978A8]/10"
                               required
                             />
                           </div>
@@ -1327,7 +1298,7 @@ export default function App() {
                       <button
                         type="submit"
                         disabled={isSearching}
-                        className="w-full rounded-xl bg-[#3978A8] hover:bg-[#306B98] disabled:opacity-60 text-white py-3.5 text-[10px] font-extrabold tracking-wide transition-colors flex items-center justify-center gap-2"
+                        className="w-full rounded-xl bg-[#3978A8] hover:bg-[#306B98] disabled:opacity-60 text-white py-5 sm:py-5 text-xs font-extrabold tracking-[0.08em] transition-colors flex items-center justify-center gap-2"
                       >
                         {isSearching ? (
                           <><RefreshCw className="h-4 w-4 animate-spin" /> ANALYZING REQUEST...</>
@@ -1342,13 +1313,13 @@ export default function App() {
                 {/* Results */}
                 <section className="xl:col-span-7 space-y-5">
                   {!searchResult && !isSearching && (
-                    <div className="min-h-[575px] bg-white rounded-2xl border border-[#E4EAF0] flex flex-col items-center justify-center text-center p-8">
+                    <div className="min-h-[620px] bg-white rounded-2xl border border-[#E4EAF0] flex flex-col items-center justify-center text-center p-8">
                       <div className="h-16 w-16 rounded-2xl bg-[#F0F6F9] flex items-center justify-center mb-5">
                         <Stethoscope className="h-7 w-7 text-[#3978A8]" />
                       </div>
                       <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#3978A8]">Ready for assessment</p>
-                      <h3 className="text-xl font-extrabold text-[#2A3C47] mt-2">Your care recommendation appears here</h3>
-                      <p className="text-xs text-[#8A969E] max-w-md mt-2 leading-relaxed">
+                      <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2A3C47] mt-2">Your care recommendation appears here</h3>
+                      <p className="text-sm text-[#8A969E] max-w-lg mt-2 leading-relaxed">
                         Submit the patient details to see AI specialty classification, urgency, ranked doctors, estimated waiting time and escalation options.
                       </p>
                       <div className="grid grid-cols-3 gap-3 w-full max-w-lg mt-7">
@@ -1368,13 +1339,13 @@ export default function App() {
                   )}
 
                   {isSearching && (
-                    <div className="min-h-[575px] bg-white rounded-2xl border border-[#DDE8EF] flex flex-col items-center justify-center text-center p-8">
+                    <div className="min-h-[620px] bg-white rounded-2xl border border-[#DDE8EF] flex flex-col items-center justify-center text-center p-8">
                       <div className="h-20 w-20 rounded-full border-4 border-[#E5EFF4] border-t-[#3978A8] animate-spin flex items-center justify-center">
                         <Activity className="h-7 w-7 text-[#3978A8] animate-pulse" />
                       </div>
                       <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#3978A8] mt-6">Processing request</p>
-                      <h3 className="text-xl font-extrabold text-[#2A3C47] mt-2">Running AI specialty triage</h3>
-                      <p className="text-xs text-[#8A969E] max-w-md mt-2 leading-relaxed">
+                      <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2A3C47] mt-2">Running AI specialty triage</h3>
+                      <p className="text-sm text-[#8A969E] max-w-lg mt-2 leading-relaxed">
                         Assessing symptoms, resolving patient location and calculating matching scores across available physicians.
                       </p>
                       <div className="w-full max-w-md mt-6 space-y-2">
@@ -1390,7 +1361,7 @@ export default function App() {
                   )}
 
                   {searchResult && (
-                    <div className="space-y-5">
+                    <div className="space-y-6">
                       <div className="bg-white rounded-2xl border border-[#DDE8EF] p-5 sm:p-6">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
                           <div>
@@ -1589,7 +1560,7 @@ export default function App() {
               <section className="bg-white rounded-2xl border border-[#E4EAF0] p-5 sm:p-6 shadow-[0_6px_24px_rgba(35,55,70,0.04)]">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
                   <div className="flex items-center gap-3">
-                    <div className="h-11 w-11 rounded-xl bg-[#EAF3F8] flex items-center justify-center"><Building className="h-5 w-5 text-[#3978A8]" /></div>
+                    <div className="h-11 w-11 rounded-xl bg-[#EAF3F8] flex items-center justify-center"><Building className="h-6 w-6 text-[#3978A8]" /></div>
                     <div>
                       <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#3978A8]">Operations center</p>
                       <h2 className="text-xl font-extrabold text-[#2B3E49] mt-1">Live Hospital Dashboard</h2>
